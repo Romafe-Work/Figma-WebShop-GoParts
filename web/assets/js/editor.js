@@ -114,6 +114,14 @@
   var classes = {};   // seletor -> lista de classes (a variante do botão)
   var fotos   = {};   // seletor -> nome do ficheiro de fundo trocado à mão
   var historico = [];
+  /* O que a página era antes de o editor lhe tocar. Fica só em memória, e é
+     apanhado antes de qualquer alteração, incluindo as que vêm guardadas do
+     navegador — senão "repor tudo" repunha o estado guardado e não o original. */
+  var originais = { textos: {}, classes: {}, fotos: {} };
+
+  function lembrar(tipo, sel, valor) {
+    if (originais[tipo][sel] === undefined) originais[tipo][sel] = valor;
+  }
   var seleccionado = null;
   var ligado = false;
 
@@ -287,14 +295,14 @@
     Object.keys(classes).forEach(function (s) {
       try {
         var n = document.querySelector(s);
-        if (n) n.className = classes[s];
+        if (n) { lembrar('classes', s, n.getAttribute('class') || ''); n.className = classes[s]; }
       } catch (e) {}
     });
 
     Object.keys(textos).forEach(function (s) {
       try {
         var n = document.querySelector(s);
-        if (n) n.textContent = textos[s];
+        if (n) { lembrar('textos', s, n.textContent); n.textContent = textos[s]; }
       } catch (e) {}
     });
     escrever();
@@ -337,10 +345,26 @@
   }
 
   function reporTudo() {
-    estilos = {}; textos = {}; classes = {}; historico = [];
+    /* devolve o texto, as classes e a fotografia ao que eram */
+    Object.keys(originais.textos).forEach(function (s) {
+      try { var n = document.querySelector(s); if (n) n.textContent = originais.textos[s]; } catch (e) {}
+    });
+    Object.keys(originais.classes).forEach(function (s) {
+      try { var n = document.querySelector(s); if (n) n.className = originais.classes[s]; } catch (e) {}
+    });
+    Object.keys(originais.fotos).forEach(function (s) {
+      try { var n = document.querySelector(s); if (n) n.style.backgroundImage = originais.fotos[s]; } catch (e) {}
+    });
+
+    estilos = {}; textos = {}; classes = {}; fotos = {};
+    originais = { textos: {}, classes: {}, fotos: {} };
+    historico = [];
     try { localStorage.removeItem(CHAVE); } catch (e) {}
+
     escrever();
-    aviso('Voltou tudo ao original. Recarrega para repor textos e variantes.');
+    seleccionar(null);
+    construirCamadas();
+    aviso('Voltou tudo ao original — texto, variantes e fotografia');
   }
 
   /* ---------------- mover ----------------
@@ -545,7 +569,8 @@
       });
       sel.addEventListener('change', function () {
         var sc2 = seletor(seleccionado);
-        historico.push({ tipo: 'classe', seletor: sc2, antes: seleccionado.className });
+        lembrar('classes', sc2, seleccionado.getAttribute('class') || '');
+        historico.push({ tipo: 'classe', seletor: sc2, antes: seleccionado.getAttribute('class') || '' });
         CLASSES_VARIANTE.forEach(function (c) { seleccionado.classList.remove(c); });
         if (sel.value) seleccionado.classList.add(sel.value);
         classes[sc2] = seleccionado.className;
@@ -568,6 +593,7 @@
       ta.value = seleccionado.textContent;
       ta.addEventListener('change', function () {
         var s2 = seletor(seleccionado);
+        lembrar('textos', s2, seleccionado.textContent);
         historico.push({ tipo: 'texto', seletor: s2, antes: textos[s2] !== undefined ? textos[s2] : seleccionado.textContent });
         seleccionado.textContent = ta.value;
         textos[s2] = ta.value;
@@ -756,6 +782,7 @@
       if (!f) return;
       var leitor = new FileReader();
       leitor.onload = function () {
+        lembrar('fotos', seletor(alvo), alvo.style.backgroundImage || '');
         alvo.style.backgroundImage = 'url(' + leitor.result + ')';
         fotos[seletor(alvo)] = f.name;
         pintarProps();
@@ -1101,6 +1128,7 @@
       alvo.focus();
       var s = seletor(alvo);
       var antes = alvo.textContent;
+      lembrar('textos', s, antes);
       alvo.addEventListener('blur', function sair() {
         alvo.removeAttribute('contenteditable');
         alvo.removeEventListener('blur', sair);
