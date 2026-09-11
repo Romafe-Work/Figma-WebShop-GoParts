@@ -146,6 +146,8 @@
 .rodape a { color: var(--c-entrada-tinta); text-decoration: none; }
 .rodape a:hover { text-decoration: underline; }
 .rodape__selo { display: flex; align-items: center; gap: var(--e-2); }
+/* As três barras são um desenho da marca, não uma palavra. Ficam laranja
+   como traço, e por isso levam aria-hidden no HTML — 02 §1.2. */
 .rodape__barras { color: var(--c-acao); font-weight: 700; letter-spacing: .08em; }
 .rodape__lema { line-height: 1.2; text-transform: uppercase; letter-spacing: .1em; font-size: 9px; }
 

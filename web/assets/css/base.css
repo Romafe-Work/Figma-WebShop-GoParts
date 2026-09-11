@@ -62,7 +62,7 @@ code, kbd, pre { font-family: var(--f-mono); font-size: .875em; }
   background: var(--c-acao); color: #fff;
   font-weight: 700;                    /* 02 §1: o peso paga o contraste do laranja */
 }
-.btn--acao:hover { background: var(--c-acao-traco); }
+.btn--acao:hover { background: var(--c-acao-premido); }
 /* 02 §3: o texto sobre laranja é branco, e não muda com o tema. */
 
 .btn__icone { width: 18px; height: 18px; flex: none; }

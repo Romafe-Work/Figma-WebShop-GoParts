@@ -43,8 +43,10 @@
   --c-marca:        #2762a8;   /* o azul da palavra ROMAFE */
   --c-marca-forte:  #1f5089;
   --c-marca-suave:  #e0eaf0;
-  --c-acao:         #ef7b10;
-  --c-acao-traco:   #ba5c00;
+  --c-acao:         #ef7b10;   /* 02 §1: o laranja de referência. Não muda com o tema */
+  --c-acao-premido: #d86c01;   /* 02 §1.2: estado premido do primário */
+  --c-acao-traco:   #ba5c00;   /* 02 §1.2: traço e preenchimento sobre fundo claro */
+  --c-acao-marcador:#ef7b10;   /* 02 §6: marcador do item ativo */
   --c-ok:           #2e6b25;
   --c-ok-suave:     #e7efe6;
   --c-aviso:        #876c0d;
@@ -98,8 +100,8 @@
   --c-marca:        #a8caee;
   --c-marca-forte:  #deebfb;
   --c-marca-suave:  #414548;
-  --c-acao:         #fb8f39;
   --c-acao-traco:   #fb8f39;
+  --c-acao-marcador:#fb8f39;
   --c-ok:           #8fbc89;
   --c-ok-suave:     #373e34;
   --c-aviso:        #f5c518;
@@ -153,8 +155,8 @@
     --c-marca:        #a8caee;
     --c-marca-forte:  #deebfb;
     --c-marca-suave:  #414548;
-    --c-acao:         #fb8f39;
     --c-acao-traco:   #fb8f39;
+    --c-acao-marcador:#fb8f39;
     --c-ok:           #8fbc89;
     --c-ok-suave:     #373e34;
     --c-aviso:        #f5c518;
