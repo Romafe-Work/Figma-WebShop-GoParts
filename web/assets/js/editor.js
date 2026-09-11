@@ -1148,6 +1148,12 @@
 
     var escolha = candidata(ev.target);
     if (escolha) seleccionar(escolha);
+
+    /* Uma aba é navegação: escolhe-se para a editar e, ao mesmo tempo, leva
+       ao ecrã dela. Sem isto, carregar em Início não marcava nada, porque o
+       editor engolia o clique antes de a barra o ver. */
+    var aba = ev.target.closest && ev.target.closest('.aba');
+    if (aba && window.RomafePortal) window.RomafePortal.activarAba(aba);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -1189,6 +1195,14 @@
         }
       });
     }, true);
+
+    window.RomafeEditor = {
+      irPara: function (nome) {
+        var picker = painelEsq && painelEsq.querySelector('.ed-ecras select');
+        if (picker) picker.value = nome;
+        trocarEcra(nome);
+      }
+    };
 
     document.addEventListener('keydown', function (ev) {
       if (!ligado) return;
