@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistema de UI da entrada — ROMAFE</title>
+<meta name="description" content="Cor, tipografia, espaçamento, botões e campos do ecrã de entrada da ROMAFE, com o código de cada peça.">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/documentacao.css">
+<script src="assets/js/tema.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+<header class="doc-topo">
+  <div>
+    <h1 class="doc-topo__titulo marca">ROMAFE</h1>
+    <p class="doc-topo__sub">Sistema de UI do ecrã de entrada</p>
+  </div>
+  <div class="segmented" role="group" aria-label="Tema da interface">
+    <button type="button" class="segmented__btn" data-tema="light" aria-pressed="false">Claro</button>
+    <button type="button" class="segmented__btn" data-tema="dark" aria-pressed="false">Escuro</button>
+    <button type="button" class="segmented__btn" data-tema="auto" aria-pressed="true">Auto</button>
+  </div>
+</header>
+
+<div class="doc-corpo">
+
+  <nav class="doc-indice" aria-label="Índice">
+    <ol>
+      <li><a href="#origem">De onde vem</a></li>
+      <li><a href="#cor">Cor e temas</a></li>
+      <li><a href="#marca">A marca</a></li>
+      <li><a href="#tipografia">Tipografia</a></li>
+      <li><a href="#espacamento">Espaçamento</a></li>
+      <li><a href="#forma">Raio e sombra</a></li>
+      <li><a href="#botoes">Botões</a></li>
+      <li><a href="#campos">Campos</a></li>
+      <li><a href="#opcao">Caixa de verificação</a></li>
+      <li><a href="#cartao">Cartão de sessão</a></li>
+      <li><a href="#editor">O editor do ecrã</a></li>
+      <li><a href="#diferencas">O que mudou</a></li>
+    </ol>
+  </nav>
+
+  <main class="doc-conteudo" id="conteudo">
+
+    <!-- ============ ORIGEM ============ -->
+    <section class="seccao" id="origem">
+      <h2>De onde vem</h2>
+      <p>
+        Todos os valores desta página são copiados de
+        <a href="https://romafe-work.github.io/UIUX/">romafe-work.github.io/UIUX</a>,
+        o manual de UI publicado. Nenhuma cor, tamanho ou folga foi escolhida aqui.
+        O ecrã de entrada só acrescenta o que o manual ainda não tinha por não ter
+        ecrã de entrada, e esse acréscimo está marcado em cada secção.
+      </p>
+      <p>Três ficheiros, por esta ordem:</p>
+      <pre><code>&lt;link rel="stylesheet" href="assets/css/tokens.css"&gt;  &lt;!-- os valores --&gt;
+&lt;link rel="stylesheet" href="assets/css/base.css"&gt;    &lt;!-- os componentes --&gt;
+&lt;link rel="stylesheet" href="assets/css/entrada.css"&gt; &lt;!-- só este ecrã --&gt;
+&lt;script src="assets/js/tema.js"&gt;&lt;/script&gt;</code></pre>
+      <p class="nota">
+        O <code>tema.js</code> entra no <code>&lt;head&gt;</code> e não no fim do corpo.
+        Corre antes de a página pintar, senão o tema escuro chega depois do branco
+        e vê-se o salto.
+      </p>
+    </section>
+
+    <!-- ============ COR ============ -->
+    <section class="seccao" id="cor">
+      <h2>Cor e temas</h2>
+      <p>
+        Dois temas escritos nos mesmos nomes. Uma peça pinta-se com
+        <code>var(--c-superficie)</code> e nunca com um hexadecimal, e é por isso
+        que o tema escuro não obriga a mexer em nenhum componente.
+      </p>
+      <p>
+        O terceiro modo, <strong>auto</strong>, não escreve nada no documento:
+        quem decide é o sistema operativo. Carrega nos três botões do topo para ver.
+      </p>
+
+      <h3>Superfícies</h3>
+      <div class="grelha-cores" data-cores="superficies"></div>
+
+      <h3>Texto</h3>
+      <div class="grelha-cores" data-cores="texto"></div>
+
+      <h3>Marca e estados</h3>
+      <div class="grelha-cores" data-cores="marca"></div>
+
+      <h3>Só na entrada</h3>
+      <div class="grelha-cores" data-cores="entrada"></div>
+
+      <p class="nota">
+        Clica num cartão de cor para copiar o nome do token.
+      </p>
+    </section>
+
+    <!-- ============ MARCA ============ -->
+    <section class="seccao" id="marca">
+      <h2>A marca</h2>
+      <p>
+        ROMAFE nunca aparece sozinho. É sempre o mesmo conjunto, pela mesma
+        ordem: o nome, o risco laranja e o subtítulo. Em qualquer ecrã, em
+        qualquer tamanho.
+      </p>
+
+      <div class="demo">
+        <span class="lockup">
+          <span class="lockup__nome">ROMAFE</span>
+          <span class="lockup__risco" aria-hidden="true"></span>
+          <span class="lockup__sub">Gestão de oficina</span>
+        </span>
+        <span class="lockup lockup--sm">
+          <span class="lockup__nome">ROMAFE</span>
+          <span class="lockup__risco" aria-hidden="true"></span>
+          <span class="lockup__sub">Gestão de oficina</span>
+        </span>
+      </div>
+
+      <div class="demo" style="background: var(--c-entrada-fundo)">
+        <span class="lockup lockup--invertido">
+          <span class="lockup__nome">ROMAFE</span>
+          <span class="lockup__risco" aria-hidden="true"></span>
+          <span class="lockup__sub">Gestão de oficina</span>
+        </span>
+        <span class="lockup lockup--sm lockup--invertido">
+          <span class="lockup__nome">ROMAFE</span>
+          <span class="lockup__risco" aria-hidden="true"></span>
+          <span class="lockup__sub">Gestão de oficina</span>
+        </span>
+      </div>
+
+      <pre><code>&lt;span class="lockup"&gt;
+  &lt;span class="lockup__nome"&gt;ROMAFE&lt;/span&gt;
+  &lt;span class="lockup__risco" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;span class="lockup__sub"&gt;Gestão de oficina&lt;/span&gt;
+&lt;/span&gt;</code></pre>
+
+      <table class="tabela">
+        <thead><tr><th>Peça</th><th>Valor</th><th>Razão</th></tr></thead>
+        <tbody>
+          <tr><td>Nome</td><td>Motor, <code>--c-logotipo</code></td><td>É a letra e a cor da marca impressa</td></tr>
+          <tr><td>Risco</td><td><code>--c-acao</code>, 3px</td><td>É o único sítio onde o laranja não é uma ação, e por isso não tem concorrência</td></tr>
+          <tr><td>Subtítulo</td><td><code>--t-sm</code>, <code>--c-texto-2</code></td><td>Diz o que é o produto, não o que é a empresa</td></tr>
+          <tr><td>Largura do risco</td><td>A do conjunto</td><td>Cresce com o subtítulo, não com o nome: é o que dá a mesma silhueta em qualquer tamanho</td></tr>
+        </tbody>
+      </table>
+
+      <p class="nota">
+        Sobre superfície escura, <code>.lockup--invertido</code>: o nome passa a
+        branco e o subtítulo à tinta clara. O azul do logótipo sobre o azul
+        escuro dá 1.53:1 e não se lê — é a armadilha de 17 §2.4. O risco laranja
+        e a ordem não mudam.
+      </p>
+    </section>
+
+    <!-- ============ TIPOGRAFIA ============ -->
+    <section class="seccao" id="tipografia">
+      <h2>Tipografia</h2>
+      <p>
+        Três famílias, com papéis que não se trocam: <strong>Motor</strong> só na
+        marca, <strong>Jost</strong> nos títulos, <strong>Lato</strong> em todo o
+        texto corrente. Os ficheiros <code>woff2</code> viajam com o produto, porque
+        o cartão de sessão tem de funcionar sem ir buscar nada à rede.
+      </p>
+      <div class="familias">
+        <div class="familia"><p class="familia__amostra marca">ROMAFE</p><p class="familia__nome"><code>--f-marca</code> · Motor</p></div>
+        <div class="familia"><p class="familia__amostra" style="font-family:var(--f-titulo)">Gestão de oficina</p><p class="familia__nome"><code>--f-titulo</code> · Jost</p></div>
+        <div class="familia"><p class="familia__amostra" style="font-family:var(--f-base)">Iniciar sessão</p><p class="familia__nome"><code>--f-base</code> · Lato</p></div>
+      </div>
+
+      <h3>A escala</h3>
+      <table class="tabela" data-escala="tipografia">
+        <caption>Sete tamanhos. Não há oitavo.</caption>
+        <thead><tr><th>Token</th><th>Valor</th><th>Amostra</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- ============ ESPAÇAMENTO ============ -->
+    <section class="seccao" id="espacamento">
+      <h2>Espaçamento</h2>
+      <p>
+        Escala de 4pt, oito degraus. Uma folga que não esteja aqui é um erro, e
+        vê-se: duas folgas quase iguais lidas lado a lado parecem um desalinhamento.
+      </p>
+      <div class="escala-espaco" data-escala="espaco"></div>
+      <p class="nota">
+        No cartão de sessão: <code>--e-6</code> de folga interior,
+        <code>--e-4</code> entre campos, <code>--e-1</code> entre a etiqueta e o campo.
+      </p>
+    </section>
+
+    <!-- ============ FORMA ============ -->
+    <section class="seccao" id="forma">
+      <h2>Raio e sombra</h2>
+      <div class="grelha-formas">
+        <div class="forma"><div class="forma__caixa" style="border-radius:var(--r-sm)"></div><code>--r-sm · 6px</code><span>Anel de foco, selos</span></div>
+        <div class="forma"><div class="forma__caixa" style="border-radius:var(--r-md)"></div><code>--r-md · 10px</code><span>Botões e campos</span></div>
+        <div class="forma"><div class="forma__caixa" style="border-radius:var(--r-lg)"></div><code>--r-lg · 16px</code><span>Cartão de sessão</span></div>
+        <div class="forma"><div class="forma__caixa" style="border-radius:var(--r-full)"></div><code>--r-full</code><span>Segmentado, chips</span></div>
+      </div>
+      <div class="grelha-formas grelha-formas--sombra">
+        <div class="forma"><div class="forma__caixa" style="box-shadow:var(--s-1)"></div><code>--s-1</code><span>Peça pousada</span></div>
+        <div class="forma"><div class="forma__caixa" style="box-shadow:var(--s-2)"></div><code>--s-2</code><span>Menu, sugestão</span></div>
+        <div class="forma"><div class="forma__caixa" style="box-shadow:var(--s-3)"></div><code>--s-3</code><span>Sobreposição: modal e cartão de sessão</span></div>
+      </div>
+    </section>
+
+    <!-- ============ BOTÕES ============ -->
+    <section class="seccao" id="botoes">
+      <h2>Botões</h2>
+      <p>
+        Todos partilham a mesma caixa — 42px de altura mínima, raio
+        <code>--r-md</code>, peso 600, folga de <code>--e-2</code> entre ícone e
+        rótulo. A variante troca fundo, cor e borda, e mais nada.
+      </p>
+
+      <div class="demo">
+        <button class="btn btn--acao">Iniciar sessão</button>
+        <button class="btn btn--primario">Guardar</button>
+        <button class="btn">Exportar</button>
+        <button class="btn btn--ghost">Cancelar</button>
+        <button class="btn btn--perigo">Terminar sessão</button>
+        <button class="btn btn--acao" disabled>Desativado</button>
+        <button class="btn btn--sm btn--ghost">Pequeno</button>
+      </div>
+
+      <h3>Qual deles é o laranja</h3>
+      <p>
+        O <code>.btn--acao</code> é a ação que se espera da pessoa, <strong>um por
+        ecrã</strong>. É o único acréscimo desta folha ao que o site já tinha: o
+        site do manual só usa o azul porque a sua única ação é abrir capítulos.
+        No produto, laranja quer dizer <em>é aqui que se carrega</em>.
+      </p>
+      <p class="nota">
+        O rótulo do laranja é <strong>peso 700</strong>, e não 600 como os outros.
+        Branco sobre <code>#ef7b10</code> dá 2.80:1 e não passa o mínimo de 4.5:1.
+        O peso recupera parte do traço que o contraste não dá, e o botão nunca é o
+        único sinal de que a ação existe.
+      </p>
+      <pre><code>&lt;button class="btn btn--acao btn--bloco"&gt;
+  &lt;svg class="btn__icone" …&gt;&lt;/svg&gt;
+  &lt;span class="btn__rotulo"&gt;Iniciar sessão&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+      <p class="nota">
+        O rótulo vai dentro de um <code>span</code> porque o estado
+        <em>A entrar…</em> troca o texto. Sem ele, trocar o texto apagava o ícone.
+      </p>
+    </section>
+
+    <!-- ============ CAMPOS ============ -->
+    <section class="seccao" id="campos">
+      <h2>Campos</h2>
+      <p>
+        Etiqueta sempre acima, nunca dentro. Um texto de exemplo a fazer de
+        etiqueta desaparece assim que se começa a escrever, e a pessoa perde a
+        única indicação do que está a preencher.
+      </p>
+
+      <div class="demo demo--coluna">
+        <div class="campo">
+          <label class="campo__label" for="d-normal">Endereço de email <span class="campo__req">*</span></label>
+          <input class="input" id="d-normal" placeholder="exemplo@romafe.com">
+          <span class="campo__ajuda">Estado normal, 42px</span>
+        </div>
+
+        <div class="campo campo--icone">
+          <label class="campo__label" for="d-icone">Endereço de email <span class="campo__req">*</span></label>
+          <svg class="campo__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <input class="input" id="d-icone" placeholder="exemplo@romafe.com">
+          <span class="campo__ajuda">Com ícone, 44px — o da entrada</span>
+        </div>
+
+        <div class="campo">
+          <label class="campo__label" for="d-erro">Endereço de email <span class="campo__req">*</span></label>
+          <input class="input" id="d-erro" aria-invalid="true" value="oficina@romafe">
+          <span class="campo__erro">Email ou palavra-passe incorretos</span>
+        </div>
+
+        <div class="campo">
+          <label class="campo__label" for="d-off">Palavra-passe</label>
+          <input class="input" id="d-off" value="Indisponível" disabled>
+          <span class="campo__ajuda">Desativado</span>
+        </div>
+      </div>
+
+      <h3>Porque é que a entrada tem 44px e o resto tem 42</h3>
+      <p>
+        O mesmo cartão abre no telemóvel do condutor, muitas vezes à chuva e com
+        luvas. Os 44px são o alvo de toque, e é a única medida do ecrã que não vem
+        da folha do site: <code>--a-campo</code>.
+      </p>
+
+      <h3>O que o navegador tem de conseguir fazer</h3>
+      <pre><code>&lt;input id="email" name="email" type="email" autocomplete="username" required&gt;
+&lt;input id="palavra-passe" name="password" type="password" autocomplete="current-password" required&gt;</code></pre>
+      <p class="nota">
+        Sem <code>autocomplete</code> correto, o gestor de palavras-passe não
+        preenche, e um formulário que impede o preenchimento automático obriga
+        toda a gente a escolher palavras-passe piores.
+      </p>
+    </section>
+
+    <!-- ============ OPÇÃO ============ -->
+    <section class="seccao" id="opcao">
+      <h2>Caixa de verificação</h2>
+      <div class="demo demo--coluna">
+        <div class="opcao">
+          <input type="checkbox" id="d-manter">
+          <label class="opcao__texto" for="d-manter">
+            Manter sessão iniciada
+            <span class="opcao__ajuda">Não usar em computadores partilhados</span>
+          </label>
+        </div>
+      </div>
+      <p>
+        Nativa, com <code>accent-color: var(--c-marca)</code>. Chega
+        <strong>desligada</strong>, porque o computador do armazém é partilhado e
+        é o caso mais comum destes produtos. A dica não é opcional: «lembrar-me»
+        sem explicação é uma promessa vaga sobre a única opção do cartão que tem
+        consequências.
+      </p>
+    </section>
+
+    <!-- ============ CARTÃO ============ -->
+    <section class="seccao" id="cartao">
+      <h2>Cartão de sessão</h2>
+      <p>
+        A moldura de tudo o que acontece fora da aplicação: entrar, recuperar a
+        palavra-passe, defini-la pela primeira vez. É a única moldura do produto
+        que existe sem menu, sem cabeçalho de página e sem migalhas.
+      </p>
+      <pre><code>.cartao {
+  max-width: var(--l-cartao);   /* 400px */
+  padding: var(--e-6);          /* 32px */
+  background: var(--c-superficie);
+  border-radius: var(--r-lg);   /* sobreposição, como o modal */
+  box-shadow: var(--s-3);
+}</code></pre>
+      <table class="tabela">
+        <thead><tr><th>Decisão</th><th>Valor</th><th>Razão</th></tr></thead>
+        <tbody>
+          <tr><td>Largura</td><td>400px</td><td>São dois campos. Uma coluna larga faz o olho procurar uma segunda</td></tr>
+          <tr><td>Folga</td><td>32px</td><td>É o único conteúdo à volta. Apertá-lo faz parecer um cartão que sobrou de outro ecrã</td></tr>
+          <tr><td>Borda</td><td>Nenhuma</td><td>Assenta sobre superfície escura, onde a borda não acrescenta nada</td></tr>
+          <tr><td>Sombra</td><td><code>--s-3</code></td><td>É uma sobreposição, como o modal</td></tr>
+        </tbody>
+      </table>
+
+      <h3>O erro de credenciais</h3>
+      <p>
+        É a única situação do produto em que o erro não vive junto ao campo: não
+        pertence a nenhum dos dois. Uma mensagem só, no topo do cartão, com
+        <code>role="alert"</code>. Nenhum campo ganha borda vermelha, porque não se
+        sabe qual está errado e marcar os dois é acusar sem saber.
+      </p>
+      <pre><code>function falhar() {
+  alerta.hidden = false;
+  passe.value = '';   // a palavra-passe limpa-se
+  passe.focus();      // o email fica: quem se engana engana-se na palavra-passe
+}</code></pre>
+    </section>
+
+    <!-- ============ EDITOR ============ -->
+    <section class="seccao" id="editor">
+      <h2>O editor do ecrã</h2>
+      <p>
+        O <code>index.html</code> abre já em edição: camadas à esquerda,
+        propriedades à direita, e o ecrã ao centro. Não há modo de ver, porque
+        para ver o ecrã a funcionar existe o produto, não esta página.
+      </p>
+      <p>
+        Em cima, à esquerda, o seletor de <strong>Ecrã</strong> troca a tela.
+        Há dois: a <em>Entrada</em> e o <em>Início do portal</em>, com os três
+        painéis de identificar veículo, selecionar veículo e pesquisar
+        referências. Acrescentar um terceiro é acrescentar um
+        <code>&lt;div class="ecra" data-ecra="…" data-nome="…"&gt;</code> ao
+        HTML: o editor encontra-o sozinho e passa a listá-lo.
+      </p>
+      <p class="nota">
+        Cada regra exportada nasce com o ecrã à frente —
+        <code>[data-ecra="portal"] …</code> — para que o mesmo botão em dois
+        ecrãs nunca se confunda. Irmãos iguais, como os três painéis, levam a
+        posição no seletor pela mesma razão.
+      </p>
+
+      <h3>A regra que o torna útil</h3>
+      <p>
+        O editor <strong>só oferece o que o manual tem</strong>. Não há
+        selecionador de cor livre nem caixa para escrever um número de folga:
+        escolhe-se um token, e o que sai é um token. Por isso o CSS que ele
+        exporta nunca traz um valor inventado, e nada do que se desenha ali fica
+        impossível de construir.
+      </p>
+      <table class="tabela">
+        <thead><tr><th>Controlo</th><th>O que oferece</th><th>Onde está escrito</th></tr></thead>
+        <tbody>
+          <tr><td>Variante do botão</td><td>Ação, primário, neutro, fantasma, destrutivo</td><td>09 §2</td></tr>
+          <tr><td>Tinta</td><td>A escala de texto e o azul da marca. <strong>Sem laranja</strong></td><td>02 §1.2</td></tr>
+          <tr><td>Fundo</td><td>As superfícies, o azul, o laranja e os estados</td><td>02 §1 e §2</td></tr>
+          <tr><td>Tamanho de letra</td><td>Os sete degraus, e não há oitavo</td><td>04 §2</td></tr>
+          <tr><td>Raio</td><td>Os quatro raios do sistema</td><td>03 §2</td></tr>
+          <tr><td>Folga e espaço</td><td>A escala de 4pt, oito degraus</td><td>07 §7</td></tr>
+          <tr><td>Fotografia de fundo</td><td>Ver a que está lá, trocá-la, ajustá-la e regular o véu</td><td>19 §1</td></tr>
+          <tr><td>Peça</td><td>Esconder e mostrar, alinhar, e as três sombras</td><td>03 §4</td></tr>
+        </tbody>
+      </table>
+      <p class="nota">
+        A cor de um botão não se muda à mão: muda-se a categoria da ação, e a cor
+        vem atrás. Um botão laranja que não é a ação principal do ecrã é um erro
+        que nenhum selecionador de cor devia deixar cometer.
+      </p>
+
+      <h3>A fotografia do ecrã de entrada</h3>
+      <p>
+        Com a camada <em>Palco · foto</em> escolhida, o painel abre uma secção
+        própria: mostra a fotografia que lá está, troca-a por outra do teu
+        computador, decide se ela preenche ou cabe, e regula o véu.
+      </p>
+      <p class="nota">
+        O véu não é decoração. É ele que faz o texto branco ler-se sobre uma
+        fotografia clara, e por isso tem um degrau <em>sem</em> que serve para
+        veres o estrago, não para o deixares assim.
+      </p>
+      <p>
+        A fotografia que vem no ficheiro foi tirada da própria maqueta: apaguei
+        o cartão, as vantagens e a assinatura, e tapei esses sítios com oficina
+        vinda de ao lado. A mensagem da parede é parte da fotografia, e por isso
+        o título grande da esquerda vem escondido — está em
+        <code>.esta-na-foto</code> e volta pelo painel, em Peça → Visível.
+      </p>
+
+      <h3>Como se mexe</h3>
+      <table class="tabela">
+        <tbody>
+          <tr><td>Um clique</td><td>Escolhe a peça inteira: o botão, o campo, o cartão</td></tr>
+          <tr><td>Segundo clique</td><td>Entra lá dentro, como no Figma</td></tr>
+          <tr><td>Duplo clique</td><td>Escreve no sítio, se a peça for só texto</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>Larga a seleção</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>Anula o último passo</td></tr>
+          <tr><td>Rato parado sobre um valor</td><td>Diz o que ele é: nome, token e valor — <code>Azul da marca · --c-marca · #00537e</code></td></tr>
+          <tr><td>Ver o CSS</td><td>Mostra tudo o que mudaste, pronto a copiar</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Os quadrados de cor e os degraus da escala não dizem o que são só por si.
+        Com o rato em cima, um rótulo diz o nome, o token e o valor: é a diferença
+        entre escolher uma cor e escolher <code>--c-marca</code>.
+      </p>
+      <p>
+        O que mudas fica guardado no navegador, em <code>romafe:editor:v1</code>,
+        e volta na próxima vez que abrires a página. <em>Repor tudo</em> limpa.
+        As alterações vivem numa folha à parte e não tocam no
+        <code>entrada.css</code>: o ficheiro do produto só muda quando fores tu a
+        colar lá o que o editor te deu.
+      </p>
+    </section>
+
+    <!-- ============ DIFERENÇAS ============ -->
+    <section class="seccao" id="diferencas">
+      <h2>O que mudou em relação à maqueta e ao site</h2>
+      <table class="tabela">
+        <thead><tr><th>Peça</th><th>Antes</th><th>Agora</th><th>Porquê</th></tr></thead>
+        <tbody>
+          <tr><td>Tipos de letra</td><td>Substituídos pelo importador</td><td>Motor, Jost e Lato</td><td>São as três do manual, e viajam em <code>woff2</code></td></tr>
+          <tr><td>Raio de botões e campos</td><td>6px</td><td><code>--r-md</code>, 10px</td><td>É o valor que o site usa hoje</td></tr>
+          <tr><td>Etiquetas</td><td>Maiúsculas 12px</td><td><code>--t-sm</code> peso 600</td><td>O site já tinha resolvido isto no <code>.campo__label</code></td></tr>
+          <tr><td>Tema escuro</td><td>Não existia</td><td>Os mesmos tokens</td><td>Nenhum componente precisou de mexer</td></tr>
+          <tr><td>Largura do cartão</td><td>400px, 19 §1</td><td>460px</td><td>É a largura da maqueta, e é o que faz as duas frases de apoio caberem numa linha</td></tr>
+          <tr><td>Fundo dos campos</td><td>Branco</td><td><code>--c-marca-suave</code></td><td>Um campo branco dentro de um cartão branco não se vê</td></tr>
+          <tr><td>Manter sessão iniciada</td><td>Desligada e com dica, 19 §5</td><td>Ligada e sem dica</td><td><strong>Contraria o manual.</strong> É o que está na maqueta. O manual quer o contrário porque o computador do armazém é partilhado</td></tr>
+          <tr><td>Modo auto</td><td>O site trata-o como claro</td><td>Segue o sistema</td><td>O site não tem regra <code>prefers-color-scheme</code>. É a única diferença de comportamento, e está em <code>tokens.css</code></td></tr>
+        </tbody>
+      </table>
+      <p class="nota">
+        A cor do logótipo no cartão, <code>--c-logotipo</code>, é a da marca
+        impressa e não uma cor de interface. No tema escuro passa a
+        <code>#a8caee</code>, porque o azul da marca sobre fundo escuro dá 1.53:1
+        e não se lê.
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/js/documentacao.js"></script>
+</body>
+</html>

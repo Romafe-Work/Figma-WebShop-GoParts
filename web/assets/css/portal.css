@@ -1,0 +1,76 @@
+/* =========================================================
+   ROMAFE — ecrã de início do portal
+   Os mesmos tokens do ecrã de entrada. Nada aqui é cor nova.
+   ========================================================= */
+
+.portal { min-height: 100vh; background: var(--c-fundo); display: grid; grid-template-rows: auto auto 1fr; }
+
+/* ---------- barra de topo ---------- */
+.portal__topo {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--e-4);
+  padding: var(--e-2) var(--e-5); background: var(--c-marca); color: #fff;
+}
+.portal__icones { display: flex; align-items: center; gap: var(--e-3); }
+.portal__icone {
+  display: grid; place-items: center; width: 32px; height: 32px;
+  border: 0; border-radius: var(--r-sm); background: transparent; color: #fff; cursor: pointer;
+}
+.portal__icone:hover { background: rgba(255,255,255,.14); }
+.portal__icone svg { width: 18px; height: 18px; }
+.portal__icone[aria-current="true"] { background: var(--c-acao); }
+
+/* ---------- abas ---------- */
+.portal__abas {
+  display: flex; align-items: stretch; gap: 0; overflow-x: auto;
+  background: var(--c-superficie); border-bottom: 1px solid var(--c-borda);
+  padding: 0 var(--e-5);
+}
+.aba {
+  font: inherit; font-size: var(--t-sm); color: var(--c-texto-2);
+  padding: var(--e-3) var(--e-4); border: 0; background: none; cursor: pointer;
+  border-bottom: 3px solid transparent; white-space: nowrap;
+}
+.aba:hover { color: var(--c-texto); }
+/* 02 §1: o laranja é o marcador do item ativo */
+.aba[aria-current="true"] { color: var(--c-marca); font-weight: 700; border-bottom-color: var(--c-acao); }
+.portal__conta { margin-left: auto; align-self: center; font-size: var(--t-xs); color: var(--c-marca); font-weight: 700; }
+
+/* ---------- painéis ---------- */
+.paineis {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--e-5); padding: var(--e-5); align-items: start;
+}
+.painel {
+  background: var(--c-superficie); border: 1px solid var(--c-borda);
+  border-radius: var(--r-md); box-shadow: var(--s-1); overflow: hidden;
+}
+.painel__cabeca {
+  display: flex; align-items: center; gap: var(--e-2);
+  padding: var(--e-3) var(--e-4); background: var(--c-marca); color: #fff;
+}
+.painel__cabeca svg { width: 20px; height: 20px; flex: none; }
+.painel__titulo { font-family: var(--f-titulo); font-size: var(--t-lg); margin: 0; font-weight: 600; }
+.painel__corpo { padding: var(--e-4); display: grid; gap: var(--e-4); }
+.painel__pe {
+  display: flex; align-items: center; justify-content: flex-end; gap: var(--e-2);
+  padding: var(--e-3) var(--e-4); background: var(--c-marca-suave); border-top: 1px solid var(--c-borda);
+}
+.painel__pe--dividido { justify-content: space-between; }
+
+.campo__contador { font-weight: 400; color: var(--c-texto-3); }
+
+/* bandeira do país no campo de matrícula */
+.matricula { display: flex; align-items: stretch; }
+.matricula__pais {
+  display: grid; place-items: center; width: 34px; flex: none;
+  background: var(--c-marca); color: #fff; font-size: var(--t-xs); font-weight: 700;
+  border: 1px solid var(--c-borda-forte); border-right: 0;
+  border-radius: var(--r-md) 0 0 var(--r-md);
+}
+.matricula .input { border-radius: 0 var(--r-md) var(--r-md) 0; }
+
+.opcoes { display: flex; flex-wrap: wrap; gap: var(--e-4); }
+.opcoes .opcao { align-items: center; }
+.opcoes .opcao input { margin-top: 0; }
+
+@media (max-width: 1100px) { .paineis { grid-template-columns: 1fr; } }

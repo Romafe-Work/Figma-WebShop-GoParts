@@ -1,0 +1,894 @@
+/* =========================================================
+   ROMAFE — editor do ecrã
+   Clicar numa peça e mudá-la no sítio, como numa tela de desenho.
+
+   A regra que manda: o editor só oferece o que o manual tem.
+   Não há selecionador de cor livre, não há caixa para escrever um
+   número de folga. Escolhe-se um token, e o que sai é um token —
+   por isso o CSS exportado nunca traz um valor inventado.
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var CHAVE = 'romafe:editor:v1';
+
+  /* ---------------- o que o manual permite ---------------- */
+
+  /* 02 §1.2: nenhum laranja serve de texto. Por isso a paleta de tinta
+     não o tem — não é esquecimento. */
+  var TINTAS = [
+    ['--c-texto', 'Tinta principal'],
+    ['--c-texto-2', 'Tinta secundária'],
+    ['--c-texto-3', 'Tinta discreta'],
+    ['--c-marca', 'Azul da marca'],
+    ['--c-marca-forte', 'Azul premido'],
+    ['--c-logotipo', 'Azul do logótipo'],
+    ['--c-erro', 'Erro'],
+    ['--c-ok', 'Estado bom'],
+    ['--c-aviso', 'Aviso'],
+    ['--c-entrada-tinta', 'Branco sobre foto'],
+    ['--c-entrada-tinta-2', 'Branco discreto']
+  ];
+
+  var FUNDOS = [
+    ['--c-superficie', 'Superfície'],
+    ['--c-superficie-2', 'Superfície 2'],
+    ['--c-superficie-3', 'Superfície 3'],
+    ['--c-fundo', 'Fundo da página'],
+    ['--c-marca', 'Azul da marca'],
+    ['--c-marca-suave', 'Azul suave'],
+    ['--c-acao', 'Laranja de ação'],
+    ['--c-acao-traco', 'Laranja premido'],
+    ['--c-erro', 'Erro'],
+    ['--c-erro-suave', 'Erro suave'],
+    ['--c-ok-suave', 'Bom suave'],
+    ['--c-aviso-suave', 'Aviso suave'],
+    ['--c-entrada-fundo', 'Superfície invertida']
+  ];
+
+  var TAMANHOS = ['--t-xs', '--t-sm', '--t-md', '--t-lg', '--t-xl', '--t-2xl', '--t-3xl'];
+  var PESOS    = [['400', 'Normal'], ['600', 'Meio'], ['700', 'Forte']];
+  var RAIOS    = ['0', '--r-sm', '--r-md', '--r-lg', '--r-full'];
+  var FOLGAS   = ['0', '--e-1', '--e-2', '--e-3', '--e-4', '--e-5', '--e-6', '--e-7', '--e-8'];
+
+  /* 09 §2.1 — a variante vem da categoria da ação, não de uma cor solta.
+     Trocar de variante troca a classe, e a cor vem atrás. */
+  var VARIANTES = [
+    ['btn--acao',     'Ação (laranja)'],
+    ['btn--primario', 'Primário (azul)'],
+    ['',              'Neutro'],
+    ['btn--ghost',    'Fantasma'],
+    ['btn--perigo',   'Destrutivo']
+  ];
+  var CLASSES_VARIANTE = ['btn--acao', 'btn--primario', 'btn--ghost', 'btn--perigo'];
+
+  /* nomes legíveis para o painel de camadas */
+  var NOMES = {
+    'entrada': 'Ecrã de entrada', 'topo': 'Barra de topo', 'palco': 'Palco',
+    'discurso': 'Discurso', 'vantagens': 'Vantagens', 'vantagem': 'Vantagem',
+    'cartao': 'Cartão de sessão', 'cartao__cabeca': 'Cabeça do cartão',
+    'formulario': 'Formulário', 'campo': 'Campo', 'opcao': 'Caixa de verificação',
+    'btn': 'Botão', 'apoio': 'Apoio', 'rodape': 'Rodapé', 'alerta': 'Alerta',
+    'separador': 'Separador', 'segmented': 'Segmentado', 'input': 'Caixa de texto',
+    'portal': 'Portal', 'portal__topo': 'Barra de topo', 'portal__marca': 'Marca',
+    'portal__icones': 'Ícones', 'portal__icone': 'Ícone', 'portal__abas': 'Abas',
+    'portal__conta': 'Conta', 'aba': 'Aba', 'paineis': 'Painéis', 'painel': 'Painel',
+    'painel__cabeca': 'Cabeça do painel', 'painel__corpo': 'Corpo do painel',
+    'painel__pe': 'Pé do painel', 'painel__titulo': 'Título do painel',
+    'matricula': 'Matrícula', 'opcoes': 'Opções', 'ecra': 'Ecrã',
+    'lockup': 'Marca ROMAFE'
+  };
+
+  /* o texto de um botão diz mais do que a palavra "Botão" */
+  function rotuloCurto(alvo) {
+    var t = (alvo.textContent || '').trim().replace(/\s+/g, ' ');
+    if (!t || t.length > 24) return '';
+    return t;
+  }
+
+  /* ---------------- estado ---------------- */
+  /* Como no Figma: o primeiro clique escolhe a peça inteira, e só o
+     clique seguinte entra lá dentro. Sem isto, clicar num botão escolhia
+     o texto do botão e a variante não aparecia. */
+  var COMPONENTES = '.lockup, .btn, .campo, .opcao, .vantagem, .apoio__item, .alerta, .separador, .segmented, .cartao, .topo, .rodape';
+
+  var estilos = {};   // seletor -> { propriedade: valor }
+  var textos  = {};   // seletor -> texto
+  var classes = {};   // seletor -> lista de classes (a variante do botão)
+  var fotos   = {};   // seletor -> nome do ficheiro de fundo trocado à mão
+  var historico = [];
+  var seleccionado = null;
+  var ligado = false;
+
+  var folha, painelEsq, painelDir, listaCamadas, corpoProps, dialogo, avisoEl;
+
+  /* ---------------- utilitários ---------------- */
+  function el(tag, classe, texto) {
+    var n = document.createElement(tag);
+    if (classe) n.className = classe;
+    if (texto !== undefined) n.textContent = texto;
+    return n;
+  }
+
+  function valorToken(v) {
+    return v.indexOf('--') === 0 ? 'var(' + v + ')' : v;
+  }
+
+  function corDoToken(token) {
+    return getComputedStyle(document.documentElement).getPropertyValue(token).trim() || '#888';
+  }
+
+  /* O rótulo que segue o rato. Os quadrados de cor e os degraus de escala
+     não dizem o que são; a etiqueta diz o nome, o token e o valor. */
+  var dicaEl;
+  function montarDica() {
+    dicaEl = el('div', 'ed-dica-flutuante');
+    dicaEl.setAttribute('role', 'tooltip');
+    dicaEl.hidden = true;
+    document.body.appendChild(dicaEl);
+
+    document.addEventListener('mouseover', function (ev) {
+      var alvo = ev.target.closest && ev.target.closest('[data-ed-dica]');
+      if (!alvo) { dicaEl.hidden = true; return; }
+      dicaEl.textContent = alvo.dataset.edDica;
+      dicaEl.hidden = false;
+      posicionar(alvo);
+    }, true);
+
+    document.addEventListener('mouseout', function (ev) {
+      if (ev.target.closest && ev.target.closest('[data-ed-dica]')) dicaEl.hidden = true;
+    }, true);
+  }
+
+  function posicionar(alvo) {
+    var r = alvo.getBoundingClientRect();
+    var l = dicaEl.getBoundingClientRect();
+    var x = r.left + r.width / 2 - l.width / 2;
+    var y = r.top - l.height - 8;
+    if (y < 4) y = r.bottom + 8;
+    dicaEl.style.left = Math.max(6, Math.min(x, window.innerWidth - l.width - 6)) + 'px';
+    dicaEl.style.top = y + 'px';
+  }
+
+  function aviso(texto) {
+    if (avisoEl) avisoEl.remove();
+    avisoEl = el('p', 'ed-aviso', texto);
+    avisoEl.setAttribute('role', 'status');
+    document.body.appendChild(avisoEl);
+    window.setTimeout(function () { if (avisoEl) { avisoEl.remove(); avisoEl = null; } }, 1800);
+  }
+
+  /* Um seletor estável para o elemento: id se houver, senão o caminho
+     de classes até ao ecrã, com :nth-of-type só quando é preciso. */
+  function ecraDe(alvo) {
+    var e = alvo.closest ? alvo.closest('.ecra') : null;
+    return e ? e.dataset.ecra : 'entrada';
+  }
+
+  function seletor(alvo) {
+    var ambito = '[data-ecra="' + ecraDe(alvo) + '"] ';
+    if (alvo.id) return ambito + '#' + alvo.id;
+
+    var partes = [];
+    var n = alvo;
+    while (n && n !== document.body) {
+      var parte = n.tagName.toLowerCase();
+      var classes = (n.className || '').toString().split(/\s+/)
+        .filter(function (c) { return c && c.indexOf('ed-') !== 0 && c !== 'editando'; })
+        .slice(0, 2);
+      if (classes.length) parte += '.' + classes.join('.');
+
+      /* Irmãos com o mesmo nome e as mesmas classes — três painéis
+         iguais, três vantagens iguais — precisam da posição, senão a
+         regra exportada apanha os três. */
+      var pai = n.parentElement;
+      if (pai) {
+        var atual = n;
+        var iguais = Array.prototype.filter.call(pai.children, function (f) {
+          if (f.tagName !== atual.tagName) return false;
+          if (!classes.length) return true;
+          return classes.every(function (c) { return f.classList.contains(c); });
+        });
+        if (iguais.length > 1) parte += ':nth-of-type(' + (iguais.indexOf(n) + 1) + ')';
+      }
+      partes.unshift(parte);
+
+      if (n.id) { partes[0] = '#' + n.id; break; }
+      if (n.classList && n.classList.contains('ecra')) { partes.shift(); break; }
+      n = pai;
+    }
+
+    var s = ambito + partes.join(' > ');
+    // se ainda apanhar mais do que um, desempata pela posição
+    try {
+      if (document.querySelectorAll(s).length > 1) {
+        var pai2 = alvo.parentElement;
+        var irmaos = Array.prototype.filter.call(pai2.children, function (f) { return f.tagName === alvo.tagName; });
+        s += ':nth-of-type(' + (irmaos.indexOf(alvo) + 1) + ')';
+      }
+    } catch (e) {}
+    return s;
+  }
+
+  function nomeDe(alvo) {
+    if (alvo.dataset.edNome) return alvo.dataset.edNome;
+
+    var classes = (alvo.className || '').toString().split(/\s+/);
+    var base = '';
+    for (var i = 0; i < classes.length && !base; i++) {
+      var c = classes[i];
+      if (NOMES[c]) base = NOMES[c];
+      else {
+        var raiz = c.split('__')[0].split('--')[0];
+        if (NOMES[raiz]) base = NOMES[raiz] + (c.indexOf('__') > 0 ? ' · ' + c.split('__')[1] : '');
+      }
+    }
+
+    if (!base) {
+      if (alvo.tagName === 'svg') base = 'Ícone';
+      else if (alvo.tagName === 'INPUT') base = 'Caixa de texto';
+      else if (alvo.tagName === 'SELECT') base = 'Seleção';
+      else if (alvo.tagName === 'BUTTON') base = 'Botão';
+      else if (/^H[1-4]$/.test(alvo.tagName)) base = 'Título';
+      else if (alvo.tagName === 'LABEL') base = 'Etiqueta';
+    }
+
+    var curto = rotuloCurto(alvo);
+    if (!base) return curto || alvo.tagName.toLowerCase();
+    if (curto && (alvo.tagName === 'BUTTON' || alvo.tagName === 'A' || alvo.children.length === 0)) {
+      return base + ' · ' + curto;
+    }
+    return base;
+  }
+
+  /* ---------------- aplicar e guardar ---------------- */
+  function escrever() {
+    var linhas = [];
+    Object.keys(estilos).forEach(function (s) {
+      var props = estilos[s];
+      var corpo = Object.keys(props).map(function (p) { return '  ' + p + ': ' + props[p] + ';'; });
+      if (corpo.length) linhas.push('.editando ' + s + ',\n' + s + ' {\n' + corpo.join('\n') + '\n}');
+    });
+    folha.textContent = linhas.join('\n\n');
+    guardar();
+  }
+
+  function guardar() {
+    try { localStorage.setItem(CHAVE, JSON.stringify({ estilos: estilos, textos: textos, classes: classes })); } catch (e) {}
+  }
+
+  function carregar() {
+    try {
+      var g = JSON.parse(localStorage.getItem(CHAVE) || '{}');
+      estilos = g.estilos || {};
+      textos  = g.textos  || {};
+      classes = g.classes || {};
+    } catch (e) { estilos = {}; textos = {}; classes = {}; }
+
+    Object.keys(classes).forEach(function (s) {
+      try {
+        var n = document.querySelector(s);
+        if (n) n.className = classes[s];
+      } catch (e) {}
+    });
+
+    Object.keys(textos).forEach(function (s) {
+      try {
+        var n = document.querySelector(s);
+        if (n) n.textContent = textos[s];
+      } catch (e) {}
+    });
+    escrever();
+  }
+
+  function definir(alvo, propriedade, valor) {
+    var s = seletor(alvo);
+    if (!estilos[s]) estilos[s] = {};
+    historico.push({ tipo: 'estilo', seletor: s, propriedade: propriedade, antes: estilos[s][propriedade] });
+    if (valor === null) delete estilos[s][propriedade];
+    else estilos[s][propriedade] = valor;
+    escrever();
+  }
+
+  function anular() {
+    var passo = historico.pop();
+    if (!passo) { aviso('Não há nada para anular'); return; }
+
+    if (passo.tipo === 'estilo') {
+      if (!estilos[passo.seletor]) estilos[passo.seletor] = {};
+      if (passo.antes === undefined) delete estilos[passo.seletor][passo.propriedade];
+      else estilos[passo.seletor][passo.propriedade] = passo.antes;
+      escrever();
+    } else if (passo.tipo === 'texto') {
+      var n = document.querySelector(passo.seletor);
+      if (n) n.textContent = passo.antes;
+      if (passo.antes === undefined) delete textos[passo.seletor];
+      else textos[passo.seletor] = passo.antes;
+      guardar();
+    } else if (passo.tipo === 'classe') {
+      var m = document.querySelector(passo.seletor);
+      if (m) m.className = passo.antes;
+      classes[passo.seletor] = passo.antes;
+      guardar();
+    }
+    pintarProps();
+    aviso('Anulado');
+  }
+
+  function reporTudo() {
+    estilos = {}; textos = {}; classes = {}; historico = [];
+    try { localStorage.removeItem(CHAVE); } catch (e) {}
+    escrever();
+    aviso('Voltou tudo ao original. Recarrega para repor textos e variantes.');
+  }
+
+  /* ---------------- seleção ---------------- */
+  function seleccionar(alvo) {
+    if (seleccionado) seleccionado.removeAttribute('data-ed-sel');
+    seleccionado = alvo || null;
+    if (seleccionado) seleccionado.setAttribute('data-ed-sel', '');
+    marcarCamada();
+    pintarProps();
+  }
+
+  function marcarCamada() {
+    var botoes = listaCamadas.querySelectorAll('.ed-camada');
+    for (var i = 0; i < botoes.length; i++) {
+      botoes[i].setAttribute('aria-current', String(botoes[i].alvo === seleccionado));
+    }
+  }
+
+  /* ---------------- painel de camadas ---------------- */
+  var IGNORAR = { SCRIPT: 1, STYLE: 1, BR: 1, PATH: 1, CIRCLE: 1, RECT: 1, LINE: 1, DIALOG: 1 };
+
+  function construirCamadas() {
+    listaCamadas.textContent = '';
+    var raiz = ecraVisivel();
+
+    (function andar(no, nivel) {
+      for (var i = 0; i < no.children.length; i++) {
+        var f = no.children[i];
+        if (IGNORAR[f.tagName]) continue;
+        if (f.closest('.ed-painel')) continue;
+
+        f.setAttribute('data-ed-alvo', '');
+
+        if (nivel <= 3) {
+          var b = el('button', 'ed-camada');
+          b.type = 'button';
+          b.style.paddingLeft = (12 + nivel * 12) + 'px';
+          b.alvo = f;
+          b.appendChild(el('span', 'ed-camada__icone', f.tagName === 'svg' ? '◇' : '▢'));
+          b.appendChild(el('span', 'ed-camada__nome', nomeDe(f)));
+          b.addEventListener('click', function () { seleccionar(this.alvo); this.alvo.scrollIntoView({ block: 'center' }); });
+          listaCamadas.appendChild(b);
+        }
+        if (f.tagName !== 'svg') andar(f, nivel + 1);
+      }
+    })(raiz, 0);
+  }
+
+  function ecraVisivel() {
+    var e = document.querySelector('.ecra:not([hidden])');
+    return e || document.querySelector('.ecra');
+  }
+
+  function trocarEcra(nome) {
+    var ecras = document.querySelectorAll('.ecra');
+    for (var i = 0; i < ecras.length; i++) {
+      ecras[i].hidden = ecras[i].dataset.ecra !== nome;
+    }
+    seleccionar(null);
+    construirCamadas();
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------------- painel de propriedades ---------------- */
+  function seccao(titulo) {
+    var s = el('div', 'ed-seccao');
+    s.appendChild(el('p', 'ed-seccao__titulo', titulo));
+    return s;
+  }
+
+  function grelhaTokens(lista, propriedade, comNenhum) {
+    var g = el('div', 'ed-tokens');
+    var s = seletor(seleccionado);
+    var actual = (estilos[s] || {})[propriedade];
+
+    if (comNenhum) {
+      var nada = el('button', 'ed-token ed-token--nenhum');
+      nada.type = 'button';
+      nada.dataset.edDica = 'Sem cor própria — herda de quem está por cima';
+      nada.setAttribute('aria-pressed', String(!actual));
+      nada.addEventListener('click', function () { definir(seleccionado, propriedade, null); pintarProps(); });
+      g.appendChild(nada);
+    }
+
+    lista.forEach(function (par) {
+      var token = par[0], nome = par[1];
+      var b = el('button', 'ed-token');
+      b.type = 'button';
+      b.dataset.edDica = nome + '  ·  ' + token + '  ·  ' + corDoToken(token);
+      b.style.background = 'var(' + token + ')';
+      b.setAttribute('aria-pressed', String(actual === 'var(' + token + ')'));
+      b.addEventListener('click', function () { definir(seleccionado, propriedade, 'var(' + token + ')'); pintarProps(); });
+      g.appendChild(b);
+    });
+    return g;
+  }
+
+  function degraus(lista, propriedade, rotulo) {
+    var linha = el('div', 'ed-degraus');
+    var s = seletor(seleccionado);
+    var actual = (estilos[s] || {})[propriedade];
+
+    lista.forEach(function (v) {
+      var b = el('button', 'ed-degrau', rotulo ? rotulo(v) : v.replace('--', '').replace(/^[te]-/, ''));
+      b.type = 'button';
+      b.dataset.edDica = descreverDegrau(v, propriedade);
+      b.setAttribute('aria-pressed', String(actual === valorToken(v)));
+      b.addEventListener('click', function () { definir(seleccionado, propriedade, valorToken(v)); pintarProps(); });
+      linha.appendChild(b);
+    });
+    return linha;
+  }
+
+  /* "--t-lg · 1.125rem · 18px" — o nome, o valor e o que isso dá em píxeis */
+  function descreverDegrau(v, propriedade) {
+    if (v.indexOf('--') !== 0) {
+      return propriedade === 'font-weight' ? 'Peso ' + v : v + 'px';
+    }
+    var bruto = getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    var px = '';
+    if (bruto.indexOf('rem') > 0) px = '  ·  ' + Math.round(parseFloat(bruto) * 16) + 'px';
+    return v + '  ·  ' + bruto + px;
+  }
+
+  function pintarProps() {
+    corpoProps.textContent = '';
+
+    var alvoEl = document.querySelector('.ed-painel--dir .ed-alvo-nome');
+
+    if (!seleccionado) {
+      if (alvoEl) alvoEl.textContent = '—';
+      corpoProps.appendChild(el('p', 'ed-vazio', 'Clica numa peça do ecrã, ou escolhe-a nas camadas à esquerda.'));
+      return;
+    }
+
+    if (alvoEl) alvoEl.textContent = nomeDe(seleccionado);
+
+    /* --- variante, só para botões (09 §2) --- */
+    if (seleccionado.classList.contains('btn')) {
+      var sv = seccao('Variante');
+      var sel = el('select', 'ed-select');
+      VARIANTES.forEach(function (par) {
+        var o = el('option', null, par[1]);
+        o.value = par[0];
+        var tem = par[0] ? seleccionado.classList.contains(par[0]) : CLASSES_VARIANTE.every(function (c) { return !seleccionado.classList.contains(c); });
+        if (tem) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener('change', function () {
+        var sc2 = seletor(seleccionado);
+        historico.push({ tipo: 'classe', seletor: sc2, antes: seleccionado.className });
+        CLASSES_VARIANTE.forEach(function (c) { seleccionado.classList.remove(c); });
+        if (sel.value) seleccionado.classList.add(sel.value);
+        classes[sc2] = seleccionado.className;
+        guardar();
+        pintarProps();
+      });
+      var l = el('div', 'ed-linha');
+      l.appendChild(el('label', null, 'Categoria'));
+      l.appendChild(sel);
+      sv.appendChild(l);
+      sv.appendChild(el('p', 'ed-dica', 'A cor vem da variante. Um botão não muda de cor sozinho: muda de categoria, e a cor vem atrás — 09 §2.'));
+      corpoProps.appendChild(sv);
+    }
+
+    /* --- texto --- */
+    var so = seleccionado.children.length === 0 && (seleccionado.textContent || '').trim();
+    if (so) {
+      var st = seccao('Texto');
+      var ta = el('textarea', 'ed-texto');
+      ta.value = seleccionado.textContent;
+      ta.addEventListener('change', function () {
+        var s2 = seletor(seleccionado);
+        historico.push({ tipo: 'texto', seletor: s2, antes: textos[s2] !== undefined ? textos[s2] : seleccionado.textContent });
+        seleccionado.textContent = ta.value;
+        textos[s2] = ta.value;
+        guardar();
+        construirCamadas();
+        marcarCamada();
+      });
+      st.appendChild(ta);
+      corpoProps.appendChild(st);
+    }
+
+    /* --- tinta --- */
+    var sc = seccao('Tinta');
+    sc.appendChild(grelhaTokens(TINTAS, 'color', true));
+    sc.appendChild(el('p', 'ed-dica', 'Não há laranja nesta paleta: o laranja é fundo, traço e preenchimento, nunca tinta — 02 §1.2.'));
+    corpoProps.appendChild(sc);
+
+    /* --- fundo --- */
+    var sf = seccao('Fundo');
+    sf.appendChild(grelhaTokens(FUNDOS, 'background-color', true));
+    corpoProps.appendChild(sf);
+
+    /* --- letra --- */
+    var sl = seccao('Letra');
+    var lt = el('div', 'ed-linha');
+    lt.appendChild(el('label', null, 'Tamanho'));
+    lt.appendChild(degraus(TAMANHOS, 'font-size', function (v) { return v.replace('--t-', ''); }));
+    sl.appendChild(lt);
+
+    var lp = el('div', 'ed-linha');
+    lp.appendChild(el('label', null, 'Peso'));
+    lp.appendChild(degraus(PESOS.map(function (p) { return p[0]; }), 'font-weight'));
+    sl.appendChild(lp);
+    sl.appendChild(el('p', 'ed-dica', 'Sete tamanhos, e não há oitavo — 04 §2.'));
+    corpoProps.appendChild(sl);
+
+    /* --- forma e folga --- */
+    var sg = seccao('Forma e folga');
+    var lr = el('div', 'ed-linha');
+    lr.appendChild(el('label', null, 'Raio'));
+    lr.appendChild(degraus(RAIOS, 'border-radius', function (v) { return v === '0' ? '0' : v.replace('--r-', ''); }));
+    sg.appendChild(lr);
+
+    var lf = el('div', 'ed-linha');
+    lf.appendChild(el('label', null, 'Folga'));
+    lf.appendChild(degraus(FOLGAS, 'padding', function (v) { return v === '0' ? '0' : v.replace('--e-', ''); }));
+    sg.appendChild(lf);
+
+    var estilo = getComputedStyle(seleccionado);
+    if (estilo.display === 'flex' || estilo.display === 'grid' || estilo.display === 'inline-flex') {
+      var lg = el('div', 'ed-linha');
+      lg.appendChild(el('label', null, 'Espaço'));
+      lg.appendChild(degraus(FOLGAS, 'gap', function (v) { return v === '0' ? '0' : v.replace('--e-', ''); }));
+      sg.appendChild(lg);
+    }
+    sg.appendChild(el('p', 'ed-dica', 'Escala de 4pt, oito degraus — 07 §7.'));
+    corpoProps.appendChild(sg);
+
+    /* --- fotografia de fundo do ecrã --- */
+    if (seleccionado.classList.contains('palco__foto')) {
+      corpoProps.insertBefore(seccaoFotografia(), corpoProps.firstChild);
+    }
+
+    /* --- a peça em si --- */
+    var sp = seccao('Peça');
+
+    var lv = el('div', 'ed-linha');
+    lv.appendChild(el('label', null, 'Visível'));
+    var escondida = getComputedStyle(seleccionado).display === 'none';
+    var bv = el('button', 'ed-degrau', escondida ? 'Mostrar' : 'Esconder');
+    bv.type = 'button';
+    bv.dataset.edDica = escondida
+      ? 'Traz a peça de volta ao ecrã'
+      : 'Tira a peça do ecrã sem a apagar. Volta por aqui ou pelas camadas.';
+    bv.addEventListener('click', function () {
+      definir(seleccionado, 'display', escondida ? 'block' : 'none');
+      pintarProps();
+    });
+    lv.appendChild(bv);
+    sp.appendChild(lv);
+
+    var la = el('div', 'ed-linha');
+    la.appendChild(el('label', null, 'Alinhar'));
+    la.appendChild(degraus(['left', 'center', 'right'], 'text-align', function (v) {
+      return v === 'left' ? 'esq' : v === 'center' ? 'centro' : 'dir';
+    }));
+    sp.appendChild(la);
+
+    var ls = el('div', 'ed-linha');
+    ls.appendChild(el('label', null, 'Sombra'));
+    ls.appendChild(degraus(['none', '--s-1', '--s-2', '--s-3'], 'box-shadow', function (v) {
+      return v === 'none' ? 'sem' : v.replace('--s-', 's');
+    }));
+    sp.appendChild(ls);
+    corpoProps.appendChild(sp);
+
+    /* --- repor esta peça --- */
+    var sr = el('div', 'ed-seccao');
+    var br = el('button', 'ed-botao', 'Repor esta peça');
+    br.type = 'button';
+    br.addEventListener('click', function () {
+      var s3 = seletor(seleccionado);
+      historico.push({ tipo: 'estilo', seletor: s3, propriedade: '*', antes: undefined });
+      delete estilos[s3];
+      escrever(); pintarProps();
+    });
+    sr.appendChild(br);
+    corpoProps.appendChild(sr);
+  }
+
+  /* A fotografia do ecrã de entrada: ver qual é, trocá-la, ajustá-la
+     e decidir quanto é que o véu a escurece. */
+  function seccaoFotografia() {
+    var sf = seccao('Fotografia de fundo');
+    var alvo = seleccionado;
+
+    var pre = el('div', 'ed-foto');
+    pre.style.backgroundImage = getComputedStyle(alvo).backgroundImage;
+    sf.appendChild(pre);
+
+    var nome = el('p', 'ed-dica', fotos[seletor(alvo)] || 'assets/img/oficina.png');
+    sf.appendChild(nome);
+
+    var rotulo = el('label', 'ed-botao ed-botao--accao ed-ficheiro', 'Trocar fotografia');
+    var ficheiro = el('input');
+    ficheiro.type = 'file';
+    ficheiro.accept = 'image/*';
+    ficheiro.addEventListener('change', function () {
+      var f = ficheiro.files && ficheiro.files[0];
+      if (!f) return;
+      var leitor = new FileReader();
+      leitor.onload = function () {
+        alvo.style.backgroundImage = 'url(' + leitor.result + ')';
+        fotos[seletor(alvo)] = f.name;
+        pintarProps();
+        aviso('Fotografia trocada — o ficheiro fica só neste separador');
+      };
+      leitor.readAsDataURL(f);
+    });
+    rotulo.appendChild(ficheiro);
+    sf.appendChild(rotulo);
+
+    var lj = el('div', 'ed-linha');
+    lj.appendChild(el('label', null, 'Ajuste'));
+    lj.appendChild(degraus(['cover', 'contain'], 'background-size', function (v) {
+      return v === 'cover' ? 'preencher' : 'caber';
+    }));
+    sf.appendChild(lj);
+
+    var lp = el('div', 'ed-linha');
+    lp.appendChild(el('label', null, 'Posição'));
+    lp.appendChild(degraus(['top', 'center', 'bottom'], 'background-position', function (v) {
+      return v === 'top' ? 'topo' : v === 'center' ? 'centro' : 'base';
+    }));
+    sf.appendChild(lp);
+
+    /* o véu é irmão da fotografia: é ele que faz o texto branco ler-se */
+    var veu = alvo.parentElement.querySelector('.palco__veu');
+    if (veu) {
+      var lvu = el('div', 'ed-linha');
+      lvu.appendChild(el('label', null, 'Véu'));
+      var linha = el('div', 'ed-degraus');
+      var sv = seletor(veu);
+      [['0', 'sem'], ['0.5', 'leve'], ['0.8', 'médio'], ['1', 'cheio']].forEach(function (par) {
+        var b = el('button', 'ed-degrau', par[1]);
+        b.type = 'button';
+        b.dataset.edDica = 'Opacidade do véu: ' + par[0];
+        var actual = (estilos[sv] || {})['opacity'];
+        b.setAttribute('aria-pressed', String(actual === par[0] || (!actual && par[0] === '1')));
+        b.addEventListener('click', function () { definir(veu, 'opacity', par[0]); pintarProps(); });
+        linha.appendChild(b);
+      });
+      lvu.appendChild(linha);
+      sf.appendChild(lvu);
+      sf.appendChild(el('p', 'ed-dica', 'Sem véu, o texto branco deixa de se ler sobre a fotografia clara — 17 §1.'));
+    }
+    return sf;
+  }
+
+  /* ---------------- exportar ---------------- */
+  function cssFinal() {
+    var partes = ['/* ROMAFE — alterações feitas no editor.',
+                  '   Só tokens: nenhum valor aqui foi inventado. */', ''];
+
+    Object.keys(estilos).forEach(function (s) {
+      var props = estilos[s];
+      var chaves = Object.keys(props);
+      if (!chaves.length) return;
+      partes.push(s + ' {');
+      chaves.forEach(function (p) { partes.push('  ' + p + ': ' + props[p] + ';'); });
+      partes.push('}', '');
+    });
+
+    var chavesFoto = Object.keys(fotos);
+    if (chavesFoto.length) {
+      partes.push('/* Fotografia trocada — grava o ficheiro em assets/img/ e aponta o url:');
+      chavesFoto.forEach(function (s) { partes.push('   ' + s + '  →  ' + fotos[s]); });
+      partes.push('*/', '');
+    }
+
+    var chavesClasse = Object.keys(classes);
+    if (chavesClasse.length) {
+      partes.push('/* Variante trocada — isto muda a classe no HTML, não o CSS:');
+      chavesClasse.forEach(function (s) { partes.push('   ' + s + '  →  class="' + classes[s] + '"'); });
+      partes.push('*/', '');
+    }
+
+    var chavesTexto = Object.keys(textos);
+    if (chavesTexto.length) {
+      partes.push('/* Texto alterado — isto muda no HTML, não no CSS:');
+      chavesTexto.forEach(function (s) { partes.push('   ' + s + '  →  "' + textos[s] + '"'); });
+      partes.push('*/');
+    }
+
+    if (partes.length <= 3) partes.push('/* Ainda não mudaste nada. */');
+    return partes.join('\n');
+  }
+
+  /* ---------------- montagem ---------------- */
+  function montar() {
+    folha = el('style');
+    folha.id = 'ed-alteracoes';
+    document.head.appendChild(folha);
+
+    /* painel esquerdo: ecrãs e camadas */
+    painelEsq = el('aside', 'ed-painel ed-painel--esq');
+    var cabecaE = el('div', 'ed-cabeca');
+    var marca = el('p', 'ed-cabeca__marca', 'ROMAFE');
+    marca.style.margin = '0';
+    cabecaE.appendChild(marca);
+    cabecaE.appendChild(el('h2', null, 'Camadas'));
+    painelEsq.appendChild(cabecaE);
+
+    var barraEcras = el('div', 'ed-ecras');
+    barraEcras.appendChild(el('label', null, 'Ecrã'));
+    var selEcras = el('select', 'ed-select');
+    var ecras = document.querySelectorAll('.ecra');
+    for (var i = 0; i < ecras.length; i++) {
+      var o = el('option', null, ecras[i].dataset.nome || ecras[i].dataset.ecra);
+      o.value = ecras[i].dataset.ecra;
+      if (!ecras[i].hidden) o.selected = true;
+      selEcras.appendChild(o);
+    }
+    selEcras.addEventListener('change', function () { trocarEcra(selEcras.value); });
+    barraEcras.appendChild(selEcras);
+    painelEsq.appendChild(barraEcras);
+
+    listaCamadas = el('div', 'ed-corpo');
+    painelEsq.appendChild(listaCamadas);
+
+    var peE = el('div', 'ed-pe');
+    var bCss = el('button', 'ed-botao ed-botao--accao', 'Ver o CSS');
+    bCss.type = 'button';
+    bCss.addEventListener('click', abrirDialogo);
+    var bAnular = el('button', 'ed-botao', 'Anular');
+    bAnular.type = 'button';
+    bAnular.addEventListener('click', anular);
+    var bRepor = el('button', 'ed-botao', 'Repor tudo');
+    bRepor.type = 'button';
+    bRepor.addEventListener('click', reporTudo);
+    peE.appendChild(bCss); peE.appendChild(bAnular); peE.appendChild(bRepor);
+
+    /* o tema muda-se aqui, porque na tela o clique escolhe peças */
+    var temaBarra = el('div', 'ed-degraus');
+    [['light', 'Claro'], ['dark', 'Escuro'], ['auto', 'Auto']].forEach(function (par) {
+      var b = el('button', 'ed-degrau', par[1]);
+      b.type = 'button';
+      b.dataset.edDica = 'Ver o ecrã no tema ' + par[1].toLowerCase();
+      b.addEventListener('click', function () {
+        if (window.RomafeTema) window.RomafeTema.aplicar(par[0]);
+        var irmaos = temaBarra.querySelectorAll('.ed-degrau');
+        for (var k = 0; k < irmaos.length; k++) irmaos[k].setAttribute('aria-pressed', String(irmaos[k] === b));
+        pintarProps();
+      });
+      if (window.RomafeTema && window.RomafeTema.actual() === par[0]) b.setAttribute('aria-pressed', 'true');
+      temaBarra.appendChild(b);
+    });
+    peE.appendChild(temaBarra);
+    painelEsq.appendChild(peE);
+
+    /* painel direito: propriedades */
+    painelDir = el('aside', 'ed-painel ed-painel--dir');
+    var cabecaD = el('div', 'ed-cabeca');
+    cabecaD.appendChild(el('h2', null, 'Propriedades'));
+    var nome = el('span', 'ed-alvo-nome', '—');
+    nome.style.color = 'var(--ed-tinta-3)';
+    cabecaD.appendChild(nome);
+    painelDir.appendChild(cabecaD);
+
+    corpoProps = el('div', 'ed-corpo');
+    painelDir.appendChild(corpoProps);
+
+    document.body.appendChild(painelEsq);
+    document.body.appendChild(painelDir);
+
+    /* diálogo do CSS */
+    dialogo = el('dialog', 'ed-dialogo');
+    var topoD = el('div', 'ed-dialogo__topo');
+    topoD.appendChild(el('h2', null, 'O que mudaste'));
+    var bFechar = el('button', 'ed-botao', 'Fechar');
+    bFechar.type = 'button';
+    bFechar.addEventListener('click', function () { dialogo.close(); });
+    topoD.appendChild(bFechar);
+    var pre = el('pre');
+    var code = el('code');
+    pre.appendChild(code);
+    var accoesD = el('div', 'ed-dialogo__accoes');
+    var bCopiar = el('button', 'ed-botao ed-botao--accao', 'Copiar');
+    bCopiar.type = 'button';
+    bCopiar.addEventListener('click', function () {
+      var t = code.textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { aviso('CSS copiado'); });
+    });
+    accoesD.appendChild(bCopiar);
+    dialogo.appendChild(topoD); dialogo.appendChild(pre); dialogo.appendChild(accoesD);
+    dialogo.codigo = code;
+    document.body.appendChild(dialogo);
+  }
+
+  function abrirDialogo() {
+    dialogo.codigo.textContent = cssFinal();
+    dialogo.showModal();
+  }
+
+  /* Enquanto se edita, o ecrã não funciona como ecrã: um clique escolhe
+     a peça e mais nada. Senão o botão submetia o formulário a cada escolha. */
+  /* a peça que um clique aqui escolheria */
+  function candidata(destino) {
+    var fundo = destino.closest('[data-ed-alvo]');
+    if (!fundo) return null;
+    var peca = destino.closest(COMPONENTES);
+    var jaLaDentro = peca && seleccionado && (seleccionado === peca || peca.contains(seleccionado));
+    return jaLaDentro || !peca ? fundo : peca;
+  }
+
+  var sobre = null;
+  function realcar(ev) {
+    if (!ligado) return;
+    if (sobre) { sobre.removeAttribute('data-ed-hover'); sobre = null; }
+    if (ev.target.closest('.ed-painel') || ev.target.closest('.ed-dialogo')) return;
+    var c = candidata(ev.target);
+    if (c && c !== seleccionado) { c.setAttribute('data-ed-hover', ''); sobre = c; }
+  }
+
+  function interceptar(ev) {
+    if (!ligado) return;
+    if (ev.target.closest('.ed-painel') || ev.target.closest('.ed-dialogo')) return;
+    if (ev.target.getAttribute && ev.target.getAttribute('contenteditable') === 'true') return;
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    var escolha = candidata(ev.target);
+    if (escolha) seleccionar(escolha);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    /* A tela abre em edição. Não há modo de ver: para ver o ecrã a
+       funcionar existe o produto, não esta página. */
+    ligado = true;
+    document.body.classList.add('editando');
+
+    montar();
+    montarDica();
+    carregar();
+    construirCamadas();
+    pintarProps();
+
+    document.addEventListener('click', interceptar, true);
+    document.addEventListener('mouseover', realcar, true);
+    document.addEventListener('submit', function (ev) { if (ligado) ev.preventDefault(); }, true);
+
+    /* duplo clique escreve no sítio */
+    document.addEventListener('dblclick', function (ev) {
+      if (!ligado) return;
+      var alvo = ev.target.closest('[data-ed-alvo]');
+      if (!alvo || alvo.children.length) return;
+      alvo.setAttribute('contenteditable', 'true');
+      alvo.focus();
+      var s = seletor(alvo);
+      var antes = alvo.textContent;
+      alvo.addEventListener('blur', function sair() {
+        alvo.removeAttribute('contenteditable');
+        alvo.removeEventListener('blur', sair);
+        if (alvo.textContent !== antes) {
+          historico.push({ tipo: 'texto', seletor: s, antes: antes });
+          textos[s] = alvo.textContent;
+          guardar();
+        }
+      });
+    }, true);
+
+    document.addEventListener('keydown', function (ev) {
+      if (!ligado) return;
+      if (ev.key === 'Escape') seleccionar(null);
+      if ((ev.ctrlKey || ev.metaKey) && ev.key === 'z') { ev.preventDefault(); anular(); }
+    });
+  });
+})();

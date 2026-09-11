@@ -1,0 +1,115 @@
+/* =========================================================
+   ROMAFE — folha da página de documentação
+   Só esta página. Não entra no produto.
+   ========================================================= */
+
+.doc-topo {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--e-4);
+  padding: var(--e-3) var(--e-5);
+  background: var(--c-superficie); border-bottom: 1px solid var(--c-borda);
+}
+.doc-topo__titulo { font-size: var(--t-xl); margin: 0; line-height: 1.1; }
+.doc-topo__sub { font-size: var(--t-sm); color: var(--c-texto-2); margin: 0; }
+
+.doc-corpo {
+  display: grid; grid-template-columns: 240px minmax(0, 1fr);
+  gap: var(--e-7); align-items: start;
+  max-width: 1200px; margin: 0 auto; padding: var(--e-6) var(--e-5);
+}
+
+.doc-indice { position: sticky; top: 88px; font-size: var(--t-sm); }
+.doc-indice ol { margin: 0; padding-left: var(--e-5); display: grid; gap: var(--e-2); color: var(--c-texto-3); }
+.doc-indice a { text-decoration: none; }
+.doc-indice a:hover { text-decoration: underline; }
+.doc-indice a[aria-current="true"] { font-weight: 700; }
+
+.doc-conteudo { min-width: 0; }
+.seccao {
+  background: var(--c-superficie); border: 1px solid var(--c-borda);
+  border-radius: var(--r-lg); padding: var(--e-6); margin-bottom: var(--e-5);
+  scroll-margin-top: 96px;
+}
+.seccao h2 { font-size: var(--t-2xl); margin-bottom: var(--e-4); }
+.seccao h3 { font-size: var(--t-lg); margin-top: var(--e-5); }
+.seccao > p { max-width: 68ch; }
+
+.nota {
+  border-left: 3px solid var(--c-marca); background: var(--c-marca-suave);
+  padding: var(--e-3) var(--e-4); border-radius: var(--r-sm);
+  font-size: var(--t-sm); max-width: 68ch;
+}
+
+pre {
+  background: var(--c-superficie-3); border: 1px solid var(--c-borda);
+  border-radius: var(--r-md); padding: var(--e-4);
+  overflow-x: auto; margin: var(--e-3) 0;
+}
+pre code { font-size: var(--t-xs); line-height: 1.7; }
+
+/* ---------- cor ---------- */
+.grelha-cores {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: var(--e-3); margin: var(--e-3) 0 var(--e-5);
+}
+.cor {
+  text-align: left; font: inherit; cursor: pointer;
+  border: 1px solid var(--c-borda); border-radius: var(--r-md);
+  background: var(--c-superficie); padding: 0; overflow: hidden;
+}
+.cor:hover { border-color: var(--c-marca); }
+.cor__amostra { display: block; height: 56px; border-bottom: 1px solid var(--c-borda); }
+.cor__texto { display: block; padding: var(--e-2) var(--e-3); }
+.cor__nome { display: block; font-size: var(--t-xs); font-weight: 700; }
+.cor__valor { display: block; font-family: var(--f-mono); font-size: 11px; color: var(--c-texto-2); }
+.cor__uso { display: block; font-size: 11px; color: var(--c-texto-3); }
+
+/* ---------- tipografia ---------- */
+.familias { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--e-4); margin: var(--e-4) 0; }
+.familia { border: 1px solid var(--c-borda); border-radius: var(--r-md); padding: var(--e-4); }
+.familia__amostra { font-size: var(--t-2xl); margin: 0 0 var(--e-2); line-height: 1.1; }
+.familia__nome { font-size: var(--t-xs); color: var(--c-texto-2); margin: 0; }
+
+/* ---------- tabelas ---------- */
+.tabela { width: 100%; border-collapse: collapse; font-size: var(--t-sm); margin: var(--e-3) 0; }
+.tabela caption { text-align: left; color: var(--c-texto-2); font-size: var(--t-xs); padding-bottom: var(--e-2); }
+.tabela th, .tabela td { text-align: left; padding: var(--e-2) var(--e-3); border-bottom: 1px solid var(--c-borda); vertical-align: top; }
+.tabela th { background: var(--c-superficie-2); font-weight: 700; }
+
+/* ---------- espaçamento ---------- */
+.escala-espaco { display: grid; gap: var(--e-2); margin: var(--e-4) 0; }
+.espaco { display: grid; grid-template-columns: 90px 1fr; align-items: center; gap: var(--e-3); font-size: var(--t-xs); }
+.espaco__barra { height: 14px; background: var(--c-marca); border-radius: var(--r-sm); }
+.espaco__nome { font-family: var(--f-mono); }
+
+/* ---------- formas ---------- */
+.grelha-formas { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--e-4); margin: var(--e-4) 0; }
+.forma { display: grid; gap: var(--e-1); font-size: var(--t-xs); color: var(--c-texto-2); }
+.forma__caixa { height: 64px; background: var(--c-superficie-2); border: 1px solid var(--c-borda); }
+/* As sombras precisam de folga à volta e de uma superfície branca por baixo,
+   senão a mais discreta não se distingue da borda. */
+.grelha-formas--sombra { background: var(--c-superficie-2); border-radius: var(--r-md); padding: var(--e-4); }
+.grelha-formas--sombra .forma__caixa { background: var(--c-superficie); border: 0; margin-bottom: var(--e-2); }
+.forma code { font-weight: 700; color: var(--c-texto); }
+
+/* ---------- demos ---------- */
+.demo {
+  display: flex; flex-wrap: wrap; gap: var(--e-3); align-items: center;
+  background: var(--c-superficie-2); border: 1px solid var(--c-borda);
+  border-radius: var(--r-md); padding: var(--e-4); margin: var(--e-3) 0;
+}
+.demo--coluna { flex-direction: column; align-items: stretch; max-width: 420px; }
+
+.aviso-copia {
+  position: fixed; left: 50%; bottom: var(--e-5); transform: translateX(-50%);
+  background: var(--c-texto); color: var(--c-fundo);
+  padding: var(--e-2) var(--e-4); border-radius: var(--r-full);
+  font-size: var(--t-sm); box-shadow: var(--s-2);
+}
+
+@media (max-width: 900px) {
+  .doc-corpo { grid-template-columns: 1fr; gap: var(--e-4); }
+  .doc-indice { position: static; }
+  .seccao { padding: var(--e-4); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

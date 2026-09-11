@@ -1,0 +1,163 @@
+/* =========================================================
+   ROMAFE — ecrã de entrada
+   Só layout. Nenhuma cor, folga ou raio escrito à mão: tudo em tokens.
+   ========================================================= */
+
+.entrada {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--c-entrada-fundo);
+}
+
+/* ---------- barra de topo ---------- */
+.topo {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--e-4);
+  padding: var(--e-3) var(--e-6);
+  background: var(--c-entrada-fundo);
+  color: var(--c-entrada-tinta);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.topo__accoes { display: flex; align-items: center; gap: var(--e-3); }
+.topo .segmented { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
+.topo .segmented__btn { color: var(--c-entrada-tinta-2); }
+.topo .segmented__btn[aria-pressed="true"] { background: rgba(255,255,255,.92); color: #222428; }
+.topo__idioma {
+  display: inline-flex; align-items: center; gap: var(--e-1);
+  font: inherit; font-size: var(--t-sm); color: var(--c-entrada-tinta);
+  background: transparent; border: 0; cursor: pointer; padding: var(--e-2);
+}
+.topo__idioma svg { width: 18px; height: 18px; }
+
+/* ---------- palco: fotografia + cartão ---------- */
+.palco {
+  position: relative; isolation: isolate;
+  display: grid; grid-template-columns: 1fr min(var(--l-cartao), 100%);
+  align-items: center; gap: var(--e-8);
+  padding: var(--e-8) var(--e-8);
+}
+/* A fotografia é opcional: sem ela fica o azul de superfície invertida.
+   O ficheiro está em assets/img/oficina.png e troca-se no painel. */
+.palco__foto {
+  position: absolute; inset: 0; z-index: -2;
+  background-color: var(--c-entrada-fundo);
+  background-image: url('../img/oficina.png');
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+}
+
+/* O véu existe para o texto branco se ler sobre qualquer fotografia. Não é decoração. */
+.palco__veu {
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg,
+    var(--c-entrada-veu) 0%,
+    rgba(1, 35, 56, .58) 34%,
+    rgba(1, 35, 56, .22) 62%,
+    rgba(1, 35, 56, .10) 100%);
+}
+[data-theme="dark"] .palco__veu {
+  background: linear-gradient(90deg,
+    var(--c-entrada-veu) 0%,
+    rgba(20, 20, 18, .72) 34%,
+    rgba(20, 20, 18, .48) 62%,
+    rgba(20, 20, 18, .38) 100%);
+}
+
+.discurso { color: var(--c-entrada-tinta); max-width: 620px; }
+/* o que já está dentro da fotografia não se repete por cima dela */
+.esta-na-foto { display: none; }
+.discurso__titulo {
+  font-family: var(--f-titulo); font-size: var(--t-3xl); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .01em; line-height: 1.15;
+  margin: 0 0 var(--e-7);
+}
+.vantagens { list-style: none; margin: 0 0 var(--e-7); padding: 0; display: grid; gap: var(--e-5); }
+.vantagem { display: flex; gap: var(--e-4); align-items: flex-start; }
+.vantagem svg { width: 40px; height: 40px; flex: none; color: var(--c-acao); }
+.vantagem__titulo { font-size: var(--t-lg); font-weight: 700; margin: 0; }
+.vantagem__sub { font-size: var(--t-sm); color: var(--c-entrada-tinta-2); margin: 0; }
+.discurso__assinatura {
+  margin: 0; padding-top: var(--e-5);
+  border-top: 1px solid rgba(255,255,255,.25);
+  font-size: var(--t-lg);
+}
+
+/* Os campos do cartão não são brancos sobre branco: levam o azul lavado
+   da marca, que é o que os faz ver-se dentro de um cartão branco. */
+.cartao .input { background: var(--c-campo-fundo); border-color: transparent; }
+.cartao .input:focus { background: var(--c-superficie); border-color: var(--c-marca); }
+
+/* ---------- cartão de sessão (19 §1) ---------- */
+.cartao {
+  width: 100%; max-width: var(--l-cartao); justify-self: end;
+  padding: var(--e-6);
+  background: var(--c-superficie);
+  border-radius: var(--r-lg);
+  box-shadow: var(--s-3);
+}
+.cartao__cabeca { display: grid; justify-items: center; margin-bottom: var(--e-5); }
+
+.formulario { display: grid; gap: var(--e-4); }
+.formulario__accoes { display: grid; gap: var(--e-3); margin-top: var(--e-1); }
+
+/* alerta de credenciais — 19 §3: uma mensagem só, no topo do cartão */
+.alerta {
+  display: flex; gap: var(--e-2); align-items: flex-start;
+  padding: var(--e-3); margin-bottom: var(--e-4);
+  background: var(--c-erro-suave); color: var(--c-texto);
+  border-left: 3px solid var(--c-erro); border-radius: var(--r-sm);
+  font-size: var(--t-sm);
+}
+.alerta[hidden] { display: none; }
+
+.separador {
+  display: flex; align-items: center; gap: var(--e-3);
+  font-size: var(--t-xs); color: var(--c-texto-2);
+}
+.separador::before, .separador::after {
+  content: ""; flex: 1; height: 1px; background: var(--c-borda);
+}
+
+.apoio {
+  display: grid; grid-template-columns: 1fr 1px 1fr; gap: var(--e-2);
+  margin-top: var(--e-5); padding-top: var(--e-4);
+  border-top: 1px solid var(--c-borda);
+}
+.apoio__risco { background: var(--c-borda); }
+.apoio__item { display: flex; gap: var(--e-2); align-items: flex-start; }
+.apoio__item svg { width: 20px; height: 20px; flex: none; color: var(--c-marca); }
+.apoio__titulo { font-size: var(--t-xs); font-weight: 700; margin: 0; }
+.apoio__sub { font-size: 11px; color: var(--c-texto-2); margin: 0; line-height: 1.35; }
+
+/* ---------- rodapé ---------- */
+.rodape {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--e-4); flex-wrap: wrap;
+  padding: var(--e-3) var(--e-6);
+  background: var(--c-entrada-fundo);
+  color: var(--c-entrada-tinta-2);
+  font-size: var(--t-xs);
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.rodape__ligacoes { display: flex; gap: var(--e-4); list-style: none; margin: 0; padding: 0; }
+.rodape a { color: var(--c-entrada-tinta); text-decoration: none; }
+.rodape a:hover { text-decoration: underline; }
+.rodape__selo { display: flex; align-items: center; gap: var(--e-2); }
+.rodape__barras { color: var(--c-acao); font-weight: 700; letter-spacing: .08em; }
+.rodape__lema { line-height: 1.2; text-transform: uppercase; letter-spacing: .1em; font-size: 9px; }
+
+/* ---------- responsivo ---------- */
+@media (max-width: 980px) {
+  .palco { grid-template-columns: 1fr; gap: var(--e-6); padding: var(--e-6) var(--e-4); }
+  .cartao { justify-self: center; }
+  .discurso { max-width: none; }
+  .discurso__titulo { font-size: var(--t-2xl); }
+}
+@media (max-width: 560px) {
+  .topo { padding: var(--e-3) var(--e-4); flex-wrap: wrap; }
+  .discurso__titulo { font-size: var(--t-xl); }
+  .vantagens { gap: var(--e-4); }
+  .cartao { padding: var(--e-5); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

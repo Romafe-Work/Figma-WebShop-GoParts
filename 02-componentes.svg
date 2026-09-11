@@ -1,0 +1,324 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1180" viewBox="0 0 1240 1180">
+<defs><linearGradient id="foto" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16283c"/><stop offset="1" stop-color="#0b1a2b"/></linearGradient><linearGradient id="veu" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#012338" stop-opacity="0.92"/><stop offset="0.62" stop-color="#012338" stop-opacity="0.45"/><stop offset="1" stop-color="#012338" stop-opacity="0.15"/></linearGradient><filter id="sombra" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#222428" flood-opacity="0.16"/></filter></defs>
+<rect x="0" y="0" width="1240" height="1180" fill="#f6f7f9"/>
+<text x="64" y="72" font-family="Jost" font-size="28" font-weight="700" fill="#0b0b0b" xml:space="preserve">ROMAFE — componentes de entrada</text>
+<text x="64" y="96" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Cada bloco é uma peça isolada: botão, campo, caixa de verificação, item e ícone. Copia e reutiliza.</text>
+<text x="64" y="160" font-family="Jost" font-size="18" font-weight="700" fill="#0b0b0b" xml:space="preserve">Botões  ·  09 §1: raio 6, 13–14px peso 700, folga 9×16</text>
+<g id="Botão / Primário / Iniciar sessão">
+<rect x="64" y="180" width="176" height="44" rx="6" fill="#ef7b10"/>
+<g id="Ícone / Entrar" transform="translate(87.2 193) scale(0.75)">
+<g fill="none" stroke="#ffffff" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round">
+<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+<path d="M10 17l5-5-5-5"/>
+<path d="M15 12H3"/>
+</g>
+</g>
+<text x="113.2" y="207" font-family="Lato" font-size="14" font-weight="700" fill="#ffffff" xml:space="preserve">Iniciar sessão</text>
+</g>
+<text x="64" y="242" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Primário</text>
+<g id="Botão / Premido / Iniciar sessão">
+<rect x="264" y="180" width="176" height="44" rx="6" fill="#d86c01"/>
+<g id="Ícone / Entrar" transform="translate(287.2 193) scale(0.75)">
+<g fill="none" stroke="#ffffff" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round">
+<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+<path d="M10 17l5-5-5-5"/>
+<path d="M15 12H3"/>
+</g>
+</g>
+<text x="313.2" y="207" font-family="Lato" font-size="14" font-weight="700" fill="#ffffff" xml:space="preserve">Iniciar sessão</text>
+</g>
+<text x="264" y="242" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Premido</text>
+<g id="Botão / Desativado / Iniciar sessão">
+<rect x="464" y="180" width="176" height="44" rx="6" fill="#f3d9bf"/>
+<g id="Ícone / Entrar" transform="translate(487.2 193) scale(0.75)">
+<g fill="none" stroke="#ffffff" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round">
+<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+<path d="M10 17l5-5-5-5"/>
+<path d="M15 12H3"/>
+</g>
+</g>
+<text x="513.2" y="207" font-family="Lato" font-size="14" font-weight="700" fill="#ffffff" xml:space="preserve">Iniciar sessão</text>
+</g>
+<text x="464" y="242" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Desativado</text>
+<g id="Botão / Fantasma / Pedir acesso">
+<rect x="64" y="272" width="176" height="44" rx="6" fill="#ffffff" stroke="#cbdcf0" stroke-width="1"/>
+<text x="152" y="299" font-family="Lato" font-size="14" font-weight="700" fill="#00537e" text-anchor="middle" xml:space="preserve">Pedir acesso</text>
+</g>
+<text x="64" y="334" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Fantasma</text>
+<g id="Botão / Neutro / Exportar">
+<rect x="264" y="272" width="176" height="44" rx="6" fill="#eceff3"/>
+<text x="352" y="299" font-family="Lato" font-size="14" font-weight="700" fill="#0b0b0b" text-anchor="middle" xml:space="preserve">Exportar</text>
+</g>
+<text x="264" y="334" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Neutro</text>
+<g id="Botão / Destrutivo / Terminar sessão">
+<rect x="464" y="272" width="176" height="44" rx="6" fill="#cf372d"/>
+<text x="552" y="299" font-family="Lato" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle" xml:space="preserve">Terminar sessão</text>
+</g>
+<text x="464" y="334" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Destrutivo</text>
+<text x="64" y="384" font-family="Jost" font-size="18" font-weight="700" fill="#0b0b0b" xml:space="preserve">Campos  ·  10 §1 e 19 §2: altura 44 na entrada, raio 6</text>
+<g id="Campo / Endereço de email">
+<text x="64" y="416" font-family="Lato" font-size="12" font-weight="700" fill="#52514e" letter-spacing="0.04em" xml:space="preserve">ENDEREÇO DE EMAIL<tspan fill="#cf372d"> *</tspan></text>
+<rect x="64" y="422" width="264" height="44" rx="6" fill="#eaf2fb" stroke="#cbdcf0" stroke-width="1"/>
+<g id="Ícone / Utilizador" transform="translate(76 435) scale(0.75)">
+<g fill="none" stroke="#6b6e74" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+<circle cx="12" cy="7" r="4"/>
+</g>
+</g>
+<text x="104" y="448.5" font-family="Lato" font-size="13" font-weight="400" fill="#6b6e74" xml:space="preserve">exemplo@romafe.com</text>
+</g>
+<text x="64" y="500" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Normal</text>
+<g id="Campo / Endereço de email">
+<text x="364" y="416" font-family="Lato" font-size="12" font-weight="700" fill="#52514e" letter-spacing="0.04em" xml:space="preserve">ENDEREÇO DE EMAIL<tspan fill="#cf372d"> *</tspan></text>
+<rect x="364" y="422" width="264" height="44" rx="6" fill="#ffffff" stroke="#1e8bcb" stroke-width="2"/>
+<g id="Ícone / Utilizador" transform="translate(376 435) scale(0.75)">
+<g fill="none" stroke="#6b6e74" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+<circle cx="12" cy="7" r="4"/>
+</g>
+</g>
+<text x="404" y="448.5" font-family="Lato" font-size="13" font-weight="400" fill="#0b0b0b" xml:space="preserve">oficina@romafe.com</text>
+</g>
+<text x="364" y="500" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Foco</text>
+<g id="Campo / Endereço de email">
+<text x="664" y="416" font-family="Lato" font-size="12" font-weight="700" fill="#52514e" letter-spacing="0.04em" xml:space="preserve">ENDEREÇO DE EMAIL<tspan fill="#cf372d"> *</tspan></text>
+<rect x="664" y="422" width="264" height="44" rx="6" fill="#ffffff" stroke="#cf372d" stroke-width="2"/>
+<g id="Ícone / Utilizador" transform="translate(676 435) scale(0.75)">
+<g fill="none" stroke="#6b6e74" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+<circle cx="12" cy="7" r="4"/>
+</g>
+</g>
+<text x="704" y="448.5" font-family="Lato" font-size="13" font-weight="400" fill="#0b0b0b" xml:space="preserve">oficina@romafe</text>
+<text x="664" y="481" font-family="Lato" font-size="12" font-weight="400" fill="#cf372d" xml:space="preserve">Email ou palavra-passe incorretos</text>
+</g>
+<text x="664" y="500" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Erro</text>
+<g id="Campo / Palavra-passe">
+<text x="64" y="548" font-family="Lato" font-size="12" font-weight="700" fill="#52514e" letter-spacing="0.04em" xml:space="preserve">PALAVRA-PASSE<tspan fill="#cf372d"> *</tspan></text>
+<rect x="64" y="554" width="264" height="44" rx="6" fill="#eaf2fb" stroke="#cbdcf0" stroke-width="1"/>
+<g id="Ícone / Cadeado" transform="translate(76 567) scale(0.75)">
+<g fill="none" stroke="#6b6e74" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+<rect x="3" y="11" width="18" height="11" rx="2"/>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</g>
+</g>
+<text x="104" y="580.5" font-family="Lato" font-size="13" font-weight="400" fill="#0b0b0b" xml:space="preserve">••••••••</text>
+<g id="Ícone / Olho" transform="translate(296 567) scale(0.75)">
+<g fill="none" stroke="#52514e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+<circle cx="12" cy="12" r="3"/>
+</g>
+</g>
+</g>
+<text x="64" y="618" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Com mostrar/ocultar — 19 §2.1</text>
+<g id="Campo / Palavra-passe">
+<text x="364" y="548" font-family="Lato" font-size="12" font-weight="700" fill="#52514e" letter-spacing="0.04em" xml:space="preserve">PALAVRA-PASSE<tspan fill="#cf372d"> *</tspan></text>
+<rect x="364" y="554" width="264" height="44" rx="6" fill="#f4f5f7" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Cadeado" transform="translate(376 567) scale(0.75)">
+<g fill="none" stroke="#6b6e74" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+<rect x="3" y="11" width="18" height="11" rx="2"/>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</g>
+</g>
+<text x="404" y="580.5" font-family="Lato" font-size="13" font-weight="400" fill="#6b6e74" xml:space="preserve">Indisponível</text>
+</g>
+<text x="364" y="618" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Desativado</text>
+<text x="64" y="720" font-family="Jost" font-size="18" font-weight="700" fill="#0b0b0b" xml:space="preserve">Caixa de verificação  ·  19 §5: desligada por omissão, com dica</text>
+<g id="Caixa de verificação / Manter sessão iniciada">
+<rect x="64" y="740" width="18" height="18" rx="4" fill="#ffffff" stroke="#cbdcf0" stroke-width="1.4"/>
+<text x="92" y="753.5" font-family="Lato" font-size="13" font-weight="400" fill="#0b0b0b" xml:space="preserve">Manter sessão iniciada</text>
+<text x="92" y="772" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Não usar em computadores partilhados</text>
+</g>
+<g id="Caixa de verificação / Manter sessão iniciada">
+<rect x="400" y="740" width="18" height="18" rx="4" fill="#00537e"/>
+<g id="Ícone / Visto" transform="translate(402 742) scale(0.583333)">
+<g fill="none" stroke="#ffffff" stroke-width="4.45714" stroke-linecap="round" stroke-linejoin="round">
+<path d="M4 12.5 9.5 18 20 6.5"/>
+</g>
+</g>
+<text x="428" y="753.5" font-family="Lato" font-size="13" font-weight="400" fill="#0b0b0b" xml:space="preserve">Manter sessão iniciada</text>
+<text x="428" y="772" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Não usar em computadores partilhados</text>
+</g>
+<text x="64" y="800" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Desligada</text>
+<text x="400" y="800" font-family="Lato" font-size="12" font-weight="400" fill="#6b6e74" xml:space="preserve">Ligada</text>
+<text x="64" y="866" font-family="Jost" font-size="18" font-weight="700" fill="#0b0b0b" xml:space="preserve">Itens de apoio do cartão</text>
+<g id="Item de apoio / Acesso seguro">
+<g id="Ícone / Escudo" transform="translate(64 888) scale(0.833333)">
+<g fill="none" stroke="#00537e" stroke-width="2.16" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+</g>
+</g>
+<text x="94" y="895" font-family="Lato" font-size="12" font-weight="700" fill="#0b0b0b" xml:space="preserve">Acesso seguro</text>
+<text x="94" y="911" font-family="Lato" font-size="11" font-weight="400" fill="#6b6e74" xml:space="preserve">Ligação cifrada</text>
+</g>
+<g id="Item de apoio / Precisa de ajuda?">
+<g id="Ícone / Auscultadores" transform="translate(400 888) scale(0.833333)">
+<g fill="none" stroke="#00537e" stroke-width="2.16" stroke-linecap="round" stroke-linejoin="round">
+<path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+<path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/>
+<path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/>
+</g>
+</g>
+<text x="430" y="895" font-family="Lato" font-size="12" font-weight="700" fill="#0b0b0b" xml:space="preserve">Precisa de ajuda?</text>
+<text x="430" y="911" font-family="Lato" font-size="11" font-weight="400" fill="#6b6e74" xml:space="preserve">Contacte-nos</text>
+</g>
+<text x="660" y="720" font-family="Jost" font-size="18" font-weight="700" fill="#0b0b0b" xml:space="preserve">Item de vantagem (sobre fundo escuro)</text>
+<rect x="660" y="740" width="540" height="190" rx="10" fill="#012338"/>
+<g id="Item de vantagem / Peças e equipamentos">
+<g id="Ícone / Engrenagem" transform="translate(692 764) scale(1.66667)">
+<g fill="none" stroke="#ef7b10" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="12" r="7.2"/>
+<circle cx="12" cy="12" r="3"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(0 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(45 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(90 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(135 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(180 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(225 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(270 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(315 12 12)"/>
+</g>
+</g>
+<text x="756" y="781" font-family="Lato" font-size="20" font-weight="700" fill="#ffffff" xml:space="preserve">Peças e equipamentos</text>
+<text x="756" y="805" font-family="Lato" font-size="15" font-weight="400" fill="#cfe0f2" xml:space="preserve">Das melhores marcas</text>
+</g>
+<g id="Item de vantagem / Apoio ao profissional">
+<g id="Ícone / Camião" transform="translate(692 848) scale(1.66667)">
+<g fill="none" stroke="#ef7b10" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M1.5 5.5h13v10h-13Z"/>
+<path d="M14.5 9h4l3.5 3.5v3h-7.5Z"/>
+<circle cx="6" cy="18" r="2.2"/>
+<circle cx="18" cy="18" r="2.2"/>
+<path d="M8.2 18h7.6"/>
+</g>
+</g>
+<text x="756" y="865" font-family="Lato" font-size="20" font-weight="700" fill="#ffffff" xml:space="preserve">Apoio ao profissional</text>
+<text x="756" y="889" font-family="Lato" font-size="15" font-weight="400" fill="#cfe0f2" xml:space="preserve">Sempre ao seu lado</text>
+</g>
+<text x="64" y="986" font-family="Jost" font-size="18" font-weight="700" fill="#0b0b0b" xml:space="preserve">Ícones  ·  traço 2, grelha 24</text>
+<rect x="56" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Utilizador" transform="translate(64 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+<circle cx="12" cy="7" r="4"/>
+</g>
+</g>
+<rect x="118" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Cadeado" transform="translate(126 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="3" y="11" width="18" height="11" rx="2"/>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</g>
+</g>
+<rect x="180" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Olho" transform="translate(188 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+<circle cx="12" cy="12" r="3"/>
+</g>
+</g>
+<rect x="242" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Globo" transform="translate(250 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="12" r="10"/>
+<path d="M2 12h20"/>
+<path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20Z"/>
+</g>
+</g>
+<rect x="304" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Seta para baixo" transform="translate(312 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M6 9l6 6 6-6"/>
+</g>
+</g>
+<rect x="366" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Entrar" transform="translate(374 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+<path d="M10 17l5-5-5-5"/>
+<path d="M15 12H3"/>
+</g>
+</g>
+<rect x="428" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Escudo" transform="translate(436 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+</g>
+</g>
+<rect x="490" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Auscultadores" transform="translate(498 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+<path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/>
+<path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/>
+</g>
+</g>
+<rect x="552" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Engrenagem" transform="translate(560 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="12" r="7.2"/>
+<circle cx="12" cy="12" r="3"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(0 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(45 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(90 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(135 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(180 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(225 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(270 12 12)"/>
+<rect x="10.6" y="0.6" width="2.8" height="4.4" rx="1" transform="rotate(315 12 12)"/>
+</g>
+</g>
+<rect x="614" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Camião" transform="translate(622 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M1.5 5.5h13v10h-13Z"/>
+<path d="M14.5 9h4l3.5 3.5v3h-7.5Z"/>
+<circle cx="6" cy="18" r="2.2"/>
+<circle cx="18" cy="18" r="2.2"/>
+<path d="M8.2 18h7.6"/>
+</g>
+</g>
+<rect x="676" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Parceria" transform="translate(684 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="9" cy="8" r="3.4"/>
+<path d="M2.6 20v-1.6A4.4 4.4 0 0 1 7 14h4a4.4 4.4 0 0 1 4.4 4.4V20"/>
+<path d="M16.2 4.9a3.4 3.4 0 0 1 0 6.4"/>
+<path d="M21.4 20v-1.6a4.4 4.4 0 0 0-3.2-4.2"/>
+</g>
+</g>
+<rect x="738" y="1006" width="48" height="48" rx="8" fill="#ffffff" stroke="#e6e8ec" stroke-width="1"/>
+<g id="Ícone / Visto" transform="translate(746 1018) scale(1)">
+<g fill="none" stroke="#00537e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M4 12.5 9.5 18 20 6.5"/>
+</g>
+</g>
+<text x="64" y="1112" font-family="Jost" font-size="18" font-weight="700" fill="#0b0b0b" xml:space="preserve">Paleta</text>
+<rect x="64" y="1128" width="40" height="40" rx="6" fill="#00537e" stroke="#e6e8ec" stroke-width="1"/>
+<text x="112" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Azul da marca</text>
+<text x="112" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#00537e</text>
+<rect x="194" y="1128" width="40" height="40" rx="6" fill="#012338" stroke="#e6e8ec" stroke-width="1"/>
+<text x="242" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Fundo escuro</text>
+<text x="242" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#012338</text>
+<rect x="324" y="1128" width="40" height="40" rx="6" fill="#ef7b10" stroke="#e6e8ec" stroke-width="1"/>
+<text x="372" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Laranja de ação</text>
+<text x="372" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#ef7b10</text>
+<rect x="454" y="1128" width="40" height="40" rx="6" fill="#1b62b7" stroke="#e6e8ec" stroke-width="1"/>
+<text x="502" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Azul do logótipo</text>
+<text x="502" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#1b62b7</text>
+<rect x="584" y="1128" width="40" height="40" rx="6" fill="#eaf2fb" stroke="#e6e8ec" stroke-width="1"/>
+<text x="632" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Fundo de campo</text>
+<text x="632" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#eaf2fb</text>
+<rect x="714" y="1128" width="40" height="40" rx="6" fill="#cbdcf0" stroke="#e6e8ec" stroke-width="1"/>
+<text x="762" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Borda</text>
+<text x="762" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#cbdcf0</text>
+<rect x="844" y="1128" width="40" height="40" rx="6" fill="#0b0b0b" stroke="#e6e8ec" stroke-width="1"/>
+<text x="892" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Tinta</text>
+<text x="892" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#0b0b0b</text>
+<rect x="974" y="1128" width="40" height="40" rx="6" fill="#6b6e74" stroke="#e6e8ec" stroke-width="1"/>
+<text x="1022" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Tinta discreta</text>
+<text x="1022" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#6b6e74</text>
+<rect x="1104" y="1128" width="40" height="40" rx="6" fill="#cf372d" stroke="#e6e8ec" stroke-width="1"/>
+<text x="1152" y="1144" font-family="Lato" font-size="9.5" font-weight="700" fill="#0b0b0b" xml:space="preserve">Vermelho</text>
+<text x="1152" y="1158" font-family="Lato" font-size="10" font-weight="400" fill="#6b6e74" xml:space="preserve">#cf372d</text>
+</svg>
