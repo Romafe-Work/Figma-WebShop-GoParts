@@ -9,15 +9,17 @@ O ecrã de entrada e o início do portal, desenhados com os tokens do
 propriedades à direita. Não precisa de servidor nem de build.
 
 `web/documentacao.html` documenta o sistema — cor, tipografia, espaçamento,
-botões, campos e a marca — com exemplos que mudam de tema.
+botões, campos, marca, notificações e modais — com exemplos que mudam de tema.
+
+`web/como-funciona.html` explica, em duas páginas, o que isto é e porque não é
+o Figma.
 
 ## O que há aqui
 
 | Pasta | O que é |
 | --- | --- |
 | `web/` | O código: HTML, CSS, JS, tipos de letra e a fotografia |
-| `01-ecra-entrada.*` · `02-componentes.*` | O mesmo desenho em SVG e PDF, para importar no Figma ou no Canva |
-| `gerar.py` | Gera os SVG e os PDF a partir dos mesmos tokens |
+| `importar/` | O mesmo desenho em SVG e PDF, para importar no Figma ou no Canva, e o guião que os gera |
 | `LEIA-ME.md` | Como importar, e o que difere da maqueta |
 
 ## A regra do editor

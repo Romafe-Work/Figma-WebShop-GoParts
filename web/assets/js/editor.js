@@ -771,7 +771,7 @@
     pre.style.backgroundImage = getComputedStyle(alvo).backgroundImage;
     sf.appendChild(pre);
 
-    var nome = el('p', 'ed-dica', fotos[seletor(alvo)] || 'assets/img/oficina.png');
+    var nome = el('p', 'ed-dica', fotos[seletor(alvo)] || 'assets/img/armazem.png');
     sf.appendChild(nome);
 
     var rotulo = el('label', 'ed-botao ed-botao--accao ed-ficheiro', 'Trocar fotografia');

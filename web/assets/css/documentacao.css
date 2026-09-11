@@ -117,3 +117,6 @@ pre code { font-size: var(--t-xs); line-height: 1.7; }
   .seccao { padding: var(--e-4); }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* uma página sem índice ocupa a largura toda, centrada */
+.doc-corpo--simples { grid-template-columns: minmax(0, 860px); justify-content: center; }

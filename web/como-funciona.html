@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como está montado — ROMAFE</title>
+<meta name="description" content="O que é a tela de desenho da ROMAFE, porque não é o Figma, e como está construída.">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/documentacao.css">
+<script src="assets/js/tema.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+<header class="doc-topo">
+  <div>
+    <h1 class="doc-topo__titulo marca">ROMAFE</h1>
+    <p class="doc-topo__sub">Como está montado</p>
+  </div>
+  <div class="segmented" role="group" aria-label="Tema da interface">
+    <button type="button" class="segmented__btn" data-tema="light" aria-pressed="false">Claro</button>
+    <button type="button" class="segmented__btn" data-tema="dark" aria-pressed="false">Escuro</button>
+    <button type="button" class="segmented__btn" data-tema="auto" aria-pressed="true">Auto</button>
+  </div>
+</header>
+
+<div class="doc-corpo doc-corpo--simples">
+  <main class="doc-conteudo" id="conteudo">
+
+    <section class="seccao" id="ideia">
+      <h2>A ideia numa frase</h2>
+      <p>
+        Em vez de desenhar uma imagem do produto e depois alguém a construir,
+        <strong>o desenho e o produto são a mesma coisa</strong>. O que está no
+        ecrã é a página a funcionar, e o painel ao lado deixa mexer-lhe em
+        direto: cor, tamanho, folga, posição, texto.
+      </p>
+      <p class="nota">
+        O que sai daqui não é uma imagem para alguém copiar. É o CSS que já
+        está a fazer o ecrã funcionar — copia-se e cola-se no produto.
+      </p>
+    </section>
+
+    <section class="seccao" id="diferenca">
+      <h2>Porque não é o Figma</h2>
+      <table class="tabela">
+        <thead><tr><th></th><th>No Figma</th><th>Aqui</th></tr></thead>
+        <tbody>
+          <tr><td>O que se edita</td><td>Um desenho do produto</td><td>O produto</td></tr>
+          <tr><td>O que sai</td><td>Uma imagem e medidas para alguém traduzir</td><td>O código que já está a correr</td></tr>
+          <tr><td>Cores disponíveis</td><td>Todas as do mundo</td><td>Só as do manual da casa</td></tr>
+          <tr><td>Tamanhos de letra</td><td>Qualquer número</td><td>Os sete que o manual tem</td></tr>
+          <tr><td>Distância entre desenho e produto</td><td>Existe sempre, e cresce com o tempo</td><td>Nenhuma: é o mesmo ficheiro</td></tr>
+          <tr><td>Quem precisa de licença</td><td>Quem desenha</td><td>Ninguém. Abre num navegador</td></tr>
+        </tbody>
+      </table>
+      <p>
+        O Figma continua a servir para o que serve: explorar ideias antes de
+        existir produto. Isto serve para o passo seguinte — afinar o que já
+        existe sem abrir uma segunda versão da verdade.
+      </p>
+    </section>
+
+    <section class="seccao" id="camadas">
+      <h2>As três camadas</h2>
+      <p>Tudo assenta em três ficheiros, por esta ordem, e a ordem importa.</p>
+      <table class="tabela">
+        <thead><tr><th>Camada</th><th>O que é</th><th>Exemplo</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Os valores</strong><br><code>tokens.css</code></td>
+            <td>As 77 decisões da casa: cores, tamanhos de letra, folgas, raios, sombras. Copiadas do manual publicado, sem uma alterada</td>
+            <td><code>--c-acao: #ef7b10</code></td>
+          </tr>
+          <tr>
+            <td><strong>As peças</strong><br><code>base.css</code></td>
+            <td>Botão, campo, caixa de verificação, marca, notificação, modal. Nenhuma escreve uma cor: todas apontam para um valor da camada de cima</td>
+            <td><code>background: var(--c-acao)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Os ecrãs</strong><br>um ficheiro cada</td>
+            <td>Só arrumação: o que fica onde. Entrada, início do portal, catálogo e histórico de pedidos</td>
+            <td><code>.cartao { max-width: var(--l-cartao) }</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="nota">
+        É por causa desta ordem que o tema escuro não obrigou a mexer em nenhum
+        componente. Trocam-se os valores da primeira camada e o resto acompanha.
+      </p>
+    </section>
+
+    <section class="seccao" id="editor">
+      <h2>O que o editor deixa fazer</h2>
+      <p>
+        Escolher qualquer peça pela tela ou pela lista de camadas, mudar-lhe a
+        cor, o tamanho, a folga e a posição, escrever no sítio com duplo clique,
+        trocar a fotografia de fundo, e ver o CSS de cada peça com o nome do
+        valor da casa ao lado de cada número. No fim, exportar o que se mudou.
+      </p>
+      <p>
+        O que se mexe fica guardado no navegador e volta na sessão seguinte, sem
+        servidor e sem conta.
+      </p>
+    </section>
+
+    <section class="seccao" id="regra">
+      <h2>A regra que o torna útil</h2>
+      <p>
+        <strong>O painel só oferece o que o manual tem.</strong> Não há
+        selecionador de cor livre, nem caixa para escrever um número de folga.
+        Escolhe-se um valor da casa, e é um valor da casa que sai no código.
+      </p>
+      <table class="tabela">
+        <thead><tr><th>O painel oferece</th><th>Porquê</th></tr></thead>
+        <tbody>
+          <tr><td>A paleta da tinta <strong>sem laranja</strong></td><td>O manual diz que o laranja é fundo, traço e preenchimento — nunca letra</td></tr>
+          <tr><td>Nos ícones, <strong>com laranja</strong></td><td>Um ícone é traço, não é letra</td></tr>
+          <tr><td>Sete tamanhos de letra</td><td>São os que o manual tem. Não há oitavo</td></tr>
+          <tr><td>Oito degraus de folga</td><td>A escala de 4pt. Uma folga fora dela lê-se como desalinhamento</td></tr>
+          <tr><td>Nos botões, <strong>categorias</strong> e não cores</td><td>Um botão não muda de cor: muda de categoria, e a cor vem atrás</td></tr>
+        </tbody>
+      </table>
+      <p class="nota">
+        A consequência prática: <strong>não é possível desenhar aqui uma coisa
+        que o produto não consiga construir</strong>, nem inventar uma cor sem
+        que alguém decida acrescentá-la ao manual.
+      </p>
+    </section>
+
+    <section class="seccao" id="crescer">
+      <h2>Como se acrescenta um ecrã</h2>
+      <p>Acrescentar um ecrã é acrescentar uma caixa ao ficheiro:</p>
+      <pre><code>&lt;div class="ecra" data-ecra="faturas" data-nome="Faturas"&gt;
+  …
+&lt;/div&gt;</code></pre>
+      <p>
+        O editor encontra-o sozinho, põe-no no seletor lá de cima e passa a
+        listar-lhe as camadas. Foi assim que os quatro ecrãs de hoje entraram, e
+        a barra de topo dos três do portal é literalmente o mesmo bloco — mexer
+        numa mexe nas três.
+      </p>
+    </section>
+
+    <section class="seccao" id="custo">
+      <h2>O que custa a manter, e onde ver</h2>
+      <table class="tabela">
+        <tbody>
+          <tr><td>Ecrãs</td><td>4</td></tr>
+          <tr><td>Valores da casa</td><td>77</td></tr>
+          <tr><td>Dependências externas</td><td><strong>Nenhuma</strong></td></tr>
+          <tr><td>Passo de compilação</td><td><strong>Nenhum</strong>. Abre-se o ficheiro e funciona</td></tr>
+          <tr><td>Licenças de software</td><td>Nenhuma</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Sem dependências não há nada para atualizar, nada que deixe de ser
+        mantido por outra pessoa, e nada que obrigue a reconstruir o projeto
+        daqui a dois anos para ele voltar a abrir.
+      </p>
+      <p>
+        A tela está em <a href="index.html">index.html</a>, o sistema
+        documentado em <a href="documentacao.html">documentacao.html</a>, e os
+        valores vêm todos do
+        <a href="https://romafe-work.github.io/UIUX/">manual da casa</a>.
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/js/documentacao.js"></script>
+</body>
+</html>

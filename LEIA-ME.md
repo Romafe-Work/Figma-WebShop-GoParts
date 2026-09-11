@@ -4,11 +4,10 @@ O ecrã de entrada e as suas peças, prontos a importar.
 
 | Ficheiro | Para quê |
 | --- | --- |
-| `01-ecra-entrada.pdf` | **Importar no Canva.** O ecrã completo, 1440×900 |
-| `02-componentes.pdf` | **Importar no Canva.** Botões, campos, caixa de verificação, itens e ícones |
-| `01-ecra-entrada.svg` · `02-componentes.svg` | O mesmo desenho para o Figma, onde entra em camadas com nome |
-| `pre-visualizacao-*.png` | Como fica, sem abrir nada |
-| `gerar.py` | Gera os quatro. Mudar um token muda tudo |
+| `importar/01-ecra-entrada.pdf` | **Importar no Canva.** O ecrã completo, 1440×900 |
+| `importar/02-componentes.pdf` | **Importar no Canva.** Botões, campos, caixa de verificação, itens e ícones |
+| `importar/*.svg` | O mesmo desenho para o Figma, onde entra em camadas com nome |
+| `importar/gerar.py` | Gera os quatro. Mudar um token muda tudo |
 
 ## O código: `web/`
 

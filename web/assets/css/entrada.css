@@ -39,7 +39,7 @@
   padding: var(--e-7) var(--e-6);
 }
 /* A fotografia é opcional: sem ela fica o azul de superfície invertida.
-   O ficheiro está em assets/img/oficina.png e troca-se no painel. */
+   O ficheiro está em assets/img/armazem.png e troca-se no painel. */
 .palco__foto {
   position: absolute; inset: 0; z-index: -2;
   background-color: var(--c-entrada-fundo);
