@@ -32,9 +32,13 @@
 /* ---------- palco: fotografia + cartão ---------- */
 .palco {
   position: relative; isolation: isolate;
-  display: grid; grid-template-columns: 1fr min(var(--l-cartao), 100%);
-  align-items: center; gap: var(--e-8);
-  padding: var(--e-8) var(--e-8);
+  /* Três colunas: o discurso à esquerda, o cartão no meio, e uma coluna
+     vazia à direita do mesmo tamanho — é ela que põe o cartão no centro
+     do ecrã, e não só no centro do espaço que sobra. */
+  display: grid;
+  grid-template-columns: 1fr min(var(--l-cartao), 100%) 1fr;
+  align-items: center; gap: var(--e-7);
+  padding: var(--e-8) var(--e-6);
 }
 /* A fotografia é opcional: sem ela fica o azul de superfície invertida.
    O ficheiro está em assets/img/oficina.png e troca-se no painel. */
@@ -81,7 +85,7 @@
 
 /* ---------- cartão de sessão (19 §1) ---------- */
 .cartao {
-  width: 100%; max-width: var(--l-cartao); justify-self: end;
+  width: 100%; max-width: var(--l-cartao); justify-self: center;
   padding: var(--e-6);
   background: var(--c-superficie);
   border-radius: var(--r-lg);
@@ -141,6 +145,7 @@
 /* ---------- responsivo ---------- */
 @media (max-width: 980px) {
   .palco { grid-template-columns: 1fr; gap: var(--e-6); padding: var(--e-6) var(--e-4); }
+  .cartao { justify-self: center; }
   .cartao { justify-self: center; }
   .discurso { max-width: none; }
   .discurso__titulo { font-size: var(--t-2xl); }
