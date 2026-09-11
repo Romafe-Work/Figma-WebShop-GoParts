@@ -114,24 +114,24 @@
 
 
 /* ---------- ACRESCENTOS DA ENTRADA ----------
-   O que o site não tinha por não ter ecrã de entrada. Nada aqui inventa
-   um valor novo: tudo sai dos tokens de cima ou do manual em PDF. */
+   Nenhuma cor nova (02 §11.2). Cada valor daqui está no capítulo 02,
+   e os dois azuis estão separados como o §11.4 obriga: um é fundo e não
+   muda com o tema, o outro é tinta e muda. */
 :root {
+  --c-marca-fundo:    #00537e;                 /* 02 §6: o azul é o mesmo nos dois temas */
   --c-entrada-fundo:  #012338;                 /* 02 §1.1 superfície invertida */
-  --c-entrada-veu:    rgba(1, 35, 56, .78);
+  --c-entrada-veu:    rgba(0, 83, 126, .78);   /* 02 §1.1: as transparências do azul */
   --c-entrada-tinta:  #ffffff;
-  --c-entrada-tinta-2:#cfe0f2;
-  --c-logotipo:       #1b62b7;                 /* azul do logotipo impresso */
+  --c-entrada-tinta-2: rgba(255, 255, 255, .72); /* 02 §6: o branco a 72% do menu */
+  --c-logotipo:       #00537e;                 /* o azul da marca, e não um parecido */
+  --c-campo-fundo:    var(--c-marca-suave);    /* 02 §4.2: o fundo do selo de informação */
   --a-campo:          44px;                    /* 19 §2: 44 e não 42 */
   --l-cartao:         460px;                   /* a maqueta. O 19 §1 pede 400 */
-  --c-campo-fundo:    var(--c-marca-suave);    /* o azul lavado dos campos da maqueta */
 }
 
-[data-theme="dark"] {
-  --c-entrada-fundo:  #1b1b19;
-  --c-entrada-veu:    rgba(20, 20, 18, .86);
-  --c-logotipo:       #a8caee;                 /* 02 §1.1: o azul que é tinta */
-}
+/* 02 §11.4: sobre fundo escuro o azul da marca dá 1.53:1. O azul que é
+   tinta muda; o que é fundo fica onde está. */
+[data-theme="dark"] { --c-logotipo: #a8caee; }
 
 /* O site trata "auto" como claro, porque não tem regra de sistema.
    Aqui auto segue o sistema — é a única diferença de comportamento. */
@@ -164,8 +164,6 @@
     --s-2: 0 4px 14px rgba(0,0,0,.45);
     --s-3: 0 18px 44px rgba(0,0,0,.55);
 
-    --c-entrada-fundo:  #1b1b19;
-    --c-entrada-veu:    rgba(20, 20, 18, .86);
-    --c-logotipo:       #a8caee;
+    --c-logotipo:     #a8caee;
   }
 }

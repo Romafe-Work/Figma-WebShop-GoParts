@@ -8,7 +8,7 @@
 /* ---------- barra de topo ---------- */
 .portal__topo {
   display: flex; align-items: center; justify-content: space-between; gap: var(--e-4);
-  padding: var(--e-2) var(--e-5); background: var(--c-marca); color: #fff;
+  padding: var(--e-2) var(--e-5); background: var(--c-marca-fundo); color: #fff;
 }
 .portal__icones { display: flex; align-items: center; gap: var(--e-3); }
 .portal__icone {
@@ -46,7 +46,7 @@
 }
 .painel__cabeca {
   display: flex; align-items: center; gap: var(--e-2);
-  padding: var(--e-3) var(--e-4); background: var(--c-marca); color: #fff;
+  padding: var(--e-3) var(--e-4); background: var(--c-marca-fundo); color: #fff;
 }
 .painel__cabeca svg { width: 20px; height: 20px; flex: none; }
 .painel__titulo { font-family: var(--f-titulo); font-size: var(--t-lg); margin: 0; font-weight: 600; }
@@ -63,7 +63,7 @@
 .matricula { display: flex; align-items: stretch; }
 .matricula__pais {
   display: grid; place-items: center; width: 34px; flex: none;
-  background: var(--c-marca); color: #fff; font-size: var(--t-xs); font-weight: 700;
+  background: var(--c-marca-fundo); color: #fff; font-size: var(--t-xs); font-weight: 700;
   border: 1px solid var(--c-borda-forte); border-right: 0;
   border-radius: var(--r-md) 0 0 var(--r-md);
 }

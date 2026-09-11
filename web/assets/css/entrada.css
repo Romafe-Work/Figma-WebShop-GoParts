@@ -41,7 +41,7 @@
 .palco__foto {
   position: absolute; inset: 0; z-index: -2;
   background-color: var(--c-entrada-fundo);
-  background-image: url('../img/oficina.png');
+  background-image: url('../img/armazem.png');
   background-size: cover; background-position: center; background-repeat: no-repeat;
 }
 
@@ -50,16 +50,9 @@
   position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(90deg,
     var(--c-entrada-veu) 0%,
-    rgba(1, 35, 56, .58) 34%,
-    rgba(1, 35, 56, .22) 62%,
-    rgba(1, 35, 56, .10) 100%);
-}
-[data-theme="dark"] .palco__veu {
-  background: linear-gradient(90deg,
-    var(--c-entrada-veu) 0%,
-    rgba(20, 20, 18, .72) 34%,
-    rgba(20, 20, 18, .48) 62%,
-    rgba(20, 20, 18, .38) 100%);
+    rgba(0, 83, 126, .56) 34%,
+    rgba(0, 83, 126, .24) 62%,
+    rgba(0, 83, 126, .12) 100%);
 }
 
 .discurso { color: var(--c-entrada-tinta); max-width: 620px; }

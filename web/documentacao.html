@@ -143,7 +143,7 @@
       <table class="tabela">
         <thead><tr><th>Peça</th><th>Valor</th><th>Razão</th></tr></thead>
         <tbody>
-          <tr><td>Nome</td><td>Motor, <code>--c-logotipo</code></td><td>É a letra e a cor da marca impressa</td></tr>
+          <tr><td>Nome</td><td>Motor, <code>--c-logotipo</code></td><td>ROMAFE é sempre azul e sempre em Motor</td></tr>
           <tr><td>Risco</td><td><code>--c-acao</code>, 3px</td><td>É o único sítio onde o laranja não é uma ação, e por isso não tem concorrência</td></tr>
           <tr><td>Subtítulo</td><td><code>--t-sm</code>, <code>--c-texto-2</code></td><td>Diz o que é o produto, não o que é a empresa</td></tr>
           <tr><td>Largura do risco</td><td>A do conjunto</td><td>Cresce com o subtítulo, não com o nome: é o que dá a mesma silhueta em qualquer tamanho</td></tr>
@@ -151,10 +151,11 @@
       </table>
 
       <p class="nota">
-        Sobre superfície escura, <code>.lockup--invertido</code>: o nome passa a
-        branco e o subtítulo à tinta clara. O azul do logótipo sobre o azul
-        escuro dá 1.53:1 e não se lê — é a armadilha de 17 §2.4. O risco laranja
-        e a ordem não mudam.
+        Sobre superfície escura, <code>.lockup--invertido</code>: o nome
+        continua azul, mas é o <code>#a8caee</code> — o azul que é tinta. O
+        <code>#00537e</code> sobre o azul escuro dá 1.53:1 e desaparece, e é por
+        isso que 02 §11.4 manda separar o azul que é fundo do azul que é tinta.
+        O risco laranja, a letra e a ordem não mudam.
       </p>
     </section>
 
@@ -430,11 +431,16 @@
         veres o estrago, não para o deixares assim.
       </p>
       <p>
-        A fotografia que vem no ficheiro foi tirada da própria maqueta: apaguei
-        o cartão, as vantagens e a assinatura, e tapei esses sítios com oficina
-        vinda de ao lado. A mensagem da parede é parte da fotografia, e por isso
-        o título grande da esquerda vem escondido — está em
-        <code>.esta-na-foto</code> e volta pelo painel, em Peça → Visível.
+        A fotografia que vem no ficheiro é o armazém do site, com o letreiro
+        <em>Rolling your way</em> e os três botões apagados e tapados com a
+        própria fotografia espelhada de cima. Em <code>assets/img/</code> está
+        também a oficina, tirada da maqueta da mesma maneira.
+      </p>
+      <p class="nota">
+        O título grande da esquerda vem escondido, em <code>.esta-na-foto</code>,
+        porque na fotografia da oficina a mensagem está pintada na parede. Com a
+        fotografia do armazém pode mostrar-se: escolhe a camada e carrega em
+        Peça → Visível.
       </p>
 
       <h3>Como se mexe</h3>
@@ -476,6 +482,9 @@
           <tr><td>Largura do cartão</td><td>400px, 19 §1</td><td>460px</td><td>É a largura da maqueta, e é o que faz as duas frases de apoio caberem numa linha</td></tr>
           <tr><td>Fundo dos campos</td><td>Branco</td><td><code>--c-marca-suave</code></td><td>Um campo branco dentro de um cartão branco não se vê</td></tr>
           <tr><td>Manter sessão iniciada</td><td>Desligada e com dica, 19 §5</td><td>Ligada e sem dica</td><td><strong>Contraria o manual.</strong> É o que está na maqueta. O manual quer o contrário porque o computador do armazém é partilhado</td></tr>
+          <tr><td>Azul do logótipo</td><td><code>#1b62b7</code>, tirado do logótipo impresso</td><td><code>#00537e</code> e <code>#a8caee</code></td><td>02 §11.9: um azul quase igual ao da marca é pior do que um azul errado, porque ninguém o vê</td></tr>
+          <tr><td>Barra de topo no tema escuro</td><td>Escurecia para quase preto</td><td>Fica <code>#012338</code></td><td>02 §6: se a navegação clareasse no escuro, o produto passava a parecer dois</td></tr>
+          <tr><td>Texto sobre o laranja</td><td>Escurecia no tema escuro</td><td>Branco sempre</td><td>02 §3: o par não muda porque o fundo também não</td></tr>
           <tr><td>Modo auto</td><td>O site trata-o como claro</td><td>Segue o sistema</td><td>O site não tem regra <code>prefers-color-scheme</code>. É a única diferença de comportamento, e está em <code>tokens.css</code></td></tr>
         </tbody>
       </table>

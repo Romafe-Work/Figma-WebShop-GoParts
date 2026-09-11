@@ -63,7 +63,7 @@ code, kbd, pre { font-family: var(--f-mono); font-size: .875em; }
   font-weight: 700;                    /* 02 §1: o peso paga o contraste do laranja */
 }
 .btn--acao:hover { background: var(--c-acao-traco); }
-[data-theme="dark"] .btn--acao { color: #2c2c2a; }
+/* 02 §3: o texto sobre laranja é branco, e não muda com o tema. */
 
 .btn__icone { width: 18px; height: 18px; flex: none; }
 
@@ -133,7 +133,8 @@ code, kbd, pre { font-family: var(--f-mono); font-size: .875em; }
 .lockup--sm .lockup__sub { font-size: var(--t-xs); }
 .lockup--sm .lockup__risco { height: 2px; }
 
-/* Sobre superfície escura o azul do logótipo dá 1.53:1 e não se lê — 17 §2.4.
-   O nome passa a branco; o risco laranja e a ordem não mudam. */
-.lockup--invertido .lockup__nome { color: #fff; }
+/* ROMAFE é sempre azul e sempre em Motor. Sobre superfície escura o
+   #00537e dá 1.53:1 e desaparece, por isso o azul que se usa lá é o
+   #a8caee — o azul que é tinta, de 02 §1.1 e §11.4. Continua a ser azul. */
+.lockup--invertido .lockup__nome { color: #a8caee; }
 .lockup--invertido .lockup__sub { color: var(--c-entrada-tinta-2); }
