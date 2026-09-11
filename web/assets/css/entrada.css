@@ -32,13 +32,14 @@
 /* ---------- palco: fotografia + cartão ---------- */
 .palco {
   position: relative; isolation: isolate;
-  /* Três colunas: o discurso à esquerda, o cartão no meio, e uma coluna
-     vazia à direita do mesmo tamanho — é ela que põe o cartão no centro
-     do ecrã, e não só no centro do espaço que sobra. */
-  display: grid;
-  grid-template-columns: 1fr min(var(--l-cartao), 100%) 1fr;
-  align-items: center; gap: var(--e-7);
-  padding: var(--e-8) var(--e-6);
+  /* Uma coluna só: o cartão ao centro e o discurso por baixo dele.
+     A ordem no HTML é a outra — o discurso vem primeiro — e é de propósito:
+     quem navega por teclado ou por leitor de ecrã encontra o formulário
+     antes do texto de apresentação. Aqui só se troca o que se vê. */
+  display: grid; grid-template-columns: 1fr;
+  justify-items: center; align-content: center;
+  gap: var(--e-7);
+  padding: var(--e-7) var(--e-6);
 }
 /* A fotografia é opcional: sem ela fica o azul de superfície invertida.
    O ficheiro está em assets/img/oficina.png e troca-se no painel. */
@@ -59,7 +60,13 @@
     rgba(0, 83, 126, .12) 100%);
 }
 
-.discurso { color: var(--c-entrada-tinta); max-width: 620px; }
+.cartao { order: 1; }
+.discurso {
+  order: 2; color: var(--c-entrada-tinta); text-align: center;
+  /* largura fixa, senão as três colunas ficam do tamanho do seu texto
+     e a do meio parece mais estreita do que as outras */
+  width: min(1000px, 100%);
+}
 /* o que já está dentro da fotografia não se repete por cima dela */
 .esta-na-foto { display: none; }
 .discurso__titulo {
@@ -67,15 +74,18 @@
   text-transform: uppercase; letter-spacing: .01em; line-height: 1.15;
   margin: 0 0 var(--e-7);
 }
-.vantagens { list-style: none; margin: 0 0 var(--e-7); padding: 0; display: grid; gap: var(--e-5); }
-.vantagem { display: flex; gap: var(--e-4); align-items: flex-start; }
-.vantagem svg { width: 40px; height: 40px; flex: none; color: var(--c-acao); }
+.vantagens {
+  list-style: none; margin: 0 0 var(--e-5); padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-5);
+}
+.vantagem { display: grid; justify-items: center; gap: var(--e-2); }
+.vantagem svg { width: 36px; height: 36px; flex: none; color: var(--c-acao); }
 .vantagem__titulo { font-size: var(--t-lg); font-weight: 700; margin: 0; }
 .vantagem__sub { font-size: var(--t-sm); color: var(--c-entrada-tinta-2); margin: 0; }
 .discurso__assinatura {
-  margin: 0; padding-top: var(--e-5);
+  margin: 0; padding-top: var(--e-4);
   border-top: 1px solid rgba(255,255,255,.25);
-  font-size: var(--t-lg);
+  font-size: var(--t-md);
 }
 
 /* Os campos do cartão não são brancos sobre branco: levam o azul lavado
@@ -144,8 +154,8 @@
 
 /* ---------- responsivo ---------- */
 @media (max-width: 980px) {
-  .palco { grid-template-columns: 1fr; gap: var(--e-6); padding: var(--e-6) var(--e-4); }
-  .cartao { justify-self: center; }
+  .palco { gap: var(--e-6); padding: var(--e-6) var(--e-4); }
+  .vantagens { grid-template-columns: 1fr; gap: var(--e-4); }
   .cartao { justify-self: center; }
   .discurso { max-width: none; }
   .discurso__titulo { font-size: var(--t-2xl); }
