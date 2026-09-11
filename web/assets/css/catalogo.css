@@ -144,7 +144,7 @@
   gap: var(--e-3);
 }
 .marca {
-  display: grid; justify-items: center; gap: var(--e-2);
+  display: grid; justify-items: center; gap: var(--e-1);
   padding: var(--e-3) var(--e-2);
   font: inherit; cursor: pointer;
   background: var(--c-superficie); border: 1px solid var(--c-borda);
@@ -152,13 +152,15 @@
   transition: border-color var(--tr), box-shadow var(--tr);
 }
 .marca:hover { border-color: var(--c-marca); box-shadow: var(--s-1); }
+.marca:hover .marca__nome { color: var(--c-texto); }
 /* O sinal é a sigla da marca, não o logótipo dela: os logótipos são marcas
-   registadas e entram como imagem quando houver ficheiros para isso. */
+   registadas e entram como imagem quando houver ficheiros para isso.
+   Sem círculo à volta: um disco cheio por cartão, quarenta vezes, pesa mais
+   do que a grelha inteira e não diz nada. */
 .marca__sinal {
-  display: grid; place-items: center; width: 42px; height: 42px;
-  border-radius: var(--r-full); background: var(--c-superficie-2);
-  color: var(--c-marca); font-size: var(--t-sm); font-weight: 700;
-  border: 1px solid var(--c-borda);
+  display: grid; place-items: center; height: 34px;
+  color: var(--c-marca); font-family: var(--f-titulo);
+  font-size: var(--t-lg); font-weight: 700; letter-spacing: .02em;
 }
 .marca__nome {
   font-size: 10px; font-weight: 700; letter-spacing: .04em;
@@ -166,7 +168,7 @@
 }
 .marca--todas { background: var(--c-marca-suave); border-color: transparent; }
 .marca__mais {
-  display: grid; place-items: center; width: 42px; height: 42px;
+  display: grid; place-items: center; height: 34px;
   font-size: var(--t-xl); color: var(--c-marca);
 }
 .marca--todas .marca__nome { color: var(--c-marca); text-transform: none; letter-spacing: 0; font-size: var(--t-xs); }

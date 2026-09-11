@@ -176,6 +176,69 @@
     seccoes.forEach(function (s) { observador.observe(s); });
   }
 
+  /* ---------------- notificações e modais ----------------
+     A região já existe no documento; o que se cria aqui é a notificação.
+     O erro não fecha sozinho: uma falha que some em quatro segundos é uma
+     falha que ninguém leu — 14 §4. */
+  var ICONES = {
+    bom:   '<circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+    info:  '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
+    aviso: '<path d="M12 4 3 19h18Z"/><path d="M12 10v4"/><path d="M12 17h.01"/>',
+    erro:  '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>'
+  };
+
+  function notificar(tipo, mensagem) {
+    var zona = document.getElementById('toasts');
+    if (!zona) return;
+
+    var t = elemento('div', 'toast toast--' + tipo);
+    t.setAttribute('role', tipo === 'erro' ? 'alert' : 'status');
+
+    var ico = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    ico.setAttribute('class', 'toast__icone');
+    ico.setAttribute('viewBox', '0 0 24 24');
+    ico.setAttribute('fill', 'none');
+    ico.setAttribute('stroke', 'currentColor');
+    ico.setAttribute('stroke-width', '2');
+    ico.setAttribute('stroke-linecap', 'round');
+    ico.setAttribute('stroke-linejoin', 'round');
+    ico.innerHTML = ICONES[tipo] || ICONES.info;
+    t.appendChild(ico);
+
+    t.appendChild(elemento('span', 'toast__texto', mensagem));
+
+    var x = elemento('button', 'toast__fechar', '×');
+    x.type = 'button';
+    x.setAttribute('aria-label', 'Fechar');
+    x.addEventListener('click', function () { t.remove(); });
+    t.appendChild(x);
+
+    zona.appendChild(t);
+    if (tipo !== 'erro') window.setTimeout(function () { t.remove(); }, 4000);
+  }
+
+  function ligarDemonstracoes() {
+    var b1 = document.getElementById('demo-toast');
+    if (b1) b1.addEventListener('click', function () { notificar('bom', 'Viatura 12-AB-34 guardada'); });
+
+    var b2 = document.getElementById('demo-toast-erro');
+    if (b2) b2.addEventListener('click', function () { notificar('erro', 'Não foi possível guardar'); });
+
+    [['demo-modal', 'modal-demo'], ['demo-modal-estreito', 'modal-confirmar']].forEach(function (par) {
+      var botao = document.getElementById(par[0]);
+      var modal = document.getElementById(par[1]);
+      if (!botao || !modal) return;
+      botao.addEventListener('click', function () { modal.showModal(); });
+      modal.querySelectorAll('[data-fechar]').forEach(function (f) {
+        f.addEventListener('click', function () { modal.close(); });
+      });
+      /* clicar no véu fecha: o clique cai no próprio dialog, fora da caixa */
+      modal.addEventListener('click', function (ev) {
+        if (ev.target === modal) modal.close();
+      });
+    });
+  }
+
   /* ---------------- arranque ----------------
      As grelhas leem os valores já resolvidos, por isso voltam a ser
      pintadas sempre que o tema muda: os mesmos nomes, outros valores. */
@@ -188,6 +251,7 @@
     pintarTipografia();
     pintarEspaco();
     seguirIndice();
+    ligarDemonstracoes();
 
     document.addEventListener('click', function (ev) {
       if (ev.target.closest('.segmented__btn[data-tema]')) {

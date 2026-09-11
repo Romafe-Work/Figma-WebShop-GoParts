@@ -40,6 +40,7 @@
       <li><a href="#campos">Campos</a></li>
       <li><a href="#opcao">Caixa de verificação</a></li>
       <li><a href="#cartao">Cartão de sessão</a></li>
+      <li><a href="#avisos">Avisos e modais</a></li>
       <li><a href="#editor">O editor do ecrã</a></li>
       <li><a href="#diferencas">O que mudou</a></li>
     </ol>
@@ -492,6 +493,88 @@
       </p>
     </section>
 
+    <!-- ============ AVISOS E MODAIS ============ -->
+    <section class="seccao" id="avisos">
+      <h2>Avisos e modais</h2>
+      <p>
+        Duas maneiras de dizer o que aconteceu, e a escolha entre elas não é de
+        gosto: <strong>o modal interrompe, a notificação não</strong>. Se a
+        pessoa tem de decidir antes de fazer mais alguma coisa, é modal. Se é
+        só para confirmar o que já aconteceu, é notificação.
+      </p>
+
+      <h3>Notificações</h3>
+      <div class="demo demo--coluna toasts--demo">
+        <div class="toast toast--bom" role="status">
+          <svg class="toast__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+          <span class="toast__texto">Viatura 12-AB-34 guardada</span>
+          <button type="button" class="toast__accao">Anular</button>
+          <button type="button" class="toast__fechar" aria-label="Fechar">×</button>
+        </div>
+
+        <div class="toast toast--info" role="status">
+          <svg class="toast__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+          <span class="toast__texto">Encomenda enviada para o armazém</span>
+          <button type="button" class="toast__fechar" aria-label="Fechar">×</button>
+        </div>
+
+        <div class="toast toast--aviso" role="status">
+          <svg class="toast__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 3 19h18Z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg>
+          <span class="toast__texto">Ligação perdida. A trabalhar sem rede.</span>
+          <button type="button" class="toast__fechar" aria-label="Fechar">×</button>
+        </div>
+
+        <div class="toast toast--erro" role="alert">
+          <svg class="toast__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>
+          <span class="toast__texto">Não foi possível guardar</span>
+          <button type="button" class="toast__accao">Tentar de novo</button>
+          <button type="button" class="toast__fechar" aria-label="Fechar">×</button>
+        </div>
+      </div>
+
+      <div class="demo">
+        <button class="btn btn--primario" id="demo-toast">Mostrar uma notificação</button>
+        <button class="btn btn--ghost" id="demo-toast-erro">Mostrar um erro</button>
+      </div>
+
+      <table class="tabela">
+        <thead><tr><th>Regra</th><th>Razão</th></tr></thead>
+        <tbody>
+          <tr><td>A cor está numa faixa de 3px à esquerda, nunca no fundo</td><td>A notificação aparece sobre conteúdo qualquer, e um fundo colorido a atravessar uma tabela é ruído</td></tr>
+          <tr><td>Sucesso, informação e aviso levam <code>role="status"</code></td><td>Esperam que a pessoa acabe a frase que está a ler</td></tr>
+          <tr><td>O erro leva <code>role="alert"</code></td><td>Interrompe. É o único caso que o justifica</td></tr>
+          <tr><td><strong>O erro não desaparece sozinho</strong></td><td>Uma falha que some em quatro segundos é uma falha que ninguém leu</td></tr>
+          <tr><td>A região existe no documento antes de haver notificações</td><td>Uma região criada no instante em que recebe conteúdo não é anunciada por metade dos leitores de ecrã</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Modal</h3>
+      <div class="demo">
+        <button class="btn btn--acao" id="demo-modal">Abrir o modal</button>
+        <button class="btn btn--ghost" id="demo-modal-estreito">Abrir a confirmação</button>
+      </div>
+      <p>
+        Cabeçalho com título e fecho, corpo que desliza, e as ações no fim com o
+        primário à direita. Fecha com <kbd>Esc</kbd>, com o véu, e com o botão de
+        recuo — três saídas, porque quem abre por engano tem de poder sair sem
+        ler nada.
+      </p>
+      <pre><code>&lt;dialog class="modal"&gt;
+  &lt;div class="modal__cabeca"&gt;…&lt;/div&gt;
+  &lt;div class="modal__corpo"&gt;…&lt;/div&gt;
+  &lt;div class="modal__accoes"&gt;
+    &lt;button class="btn btn--ghost"&gt;Cancelar&lt;/button&gt;
+    &lt;button class="btn btn--acao"&gt;Guardar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <p class="nota">
+        É o <code>&lt;dialog&gt;</code> do navegador, e não uma <code>div</code>
+        com <code>position: fixed</code>. O foco fica preso lá dentro, o
+        <kbd>Esc</kbd> funciona sem código, e o resto da página deixa de ser
+        alcançável por teclado — três coisas que ninguém acerta à mão.
+      </p>
+    </section>
+
     <!-- ============ DIFERENÇAS ============ -->
     <section class="seccao" id="diferencas">
       <h2>O que mudou em relação à maqueta e ao site</h2>
@@ -521,6 +604,44 @@
 
   </main>
 </div>
+
+<div class="toasts" id="toasts" role="region" aria-label="Notificações"></div>
+
+<dialog class="modal" id="modal-demo">
+  <div class="modal__cabeca">
+    <h2 class="modal__titulo">Registar abastecimento</h2>
+    <button type="button" class="modal__fechar" data-fechar aria-label="Fechar">×</button>
+  </div>
+  <div class="modal__corpo">
+    <div class="campo">
+      <label class="campo__label" for="m-matricula">Matrícula <span class="campo__req">*</span></label>
+      <input class="input" id="m-matricula" value="12-AB-34">
+    </div>
+    <div class="campo">
+      <label class="campo__label" for="m-litros">Litros <span class="campo__req">*</span></label>
+      <input class="input" id="m-litros" placeholder="0,00">
+      <span class="campo__ajuda">Com duas casas decimais</span>
+    </div>
+  </div>
+  <div class="modal__accoes">
+    <button type="button" class="btn btn--ghost" data-fechar>Cancelar</button>
+    <button type="button" class="btn btn--acao" data-fechar>Guardar</button>
+  </div>
+</dialog>
+
+<dialog class="modal modal--estreito" id="modal-confirmar">
+  <div class="modal__cabeca">
+    <h2 class="modal__titulo">Terminar sessão?</h2>
+    <button type="button" class="modal__fechar" data-fechar aria-label="Fechar">×</button>
+  </div>
+  <div class="modal__corpo">
+    <p style="margin:0">O trabalho por guardar perde-se. Esta ação não tem volta.</p>
+  </div>
+  <div class="modal__accoes">
+    <button type="button" class="btn btn--ghost" data-fechar>Ficar</button>
+    <button type="button" class="btn btn--perigo" data-fechar>Terminar sessão</button>
+  </div>
+</dialog>
 
 <script src="assets/js/documentacao.js"></script>
 </body>

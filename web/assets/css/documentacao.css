@@ -99,6 +99,10 @@ pre code { font-size: var(--t-xs); line-height: 1.7; }
   border-radius: var(--r-md); padding: var(--e-4); margin: var(--e-3) 0;
 }
 .demo--coluna { flex-direction: column; align-items: stretch; max-width: 420px; }
+/* As notificações vivem coladas ao fundo do ecrã. Aqui estão a ser mostradas,
+   não a acontecer, por isso ficam em linha com o resto da página. */
+.toasts--demo .toast { position: static; }
+.toasts--demo { max-width: 520px; }
 
 .aviso-copia {
   position: fixed; left: 50%; bottom: var(--e-5); transform: translateX(-50%);
