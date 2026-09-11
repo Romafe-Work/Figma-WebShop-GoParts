@@ -82,6 +82,21 @@ Serve para criar designs com a IA do Canva, preencher modelos e exportar. **Não
 coloca elementos em posições exatas**, por isso não reproduz este ecrã ao pixel —
 o caminho do PDF continua a ser o mais fiel.
 
+## Duas cores que vêm do produto, e não do manual
+
+As capturas do ecrã de entrada da **Gestão de frota** fixaram dois valores que o
+capítulo 02 não tem:
+
+| Token | Valor | Onde |
+| --- | --- | --- |
+| `--c-logotipo` | `#2762a8` nos dois temas | O nome ROMAFE |
+| `--c-campo-fundo` | `#e9f0fe` claro · `#3d434f` escuro | O fundo dos campos |
+
+O manual diz que uma cor que não esteja no capítulo 02 não existe no produto, e
+que um azul quase igual ao da marca é pior do que um azul errado. Ou o manual
+ganha e estes dois voltam a `#00537e` e `--c-marca-suave`, ou o capítulo 02 fica
+incompleto e é ele que tem de crescer. Não é uma decisão de código.
+
 ## O que segue o manual, e não a maqueta
 
 | Peça | Maqueta | Aqui | Porquê |

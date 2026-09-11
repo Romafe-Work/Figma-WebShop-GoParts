@@ -14,17 +14,14 @@
 .topo {
   display: flex; align-items: center; justify-content: space-between; gap: var(--e-4);
   padding: var(--e-3) var(--e-6);
-  background: var(--c-entrada-fundo);
-  color: var(--c-entrada-tinta);
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: var(--c-superficie);
+  color: var(--c-texto);
+  border-bottom: 1px solid var(--c-borda);
 }
 .topo__accoes { display: flex; align-items: center; gap: var(--e-3); }
-.topo .segmented { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
-.topo .segmented__btn { color: var(--c-entrada-tinta-2); }
-.topo .segmented__btn[aria-pressed="true"] { background: rgba(255,255,255,.92); color: #222428; }
 .topo__idioma {
   display: inline-flex; align-items: center; gap: var(--e-1);
-  font: inherit; font-size: var(--t-sm); color: var(--c-entrada-tinta);
+  font: inherit; font-size: var(--t-sm); color: var(--c-texto);
   background: transparent; border: 0; cursor: pointer; padding: var(--e-2);
 }
 .topo__idioma svg { width: 18px; height: 18px; }

@@ -123,15 +123,17 @@
   --c-entrada-veu:    rgba(0, 83, 126, .78);   /* 02 §1.1: as transparências do azul */
   --c-entrada-tinta:  #ffffff;
   --c-entrada-tinta-2: rgba(255, 255, 255, .72); /* 02 §6: o branco a 72% do menu */
-  --c-logotipo:       #00537e;                 /* o azul da marca, e não um parecido */
-  --c-campo-fundo:    var(--c-marca-suave);    /* 02 §4.2: o fundo do selo de informação */
+  /* Estes dois vêm das capturas do ecrã de entrada da Gestão de frota, que
+     é o produto a copiar. Não estão no capítulo 02 — ver LEIA-ME. */
+  --c-logotipo:       #2762a8;                 /* o azul do nome, nos dois temas */
+  --c-campo-fundo:    #e9f0fe;                 /* o azul lavado dos campos */
   --a-campo:          44px;                    /* 19 §2: 44 e não 42 */
   --l-cartao:         460px;                   /* a maqueta. O 19 §1 pede 400 */
 }
 
 /* 02 §11.4: sobre fundo escuro o azul da marca dá 1.53:1. O azul que é
    tinta muda; o que é fundo fica onde está. */
-[data-theme="dark"] { --c-logotipo: #a8caee; }
+[data-theme="dark"] { --c-campo-fundo: #3d434f; }
 
 /* O site trata "auto" como claro, porque não tem regra de sistema.
    Aqui auto segue o sistema — é a única diferença de comportamento. */
@@ -164,6 +166,6 @@
     --s-2: 0 4px 14px rgba(0,0,0,.45);
     --s-3: 0 18px 44px rgba(0,0,0,.55);
 
-    --c-logotipo:     #a8caee;
+    --c-campo-fundo:  #3d434f;
   }
 }
