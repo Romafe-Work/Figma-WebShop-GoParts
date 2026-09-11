@@ -138,7 +138,12 @@
 
 /* 02 §11.4: sobre fundo escuro o azul da marca dá 1.53:1. O azul que é
    tinta muda; o que é fundo fica onde está. */
-[data-theme="dark"] { --c-campo-fundo: #3d434f; }
+/* O fundo do portal é uma superfície como as outras: no tema escuro segue a
+   página, senão o ecrã inteiro fica branco por baixo dos cartões — 02 §2. */
+[data-theme="dark"] {
+  --c-campo-fundo:  #3d434f;
+  --c-portal-fundo: #2c2c2a;
+}
 
 /* O site trata "auto" como claro, porque não tem regra de sistema.
    Aqui auto segue o sistema — é a única diferença de comportamento. */
@@ -172,5 +177,6 @@
     --s-3: 0 18px 44px rgba(0,0,0,.55);
 
     --c-campo-fundo:  #3d434f;
+    --c-portal-fundo: #2c2c2a;
   }
 }

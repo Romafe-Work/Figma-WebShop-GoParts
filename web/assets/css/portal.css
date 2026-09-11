@@ -106,18 +106,12 @@
 .aba svg { width: 18px; height: 18px; }
 .aba:hover { color: var(--c-texto); background: var(--c-superficie-2); }
 /* 02 §1: o laranja é o marcador do item ativo */
+.portal__abas .aba:last-of-type { margin-right: auto; }
 .aba[aria-current="true"] {
   color: var(--c-marca); font-weight: 700;
   background: var(--c-marca-suave); border-bottom-color: var(--c-acao-marcador);
 }
 
-.portal__lema {
-  display: flex; align-items: center; gap: var(--e-2);
-  margin: 0 0 0 auto; align-self: center; padding-left: var(--e-4);
-  font-size: var(--t-xs); font-weight: 700; color: var(--c-marca);
-  text-transform: uppercase; letter-spacing: .04em; white-space: nowrap;
-}
-.portal__swoosh { width: 28px; height: 11px; flex: none; }
 
 /* ---------- painéis ---------- */
 .paineis {

@@ -97,6 +97,29 @@
 .campo--largo { grid-column: span 3; }
 .pesquisa__accao { align-self: end; height: 46px; }
 
+/* ---------- pesquisa por referência ---------- */
+.referencia { margin-top: var(--e-5); }
+.referencia__ou {
+  display: flex; align-items: center; gap: var(--e-3);
+  margin: 0 0 var(--e-4);
+  font-size: var(--t-xs); color: var(--c-texto-3);
+  text-transform: uppercase; letter-spacing: .1em;
+}
+.referencia__ou::before, .referencia__ou::after {
+  content: ""; flex: 1; height: 1px; background: var(--c-borda);
+}
+.referencia__linha {
+  display: grid; grid-template-columns: minmax(0, 1.2fr) auto auto;
+  align-items: end; gap: var(--e-4);
+}
+.referencia__linha .opcoes { padding-bottom: 12px; }
+.referencia__accao { height: 46px; }
+
+@media (max-width: 1200px) {
+  .referencia__linha { grid-template-columns: 1fr; align-items: stretch; }
+  .referencia__linha .opcoes { padding-bottom: 0; }
+}
+
 /* ---------- marcas ---------- */
 .marcas { padding: var(--e-6) var(--e-5); }
 .marcas__topo {
