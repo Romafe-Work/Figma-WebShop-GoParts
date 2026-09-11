@@ -91,6 +91,13 @@ capítulo 02 não tem:
 | --- | --- | --- |
 | `--c-logotipo` | `#2762a8` nos dois temas | O nome ROMAFE |
 | `--c-campo-fundo` | `#e9f0fe` claro · `#3d434f` escuro | O fundo dos campos |
+| `--c-marca-fundo-2` | `#2d7ac6` | O fim do degradé das cabeças dos painéis |
+| `--c-portal-fundo` | `#edf4fa` | O fundo do início do portal |
+
+Há ainda duas coisas no portal que o capítulo 02 desaconselha e que a maqueta
+pede. A cabeça do terceiro painel é laranja com texto por cima, e o §1 diz que o
+laranja não serve de fundo a blocos de texto. E o marcador da aba ativa ficou
+laranja, como o §1 manda, quando a maqueta o mostra azul.
 
 O manual diz que uma cor que não esteja no capítulo 02 não existe no produto, e
 que um azul quase igual ao da marca é pior do que um azul errado. Ou o manual

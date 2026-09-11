@@ -129,6 +129,9 @@
      é o produto a copiar. Não estão no capítulo 02 — ver LEIA-ME. */
   --c-logotipo:       #2762a8;                 /* o azul do nome, nos dois temas */
   --c-campo-fundo:    #e9f0fe;                 /* o azul lavado dos campos */
+  --c-marca-fundo-2:  #2d7ac6;                 /* fim do degradé das cabeças dos painéis */
+  --c-portal-fundo:   #edf4fa;                 /* o fundo do portal */
+  --c-acao-suave:     #fee1ce;                 /* 02 §1.2: fundo suave do laranja */
   --a-campo:          44px;                    /* 19 §2: 44 e não 42 */
   --l-cartao:         460px;                   /* a maqueta. O 19 §1 pede 400 */
 }
