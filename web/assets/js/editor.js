@@ -358,7 +358,7 @@
     else definir(alvo, 'transform', 'translate(' + Math.round(x) + 'px, ' + Math.round(y) + 'px)');
   }
 
-  var arrasto = null, engoleClique = false;
+  var arrasto = null, engoleClique = false, mudouNoMousedown = false;
 
   function comecarArrasto(ev) {
     if (!ligado || ev.button !== 0) return;
@@ -367,7 +367,11 @@
 
     var alvo = candidata(ev.target);
     if (!alvo) return;
-    if (alvo !== seleccionado) seleccionar(alvo);
+
+    /* O mousedown já escolhe. Se escolheu agora, o clique que vem a seguir
+       não pode entrar dentro da peça: seria escolher e entrar no mesmo gesto. */
+    mudouNoMousedown = alvo !== seleccionado;
+    if (mudouNoMousedown) seleccionar(alvo);
 
     var base = lerPosicao(alvo);
     arrasto = { alvo: alvo, x0: ev.clientX, y0: ev.clientY, bx: base.x, by: base.y, moveu: false };
@@ -714,6 +718,8 @@
     sp.appendChild(ls);
     corpoProps.appendChild(sp);
 
+    corpoProps.appendChild(seccaoCss());
+
     /* --- repor esta peça --- */
     var sr = el('div', 'ed-seccao');
     var br = el('button', 'ed-botao', 'Repor esta peça');
@@ -795,6 +801,95 @@
       sf.appendChild(el('p', 'ed-dica', 'Sem véu, o texto branco deixa de se ler sobre a fotografia clara — 17 §1.'));
     }
     return sf;
+  }
+
+  /* ---------------- o CSS da peça escolhida ----------------
+     Mostra o que a peça é agora, não o que o editor lhe fez. Onde o valor
+     bater certo com um token, aparece o nome do token: é assim que se vê
+     se uma peça está no sistema ou fora dele. */
+  var PROPRIEDADES = [
+    ['font-family', 'font-family'], ['font-size', 'font-size'], ['font-weight', 'font-weight'],
+    ['line-height', 'line-height'], ['letter-spacing', 'letter-spacing'],
+    ['color', 'color'], ['background-color', 'background-color'],
+    ['border', 'border'], ['border-radius', 'border-radius'],
+    ['box-shadow', 'box-shadow'], ['padding', 'padding'], ['gap', 'gap'],
+    ['display', 'display'], ['width', 'width'], ['height', 'height'],
+    ['stroke-width', 'stroke-width'], ['transform', 'transform']
+  ];
+  var VAZIOS = ['none', 'normal', '0px', 'auto', 'rgba(0, 0, 0, 0)', 'matrix(1, 0, 0, 1, 0, 0)', '0', ''];
+
+  function hexParaRgb(h) {
+    h = h.trim();
+    if (h.indexOf('#') !== 0 || (h.length !== 7 && h.length !== 4)) return null;
+    if (h.length === 4) h = '#' + h[1] + h[1] + h[2] + h[2] + h[3] + h[3];
+    return 'rgb(' + parseInt(h.slice(1, 3), 16) + ', ' + parseInt(h.slice(3, 5), 16) + ', ' + parseInt(h.slice(5, 7), 16) + ')';
+  }
+
+  /* Uma família por propriedade. Sem isto, 16px de altura de linha vinha
+     dado como var(--r-lg), que é um raio, só porque calha ter o mesmo valor. */
+  var FAMILIAS = {
+    'color':            function () { return TINTAS.concat(CORES_ICONE).map(function (p) { return p[0]; }); },
+    'background-color': function () { return FUNDOS.map(function (p) { return p[0]; }); },
+    'font-size':        function () { return TAMANHOS; },
+    'border-radius':    function () { return RAIOS; },
+    'padding':          function () { return FOLGAS; },
+    'gap':              function () { return FOLGAS; }
+  };
+
+  function tokenPara(propriedade, valor) {
+    var fam = FAMILIAS[propriedade];
+    if (!fam) return null;
+    var nomes = fam();
+    for (var i = 0; i < nomes.length; i++) {
+      var t = nomes[i];
+      if (t.indexOf('--') !== 0) continue;
+      var v = getComputedStyle(document.documentElement).getPropertyValue(t).trim();
+      if (!v) continue;
+      if (v === valor) return t;
+      if (hexParaRgb(v) === valor) return t;
+      if (v.indexOf('rem') > 0 && (parseFloat(v) * 16) + 'px' === valor) return t;
+    }
+    return null;
+  }
+
+  function cssDaPeca(alvo) {
+    var estilo = getComputedStyle(alvo);
+    var linhas = [seletor(alvo) + ' {'];
+
+    PROPRIEDADES.forEach(function (par) {
+      var v = estilo.getPropertyValue(par[1]);
+      if (!v) return;
+      v = v.trim();
+      if (VAZIOS.indexOf(v) >= 0) return;
+      if (par[1] === 'font-family') v = v.split(',')[0].replace(/["']/g, '');
+      if (par[1] === 'border' && v.indexOf('0px') === 0) return;
+      var token = tokenPara(par[1], v);
+      linhas.push('  ' + par[0] + ': ' + (token ? 'var(' + token + ')  /* ' + v + ' */' : v) + ';');
+    });
+
+    linhas.push('}');
+
+    var meus = estilos[seletor(alvo)];
+    if (meus && Object.keys(meus).length) {
+      linhas.push('', '/* do que mudaste aqui: */');
+      Object.keys(meus).forEach(function (k) { linhas.push('  ' + k + ': ' + meus[k] + ';'); });
+    }
+    return linhas.join('\n');
+  }
+
+  function seccaoCss() {
+    var sc = seccao('CSS da peça');
+    var pre = el('pre', 'ed-css');
+    pre.textContent = cssDaPeca(seleccionado);
+    sc.appendChild(pre);
+
+    var b = el('button', 'ed-botao', 'Copiar este CSS');
+    b.type = 'button';
+    b.addEventListener('click', function () {
+      if (navigator.clipboard) navigator.clipboard.writeText(pre.textContent).then(function () { aviso('CSS da peça copiado'); });
+    });
+    sc.appendChild(b);
+    return sc;
   }
 
   /* ---------------- exportar ---------------- */
@@ -972,6 +1067,7 @@
 
     /* o clique que fecha um arrasto não muda a seleção */
     if (engoleClique) { engoleClique = false; return; }
+    if (mudouNoMousedown) { mudouNoMousedown = false; return; }
 
     var escolha = candidata(ev.target);
     if (escolha) seleccionar(escolha);
