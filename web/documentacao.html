@@ -410,7 +410,8 @@
           <tr><td>Raio</td><td>Os quatro raios do sistema</td><td>03 §2</td></tr>
           <tr><td>Folga e espaço</td><td>A escala de 4pt, oito degraus</td><td>07 §7</td></tr>
           <tr><td>Fotografia de fundo</td><td>Ver a que está lá, trocá-la, ajustá-la e regular o véu</td><td>19 §1</td></tr>
-          <tr><td>Peça</td><td>Esconder e mostrar, alinhar, e as três sombras</td><td>03 §4</td></tr>
+          <tr><td>Peça</td><td>Esconder e mostrar, alinhar, as três sombras e a posição</td><td>03 §4</td></tr>
+          <tr><td>Ícone</td><td>Cor, espessura do traço e tamanho. <strong>Aqui o laranja entra</strong></td><td>02 §1.2</td></tr>
         </tbody>
       </table>
       <p class="nota">
@@ -443,12 +444,33 @@
         Peça → Visível.
       </p>
 
+      <h3>Mover</h3>
+      <p>
+        Arrasta-se com o rato, empurra-se com as setas, ou escrevem-se as
+        coordenadas em X e Y. O que sai é sempre a mesma linha:
+        <code>transform: translate(-120px, 20px)</code>.
+      </p>
+      <p class="nota">
+        Move-se com <code>transform</code> e não com margens nem com
+        <code>position</code>. Assim nada à volta se desarruma quando se empurra
+        uma peça, e o que se copia para o produto é uma linha só.
+      </p>
+
+      <h3>A cor dos ícones</h3>
+      <p>
+        O ícone tem secção própria: cor, espessura do traço e tamanho. A paleta
+        dele <strong>tem laranja</strong>, ao contrário da paleta da tinta: o
+        manual proíbe o laranja como letra, não como traço.
+      </p>
+
       <h3>Como se mexe</h3>
       <table class="tabela">
         <tbody>
           <tr><td>Um clique</td><td>Escolhe a peça inteira: o botão, o campo, o cartão</td></tr>
           <tr><td>Segundo clique</td><td>Entra lá dentro, como no Figma</td></tr>
           <tr><td>Duplo clique</td><td>Escreve no sítio, se a peça for só texto</td></tr>
+          <tr><td>Arrastar</td><td>Move a peça. As setas movem um píxel, e oito com <kbd>Shift</kbd></td></tr>
+          <tr><td>X e Y no painel</td><td>A mesma posição escrita à mão, em píxeis</td></tr>
           <tr><td><kbd>Esc</kbd></td><td>Larga a seleção</td></tr>
           <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>Anula o último passo</td></tr>
           <tr><td>Rato parado sobre um valor</td><td>Diz o que ele é: nome, token e valor — <code>Azul da marca · --c-marca · #00537e</code></td></tr>

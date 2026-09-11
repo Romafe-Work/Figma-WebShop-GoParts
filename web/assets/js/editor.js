@@ -46,6 +46,23 @@
     ['--c-entrada-fundo', 'Superfície invertida']
   ];
 
+  /* O ícone é traço e preenchimento, não é texto. Por isso aqui o laranja
+     entra — 02 §1.2 proíbe-o como tinta, não como traço. */
+  var CORES_ICONE = [
+    ['--c-marca-fundo', 'Azul ROMAFE'],
+    ['--c-marca', 'Azul do tema'],
+    ['--c-acao', 'Laranja de ação'],
+    ['--c-acao-traco', 'Laranja escuro'],
+    ['--c-texto', 'Tinta principal'],
+    ['--c-texto-2', 'Tinta secundária'],
+    ['--c-texto-3', 'Tinta discreta'],
+    ['--c-entrada-tinta', 'Branco'],
+    ['--c-erro', 'Erro'],
+    ['--c-ok', 'Bom']
+  ];
+  var TRACOS = ['1', '1.5', '2', '2.5', '3'];
+  var MEDIDAS = ['16px', '20px', '24px', '32px', '40px', '48px'];
+
   var TAMANHOS = ['--t-xs', '--t-sm', '--t-md', '--t-lg', '--t-xl', '--t-2xl', '--t-3xl'];
   var PESOS    = [['400', 'Normal'], ['600', 'Meio'], ['700', 'Forte']];
   var RAIOS    = ['0', '--r-sm', '--r-md', '--r-lg', '--r-full'];
@@ -173,7 +190,9 @@
     var n = alvo;
     while (n && n !== document.body) {
       var parte = n.tagName.toLowerCase();
-      var classes = (n.className || '').toString().split(/\s+/)
+      /* num <svg>, className é um SVGAnimatedString e não uma string:
+         lê-se o atributo, senão o seletor sai com "[object SVGAnimatedString]" */
+      var classes = (n.getAttribute('class') || '').split(/\s+/)
         .filter(function (c) { return c && c.indexOf('ed-') !== 0 && c !== 'editando'; })
         .slice(0, 2);
       if (classes.length) parte += '.' + classes.join('.');
@@ -213,7 +232,7 @@
   function nomeDe(alvo) {
     if (alvo.dataset.edNome) return alvo.dataset.edNome;
 
-    var classes = (alvo.className || '').toString().split(/\s+/);
+    var classes = (alvo.getAttribute('class') || '').split(/\s+/);
     var base = '';
     for (var i = 0; i < classes.length && !base; i++) {
       var c = classes[i];
@@ -282,6 +301,8 @@
   }
 
   function definir(alvo, propriedade, valor) {
+    /* num ícone, mudar a largura sem mudar a altura deforma o desenho */
+    if (propriedade === 'width' && alvo.tagName === 'svg') definir(alvo, 'height', valor);
     var s = seletor(alvo);
     if (!estilos[s]) estilos[s] = {};
     historico.push({ tipo: 'estilo', seletor: s, propriedade: propriedade, antes: estilos[s][propriedade] });
@@ -320,6 +341,56 @@
     try { localStorage.removeItem(CHAVE); } catch (e) {}
     escrever();
     aviso('Voltou tudo ao original. Recarrega para repor textos e variantes.');
+  }
+
+  /* ---------------- mover ----------------
+     A peça move-se com transform: translate, e não com margens ou com
+     position. Assim nada à volta se desarruma, e o que sai no CSS é uma
+     linha só que se pode copiar para o produto. */
+  function lerPosicao(alvo) {
+    var v = (estilos[seletor(alvo)] || {})['transform'] || '';
+    var m = v.match(/translate\(\s*(-?\d+(?:\.\d+)?)px\s*,\s*(-?\d+(?:\.\d+)?)px\s*\)/);
+    return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 0, y: 0 };
+  }
+
+  function mover(alvo, x, y) {
+    if (!x && !y) definir(alvo, 'transform', null);
+    else definir(alvo, 'transform', 'translate(' + Math.round(x) + 'px, ' + Math.round(y) + 'px)');
+  }
+
+  var arrasto = null, engoleClique = false;
+
+  function comecarArrasto(ev) {
+    if (!ligado || ev.button !== 0) return;
+    if (ev.target.closest('.ed-painel') || ev.target.closest('.ed-dialogo')) return;
+    if (ev.target.getAttribute && ev.target.getAttribute('contenteditable') === 'true') return;
+
+    var alvo = candidata(ev.target);
+    if (!alvo) return;
+    if (alvo !== seleccionado) seleccionar(alvo);
+
+    var base = lerPosicao(alvo);
+    arrasto = { alvo: alvo, x0: ev.clientX, y0: ev.clientY, bx: base.x, by: base.y, moveu: false };
+    ev.preventDefault();
+  }
+
+  function durante(ev) {
+    if (!arrasto) return;
+    var dx = ev.clientX - arrasto.x0, dy = ev.clientY - arrasto.y0;
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) arrasto.moveu = true;
+    /* enquanto se arrasta é estilo em linha: é mais rápido do que reescrever
+       a folha a cada pixel, e no fim apaga-se */
+    arrasto.alvo.style.transform = 'translate(' + (arrasto.bx + dx) + 'px, ' + (arrasto.by + dy) + 'px)';
+  }
+
+  function largar(ev) {
+    if (!arrasto) return;
+    var a = arrasto; arrasto = null;
+    a.alvo.style.transform = '';
+    if (!a.moveu) return;
+    engoleClique = true;
+    mover(a.alvo, a.bx + (ev.clientX - a.x0), a.by + (ev.clientY - a.y0));
+    pintarProps();
   }
 
   /* ---------------- seleção ---------------- */
@@ -551,6 +622,25 @@
     sg.appendChild(el('p', 'ed-dica', 'Escala de 4pt, oito degraus — 07 §7.'));
     corpoProps.appendChild(sg);
 
+    /* --- ícone --- */
+    if (seleccionado.tagName === 'svg') {
+      var si = seccao('Ícone');
+      si.appendChild(grelhaTokens(CORES_ICONE, 'color', false));
+
+      var lt2 = el('div', 'ed-linha');
+      lt2.appendChild(el('label', null, 'Traço'));
+      lt2.appendChild(degraus(TRACOS, 'stroke-width'));
+      si.appendChild(lt2);
+
+      var lm = el('div', 'ed-linha');
+      lm.appendChild(el('label', null, 'Tamanho'));
+      lm.appendChild(degraus(MEDIDAS, 'width', function (v) { return v.replace('px', ''); }));
+      si.appendChild(lm);
+
+      si.appendChild(el('p', 'ed-dica', 'A cor do ícone é o traço, e por isso pode ser laranja. O que nunca é laranja é a letra — 02 §1.2.'));
+      corpoProps.insertBefore(si, corpoProps.firstChild);
+    }
+
     /* --- fotografia de fundo do ecrã --- */
     if (seleccionado.classList.contains('palco__foto')) {
       corpoProps.insertBefore(seccaoFotografia(), corpoProps.firstChild);
@@ -580,6 +670,41 @@
       return v === 'left' ? 'esq' : v === 'center' ? 'centro' : 'dir';
     }));
     sp.appendChild(la);
+
+    var pos = lerPosicao(seleccionado);
+    var lpos = el('div', 'ed-linha');
+    lpos.appendChild(el('label', null, 'Posição'));
+    var caixaPos = el('div', 'ed-coords');
+
+    /* X e Y escrevem-se à mão. Arrastar é o mesmo valor, com o rato. */
+    function coord(eixo, valor) {
+      var env = el('label', 'ed-coord');
+      env.appendChild(el('span', null, eixo.toUpperCase()));
+      var campo = el('input', 'ed-select');
+      campo.type = 'number';
+      campo.step = '1';
+      campo.value = valor;
+      campo.dataset.edDica = 'Deslocamento em píxeis a partir do sítio de origem';
+      campo.addEventListener('change', function () {
+        var p3 = lerPosicao(seleccionado);
+        var x = eixo === 'x' ? parseFloat(campo.value || 0) : p3.x;
+        var y = eixo === 'y' ? parseFloat(campo.value || 0) : p3.y;
+        mover(seleccionado, x, y);
+        pintarProps();
+      });
+      env.appendChild(campo);
+      return env;
+    }
+
+    caixaPos.appendChild(coord('x', pos.x));
+    caixaPos.appendChild(coord('y', pos.y));
+    var bpos = el('button', 'ed-degrau', 'Repor');
+    bpos.type = 'button';
+    bpos.dataset.edDica = 'Devolve a peça ao sítio de origem';
+    bpos.addEventListener('click', function () { mover(seleccionado, 0, 0); pintarProps(); });
+    caixaPos.appendChild(bpos);
+    lpos.appendChild(caixaPos);
+    sp.appendChild(lpos);
 
     var ls = el('div', 'ed-linha');
     ls.appendChild(el('label', null, 'Sombra'));
@@ -845,6 +970,9 @@
     ev.preventDefault();
     ev.stopPropagation();
 
+    /* o clique que fecha um arrasto não muda a seleção */
+    if (engoleClique) { engoleClique = false; return; }
+
     var escolha = candidata(ev.target);
     if (escolha) seleccionar(escolha);
   }
@@ -863,6 +991,9 @@
 
     document.addEventListener('click', interceptar, true);
     document.addEventListener('mouseover', realcar, true);
+    document.addEventListener('mousedown', comecarArrasto, true);
+    document.addEventListener('mousemove', durante, true);
+    document.addEventListener('mouseup', largar, true);
     document.addEventListener('submit', function (ev) { if (ligado) ev.preventDefault(); }, true);
 
     /* duplo clique escreve no sítio */
@@ -889,6 +1020,16 @@
       if (!ligado) return;
       if (ev.key === 'Escape') seleccionar(null);
       if ((ev.ctrlKey || ev.metaKey) && ev.key === 'z') { ev.preventDefault(); anular(); }
+
+      /* setas movem a peça: um pixel, ou oito com Shift */
+      var setas = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+      if (seleccionado && setas[ev.key] && !ev.target.closest('.ed-painel')) {
+        ev.preventDefault();
+        var passo = ev.shiftKey ? 8 : 1;
+        var p2 = lerPosicao(seleccionado);
+        mover(seleccionado, p2.x + setas[ev.key][0] * passo, p2.y + setas[ev.key][1] * passo);
+        pintarProps();
+      }
     });
   });
 })();

@@ -74,6 +74,7 @@ code, kbd, pre { font-family: var(--f-mono); font-size: .875em; }
 .campo__erro { display: block; font-size: var(--t-xs); color: var(--c-erro); margin-top: var(--e-1); font-weight: 600; }
 .campo__req { color: var(--c-erro); font-weight: 700; margin-left: 2px; }
 
+select.input { accent-color: var(--c-marca-fundo); }
 .input, select.input, textarea.input {
   width: 100%; font: inherit; color: var(--c-texto);
   padding: 10px var(--e-3); min-height: 42px;
@@ -104,7 +105,7 @@ code, kbd, pre { font-family: var(--f-mono); font-size: .875em; }
 
 /* ---------- opção (caixa de verificação) ---------- */
 .opcao { display: flex; gap: var(--e-2); align-items: flex-start; }
-.opcao input { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--c-marca); flex: none; }
+.opcao input { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--c-marca-fundo); flex: none; }
 .opcao__texto { font-size: var(--t-sm); }
 .opcao__ajuda { display: block; font-size: var(--t-xs); color: var(--c-texto-2); }
 

@@ -44,6 +44,7 @@
 /* O realce vai só à peça que o clique escolheria. Com :hover puro,
    todos os pais do rato ficavam marcados ao mesmo tempo. */
 .editando [data-ed-alvo] { cursor: default; }
+.editando [data-ed-sel] { cursor: move; }
 .editando [data-ed-hover] { outline: 1px solid var(--ed-accao); outline-offset: 1px; }
 .editando [data-ed-sel] { outline: 2px solid var(--ed-accao) !important; outline-offset: 1px; }
 .editando [contenteditable="true"] { outline: 2px solid var(--ed-marca) !important; cursor: text; }
@@ -165,3 +166,9 @@
 }
 .ed-ficheiro { display: block; text-align: center; cursor: pointer; }
 .ed-ficheiro input { display: none; }
+
+/* ---------- coordenadas ---------- */
+.ed-coords { display: flex; gap: var(--e-2); align-items: center; }
+.ed-coord { display: flex; align-items: center; gap: 4px; flex: 1; }
+.ed-coord > span { color: var(--ed-tinta-3); font-size: 10px; font-weight: 700; }
+.ed-coord input { width: 100%; }

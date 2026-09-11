@@ -40,8 +40,8 @@
   --c-texto-3:      #6b6e74;
 
   /* cor — marca e estados */
-  --c-marca:        #00537e;
-  --c-marca-forte:  #00416a;
+  --c-marca:        #2762a8;   /* o azul da palavra ROMAFE */
+  --c-marca-forte:  #1f5089;
   --c-marca-suave:  #e0eaf0;
   --c-acao:         #ef7b10;
   --c-acao-traco:   #ba5c00;
@@ -118,7 +118,7 @@
    e os dois azuis estão separados como o §11.4 obriga: um é fundo e não
    muda com o tema, o outro é tinta e muda. */
 :root {
-  --c-marca-fundo:    #00537e;                 /* 02 §6: o azul é o mesmo nos dois temas */
+  --c-marca-fundo:    #2762a8;                 /* o mesmo azul, onde ele é fundo e não tinta */
   --c-entrada-fundo:  #012338;                 /* 02 §1.1 superfície invertida */
   --c-entrada-veu:    rgba(0, 83, 126, .78);   /* 02 §1.1: as transparências do azul */
   --c-entrada-tinta:  #ffffff;
