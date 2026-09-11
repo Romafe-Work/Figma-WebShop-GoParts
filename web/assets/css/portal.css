@@ -86,8 +86,8 @@
   font-size: var(--t-sm); font-weight: 700;
 }
 .conta__texto { display: grid; }
-.conta__nome { font-size: var(--t-xs); font-weight: 700; color: var(--c-marca); }
-.conta__local { font-size: 10px; color: var(--c-texto-3); }
+.conta__nome { font-size: var(--t-sm); font-weight: 700; color: var(--c-texto); line-height: 1.2; }
+.conta__local { font-size: var(--t-xs); color: var(--c-texto-3); }
 .conta svg { width: 16px; height: 16px; color: var(--c-texto-3); }
 
 /* ---------- abas ---------- */
@@ -207,18 +207,39 @@ select.input {
 }
 .dica__fechar:hover { background: var(--c-superficie-2); color: var(--c-texto); }
 
-/* ---------- rodapé ---------- */
+/* ---------- rodapé ----------
+   Faixa azul da marca, com quem faz a plataforma à esquerda e a versão e os
+   avisos legais a seguir. É a única superfície de cor plena deste ecrã. */
 .portal__rodape {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: var(--e-4); flex-wrap: wrap;
-  padding: var(--e-3) var(--e-5);
-  background: var(--c-superficie); border-top: 1px solid var(--c-borda);
-  font-size: var(--t-xs); color: var(--c-texto-3);
+  display: flex; align-items: center; gap: var(--e-5); flex-wrap: wrap;
+  padding: var(--e-2) var(--e-5);
+  background: var(--c-marca-fundo); color: #fff;
+  font-size: var(--t-xs);
 }
 .portal__rodape p { margin: 0; }
-.portal__ligacoes { display: flex; gap: var(--e-4); list-style: none; margin: 0; padding: 0; }
-.portal__ligacoes a { color: var(--c-texto-2); text-decoration: none; }
+
+.fornecedor { display: flex; align-items: center; gap: var(--e-2); }
+.fornecedor__barras { color: #fff; font-weight: 700; letter-spacing: .06em; opacity: .9; }
+.fornecedor__texto { display: grid; line-height: 1.1; }
+.fornecedor__nome { font-size: var(--t-sm); font-weight: 300; }
+.fornecedor__nome strong { font-weight: 700; }
+.fornecedor__sub { font-size: 8px; letter-spacing: .18em; text-transform: uppercase; opacity: .8; }
+
+.portal__ligacoes {
+  display: flex; align-items: center; gap: var(--e-5); flex-wrap: wrap;
+  list-style: none; margin: 0; padding: 0;
+}
+.portal__ligacoes a { color: #fff; text-decoration: none; }
 .portal__ligacoes a:hover { text-decoration: underline; }
+
+.portal__topo-acima {
+  margin-left: auto; display: grid; place-items: center;
+  width: 30px; height: 30px; border-radius: var(--r-full);
+  border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.10);
+  color: #fff; cursor: pointer;
+}
+.portal__topo-acima:hover { background: rgba(255,255,255,.20); }
+.portal__topo-acima svg { width: 16px; height: 16px; }
 
 @media (max-width: 1200px) {
   .portal__topo { grid-template-columns: 1fr; gap: var(--e-3); }
