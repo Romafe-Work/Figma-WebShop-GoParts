@@ -113,12 +113,26 @@
 }
 .alerta[hidden] { display: none; }
 
+.ligacao-recuperar {
+  display: block; text-align: center;
+  font-size: var(--t-sm); color: var(--c-marca);
+  text-decoration: none; padding: var(--e-1) 0;
+}
+.ligacao-recuperar:hover { text-decoration: underline; }
+
 .separador {
   display: flex; align-items: center; gap: var(--e-3);
   font-size: var(--t-xs); color: var(--c-texto-2);
 }
 .separador::before, .separador::after {
   content: ""; flex: 1; height: 1px; background: var(--c-borda);
+}
+
+/* O número da versão. Vive no fim do cartão e em tinta discreta: quem o
+   procura sabe onde está, e quem vem entrar não tropeça nele. */
+.cartao__versao {
+  margin: var(--e-3) 0 0;
+  font-size: 11px; color: var(--c-texto-3);
 }
 
 .apoio {

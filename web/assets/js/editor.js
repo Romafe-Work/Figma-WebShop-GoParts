@@ -11,6 +11,7 @@
   'use strict';
 
   var CHAVE = 'romafe:editor:v1';
+  var CHAVE_PAINEIS = 'romafe:editor:paineis';
 
   /* ---------------- o que o manual permite ---------------- */
 
@@ -386,7 +387,7 @@
 
   function comecarArrasto(ev) {
     if (!ligado || ev.button !== 0) return;
-    if (ev.target.closest('.ed-painel') || ev.target.closest('.ed-dialogo')) return;
+    if (ehMoldura(ev.target)) return;
     if (ev.target.getAttribute && ev.target.getAttribute('contenteditable') === 'true') return;
 
     var alvo = candidata(ev.target);
@@ -958,6 +959,39 @@
     return partes.join('\n');
   }
 
+  /* ---------------- abrir e fechar os painéis ----------------
+     Fechado, o painel sai do caminho e a tela fica com o ecrã inteiro.
+     Fica um botão encostado à margem para o trazer de volta. */
+  function estadoPaineis() {
+    try { return JSON.parse(localStorage.getItem(CHAVE_PAINEIS) || '{}'); } catch (e) { return {}; }
+  }
+
+  function alternarPainel(lado, fechar) {
+    var e = estadoPaineis();
+    if (fechar === undefined) fechar = !e[lado];
+    e[lado] = fechar;
+    try { localStorage.setItem(CHAVE_PAINEIS, JSON.stringify(e)); } catch (err) {}
+    document.body.classList.toggle('ed-sem-' + lado, !!fechar);
+  }
+
+  function botaoFechar(lado, seta) {
+    var b = el('button', 'ed-fechar', seta);
+    b.type = 'button';
+    b.dataset.edDica = 'Fechar este painel';
+    b.setAttribute('aria-label', 'Fechar o painel');
+    b.addEventListener('click', function () { alternarPainel(lado, true); });
+    return b;
+  }
+
+  function botaoAbrir(lado, seta, titulo) {
+    var b = el('button', 'ed-abrir ed-abrir--' + lado, seta);
+    b.type = 'button';
+    b.dataset.edDica = 'Abrir ' + titulo;
+    b.setAttribute('aria-label', 'Abrir ' + titulo);
+    b.addEventListener('click', function () { alternarPainel(lado, false); });
+    document.body.appendChild(b);
+  }
+
   /* ---------------- montagem ---------------- */
   function montar() {
     folha = el('style');
@@ -971,6 +1005,7 @@
     marca.style.margin = '0';
     cabecaE.appendChild(marca);
     cabecaE.appendChild(el('h2', null, 'Camadas'));
+    cabecaE.appendChild(botaoFechar('esq', '‹'));
     painelEsq.appendChild(cabecaE);
 
     var barraEcras = el('div', 'ed-ecras');
@@ -1027,6 +1062,7 @@
     var nome = el('span', 'ed-alvo-nome', '—');
     nome.style.color = 'var(--ed-tinta-3)';
     cabecaD.appendChild(nome);
+    cabecaD.appendChild(botaoFechar('dir', '›'));
     painelDir.appendChild(cabecaD);
 
     corpoProps = el('div', 'ed-corpo');
@@ -1034,6 +1070,12 @@
 
     document.body.appendChild(painelEsq);
     document.body.appendChild(painelDir);
+
+    botaoAbrir('esq', '›', 'as camadas');
+    botaoAbrir('dir', '‹', 'as propriedades');
+    var guardado = estadoPaineis();
+    alternarPainel('esq', !!guardado.esq);
+    alternarPainel('dir', !!guardado.dir);
 
     /* diálogo do CSS */
     dialogo = el('dialog', 'ed-dialogo');
@@ -1066,6 +1108,14 @@
 
   /* Enquanto se edita, o ecrã não funciona como ecrã: um clique escolhe
      a peça e mais nada. Senão o botão submetia o formulário a cada escolha. */
+  /* A moldura do editor não é tela: cliques nela passam como cliques normais.
+     Sem isto, o botão de reabrir um painel ficava morto, porque o editor
+     engolia o clique antes de ele chegar lá. */
+  function ehMoldura(no) {
+    return !!(no && no.closest && (no.closest('.ed-painel') || no.closest('.ed-dialogo') ||
+              no.closest('.ed-abrir') || no.closest('.ed-aviso') || no.closest('.ed-dica-flutuante')));
+  }
+
   /* a peça que um clique aqui escolheria */
   function candidata(destino) {
     var fundo = destino.closest('[data-ed-alvo]');
@@ -1079,14 +1129,14 @@
   function realcar(ev) {
     if (!ligado) return;
     if (sobre) { sobre.removeAttribute('data-ed-hover'); sobre = null; }
-    if (ev.target.closest('.ed-painel') || ev.target.closest('.ed-dialogo')) return;
+    if (ehMoldura(ev.target)) return;
     var c = candidata(ev.target);
     if (c && c !== seleccionado) { c.setAttribute('data-ed-hover', ''); sobre = c; }
   }
 
   function interceptar(ev) {
     if (!ligado) return;
-    if (ev.target.closest('.ed-painel') || ev.target.closest('.ed-dialogo')) return;
+    if (ehMoldura(ev.target)) return;
     if (ev.target.getAttribute && ev.target.getAttribute('contenteditable') === 'true') return;
 
     ev.preventDefault();

@@ -38,6 +38,31 @@
 
 /* ---------- a tela encolhe para os painéis ---------- */
 .editando { padding-left: var(--ed-larg); padding-right: var(--ed-larg); }
+.editando.ed-sem-esq { padding-left: 0; }
+.editando.ed-sem-dir { padding-right: 0; }
+.editando.ed-sem-esq .ed-painel--esq,
+.editando.ed-sem-dir .ed-painel--dir { display: none; }
+
+/* botão de fechar, na cabeça de cada painel */
+.ed-fechar {
+  font: inherit; font-size: 16px; line-height: 1;
+  width: 24px; height: 24px; flex: none;
+  border: 1px solid var(--ed-borda); border-radius: var(--r-sm);
+  background: var(--ed-painel-2); color: var(--ed-tinta-2); cursor: pointer;
+}
+.ed-fechar:hover { background: rgba(255,255,255,.10); color: var(--ed-tinta); }
+
+/* botão de abrir, encostado à margem, só quando o painel está fechado */
+.ed-abrir {
+  position: fixed; top: 10px; z-index: 61; display: none;
+  width: 26px; height: 34px; padding: 0;
+  font: inherit; font-size: 16px; line-height: 1;
+  border: 1px solid var(--ed-borda); background: var(--ed-painel); color: var(--ed-tinta);
+  cursor: pointer;
+}
+.ed-abrir--esq { left: 0; border-left: 0; border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+.ed-abrir--dir { right: 0; border-right: 0; border-radius: var(--r-sm) 0 0 var(--r-sm); }
+.ed-sem-esq .ed-abrir--esq, .ed-sem-dir .ed-abrir--dir { display: block; }
 .editando .entrada { min-height: calc(100vh - 0px); }
 
 /* ---------- alvos na tela ---------- */
