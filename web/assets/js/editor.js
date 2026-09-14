@@ -88,7 +88,7 @@
     'formulario': 'Formulário', 'campo': 'Campo', 'opcao': 'Caixa de verificação',
     'btn': 'Botão', 'apoio': 'Apoio', 'rodape': 'Rodapé', 'alerta': 'Alerta',
     'separador': 'Separador', 'segmented': 'Segmentado', 'input': 'Caixa de texto',
-    'portal': 'Portal', 'portal__topo': 'Barra de topo', 'portal__marca': 'Marca',
+    'portal': 'Portal', 'portal__topo': 'Barra de topo', 'portal__marca': 'Logótipo',
     'portal__icones': 'Ícones', 'portal__icone': 'Ícone', 'portal__abas': 'Abas',
     'portal__conta': 'Conta', 'aba': 'Aba', 'paineis': 'Painéis', 'painel': 'Painel',
     'painel__cabeca': 'Cabeça do painel', 'painel__corpo': 'Corpo do painel',
@@ -181,6 +181,7 @@
     avisoEl = el('p', 'ed-aviso', texto);
     avisoEl.setAttribute('role', 'status');
     document.body.appendChild(avisoEl);
+    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(avisoEl);
     window.setTimeout(function () { if (avisoEl) { avisoEl.remove(); avisoEl = null; } }, 1800);
   }
 
@@ -473,6 +474,8 @@
         if (f.tagName !== 'svg') andar(f, nivel + 1);
       }
     })(raiz, 0);
+
+    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(listaCamadas);
   }
 
   function ecraVisivel() {
@@ -757,6 +760,11 @@
     corpoProps.appendChild(sp);
 
     corpoProps.appendChild(seccaoCss());
+
+    /* O painel acabou de ser construído, e nasceu em português. Em inglês, a
+       tradução passa por ele agora — só por ele, e não pela página toda, que a
+       cada clique era percorrê-la dezenas de vezes por minuto. */
+    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(painelDir);
 
     /* --- repor esta peça --- */
     var sr = el('div', 'ed-seccao');
@@ -1058,6 +1066,9 @@
     var peE = el('div', 'ed-pe');
     var bCss = el('button', 'ed-botao ed-botao--accao', 'Ver o CSS');
     bCss.type = 'button';
+    // Um id, porque o rótulo muda de língua e procurar um botão pelo texto
+    // deixou de funcionar no dia em que o texto passou a ser traduzido.
+    bCss.id = 'ed-ver-css';
     bCss.addEventListener('click', abrirDialogo);
     var bAnular = el('button', 'ed-botao', 'Anular');
     bAnular.type = 'button';
@@ -1092,7 +1103,7 @@
       var b = el('button', 'ed-degrau', par[1]);
       b.type = 'button';
       b.dataset.edIdioma = par[0];
-      b.dataset.edDica = 'Ver o ecrã em ' + par[1].toLowerCase();
+      b.dataset.edDica = 'Ver o ecrã em ' + par[1];
       /* Quem marca o degrau é a própria tradução — ver `marcar()` lá. Aqui só
          se pede a mudança, senão havia dois sítios a decidir o mesmo. */
       b.addEventListener('click', function () {

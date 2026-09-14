@@ -49,8 +49,10 @@ casa. A peça entra sempre no **fim** do bloco escolhido, nunca a meio: enfiar u
 campo entre dois irmãos empurra os de baixo e as regras de CSS já guardadas para
 eles passam a apontar para a peça errada, sem erro nenhum à vista.
 
-O ecrã lê-se em **português e inglês**. O botão está na barra de topo e também
-no painel do editor, porque só a entrada tem o da barra. O HTML continua escrito
+O ecrã lê-se em **português e inglês**, e os painéis laterais mudam com ele —
+camadas, propriedades e paleta. O que fica por traduzir é o código dentro do
+diálogo do CSS, que se cola num projeto escrito em português. O botão está na
+barra de topo e também no painel do editor, porque só a entrada tem o da barra. O HTML continua escrito
 em português e o inglês é um dicionário por cima — uma peça acrescentada na
 paleta aparece traduzida sem se lhe mexer, e `RomafeTraducao.porTraduzir()`, na
 consola, diz o que falta.

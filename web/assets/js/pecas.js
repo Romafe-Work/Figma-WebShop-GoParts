@@ -287,7 +287,7 @@
         b.type = 'button';
         b.className = 'ed-peca';
         b.textContent = item[0];
-        b.dataset.edDica = 'Acrescenta um ' + item[0].toLowerCase() + ' no fim do bloco escolhido';
+        b.dataset.edDica = 'Acrescentar no fim do bloco escolhido: ' + item[0];
         b.addEventListener('click', function () { acrescentar(item[1]); });
         grelha.appendChild(b);
       });
@@ -300,6 +300,7 @@
 
     onde.appendChild(caixa);
     pintarLista();
+    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(caixa);
   }
 
   function pintarLista() {
@@ -339,6 +340,8 @@
       linha.appendChild(fora);
       lista.appendChild(linha);
     });
+
+    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(lista);
   }
 
   /**
