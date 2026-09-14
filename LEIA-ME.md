@@ -57,6 +57,13 @@ em português e o inglês é um dicionário por cima — uma peça acrescentada 
 paleta aparece traduzida sem se lhe mexer, e `RomafeTraducao.porTraduzir()`, na
 consola, diz o que falta.
 
+O painel **abre a dizer como a peça está**: tamanho, peso, raio, folga e cores
+vêm marcados com o valor que ela já tem. Traço cheio é o que mudaste e sai no
+CSS; traço interrompido é o que a peça já tinha e não sai. O valor descobre-se a
+perguntar ao navegador, com uma sonda invisível ao lado da peça — ler o ficheiro
+não chegava, porque o valor pode vir de uma classe, de quem está por cima, ou de
+um `var()`.
+
 O painel só oferece tokens do manual. Não há selecionador de cor livre nem folga
 escrita à mão, e um botão muda de cor trocando de categoria. Com o rato sobre
 qualquer valor, um rótulo diz o nome, o token e o valor. No fim, *Ver o CSS* dá o

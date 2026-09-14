@@ -36,6 +36,17 @@
   var pecas = [];
   var contador = 0;
 
+  /* Igual ao do editor, e pela mesma razão: a paleta tem de acrescentar peças
+     mesmo que o tradutor falhe. Ver o comentário em `editor.js`. */
+  function traduzirRamo(raiz) {
+    if (!window.RomafeTraducao || typeof window.RomafeTraducao.traduzirRamo !== 'function') return;
+    try {
+      window.RomafeTraducao.traduzirRamo(raiz);
+    } catch (e) {
+      if (window.console) console.warn('A tradução falhou neste ramo:', e);
+    }
+  }
+
   /* ---------------- o catálogo ---------------- */
 
   /* Um `id` por peça, porque é o que dá ao editor um seletor que não depende da
@@ -300,7 +311,7 @@
 
     onde.appendChild(caixa);
     pintarLista();
-    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(caixa);
+    traduzirRamo(caixa);
   }
 
   function pintarLista() {
@@ -341,7 +352,7 @@
       lista.appendChild(linha);
     });
 
-    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(lista);
+    traduzirRamo(lista);
   }
 
   /**

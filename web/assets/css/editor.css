@@ -132,6 +132,13 @@
   padding: 0; cursor: pointer; background-clip: padding-box;
 }
 .ed-token[aria-pressed="true"] { outline: 2px solid var(--ed-accao); outline-offset: 1px; }
+
+/* DUAS MARCAS, E A DIFERENÇA IMPORTA.
+   O traço cheio é o que TU mudaste, e é o que sai no CSS exportado.
+   O traço interrompido é o que a peça JÁ TINHA, e não sai em lado nenhum —
+   serve para se saber onde ela está antes de se lhe tocar. Se fossem iguais,
+   quem olhasse para o painel não saberia o que ia levar daqui. */
+.ed-token[data-ed-actual] { outline: 2px dashed var(--ed-marca); outline-offset: 1px; }
 .ed-token--nenhum { position: relative; background: var(--ed-painel-2); }
 .ed-token--nenhum::after {
   content: ""; position: absolute; inset: 2px;
@@ -147,6 +154,11 @@
   cursor: pointer;
 }
 .ed-degrau[aria-pressed="true"] { background: var(--ed-accao); border-color: transparent; color: #2c2c2a; }
+
+/* Ver a nota em `.ed-token[data-ed-actual]`: o que a peça já tinha marca-se,
+   mas não se confunde com o que mudaste. */
+.ed-degrau[data-ed-actual] { border-color: var(--ed-marca); color: var(--ed-tinta); }
+.ed-degrau[data-ed-actual][aria-pressed="true"] { border-color: transparent; }
 
 .ed-botao {
   font: inherit; font-size: var(--t-xs); font-weight: 600;

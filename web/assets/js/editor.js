@@ -128,7 +128,85 @@
 
   var folha, painelEsq, painelDir, listaCamadas, corpoProps, dialogo, avisoEl;
 
+  /* ---------------- o que a peça já tem ----------------
+     O painel abria em branco: as grelhas só marcavam o que TU tinhas mudado,
+     e uma peça acabada de escolher não tinha nada mudado. Quem olhava não
+     ficava a saber que tamanho, que peso ou que folga a peça tem — que é a
+     primeira coisa que se quer saber ao clicar nela.
+
+     Descobrir isso não se faz a ler o CSS: o valor vem de uma folha, de uma
+     classe, de quem está por cima, e pode ser um `var()` que só o navegador
+     sabe resolver. Pergunta-se ao navegador — põe-se uma sonda ao lado da peça,
+     dá-se-lhe o valor da casa, e vê-se se o que sai é igual ao que a peça tem.
+
+     A sonda vai para o PAI da peça e não para o corpo, porque os valores da
+     casa mudam com o tema e o tema muda-os na raiz: ao lado da peça, o que a
+     sonda lê é o que a peça leria. */
+
+  var sonda = null;
+
+  function porSonda(alvo) {
+    if (!sonda) {
+      sonda = document.createElement('span');
+      sonda.setAttribute('aria-hidden', 'true');
+      // `display:block` porque numa caixa em linha a largura não se computa, e
+      // a grelha das medidas dos ícones ficava sem nada marcado.
+      sonda.style.cssText = 'position:absolute;left:-9999px;top:0;display:block;' +
+        'width:0;height:0;overflow:hidden;pointer-events:none';
+    }
+    (alvo.parentElement || document.body).appendChild(sonda);
+    return sonda;
+  }
+
+  /**
+   * Qual dos valores da lista é o que a peça mostra neste momento.
+   *
+   * Devolve o valor tal como entra no CSS — `var(--t-md)` ou `16px` — ou `null`
+   * quando o que a peça tem não é nenhum deles. Isso acontece, e é informação:
+   * quer dizer que aquela medida não saiu do manual.
+   */
+  function valorEmUso(alvo, propriedade, lista) {
+    if (!alvo) return null;
+    var tem = getComputedStyle(alvo).getPropertyValue(propriedade);
+    if (!tem) return null;
+
+    // A sonda entra e sai UMA vez por grelha, e não uma vez por valor. Com nove
+    // folgas e treze cores, eram sessenta idas ao documento por cada peça
+    // escolhida, e cada ida obriga o navegador a recalcular tudo outra vez.
+    var s2 = porSonda(alvo);
+    var achado = null;
+    for (var i = 0; i < lista.length && achado === null; i++) {
+      var v = valorToken(lista[i]);
+      s2.style.setProperty(propriedade, v);
+      if (getComputedStyle(s2).getPropertyValue(propriedade) === tem) achado = v;
+      s2.style.removeProperty(propriedade);
+    }
+    s2.remove();
+    return achado;
+  }
+
   /* ---------------- utilitários ---------------- */
+
+  /**
+   * PEDIR A TRADUÇÃO DE UM RAMO, SEM LHE DAR PODER DE PARAR O EDITOR.
+   *
+   * O painel das propriedades é construído e traduzido no mesmo fôlego. Feito à
+   * pressa, isso deixava o tradutor decidir se o painel aparece: uma exceção lá
+   * dentro — ou uma versão antiga do ficheiro em cache, sem esta função —
+   * rebentava a meio de `pintarProps` e o painel ficava no «clica numa peça»,
+   * como se o clique não tivesse chegado.
+   *
+   * O editor tem de funcionar sem tradutor nenhum. Traduzir é um extra.
+   */
+  function traduzirRamo(raiz) {
+    if (!window.RomafeTraducao || typeof window.RomafeTraducao.traduzirRamo !== 'function') return;
+    try {
+      window.RomafeTraducao.traduzirRamo(raiz);
+    } catch (e) {
+      if (window.console) console.warn('A tradução falhou neste ramo:', e);
+    }
+  }
+
   function el(tag, classe, texto) {
     var n = document.createElement(tag);
     if (classe) n.className = classe;
@@ -181,7 +259,7 @@
     avisoEl = el('p', 'ed-aviso', texto);
     avisoEl.setAttribute('role', 'status');
     document.body.appendChild(avisoEl);
-    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(avisoEl);
+    traduzirRamo(avisoEl);
     window.setTimeout(function () { if (avisoEl) { avisoEl.remove(); avisoEl = null; } }, 1800);
   }
 
@@ -475,7 +553,7 @@
       }
     })(raiz, 0);
 
-    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(listaCamadas);
+    traduzirRamo(listaCamadas);
   }
 
   function ecraVisivel() {
@@ -508,6 +586,11 @@
     var g = el('div', 'ed-tokens');
     var s = seletor(seleccionado);
     var actual = (estilos[s] || {})[propriedade];
+    /* O que a peça mostra, venha de onde vier. Só se procura quando não há
+       valor teu: se mudaste a cor, a que está em uso és tu. */
+    var emUso = actual ? null : valorEmUso(
+      seleccionado, propriedade, lista.map(function (par) { return par[0]; })
+    );
 
     if (comNenhum) {
       var nada = el('button', 'ed-token ed-token--nenhum');
@@ -525,6 +608,9 @@
       b.dataset.edDica = nome + '  ·  ' + token + '  ·  ' + corDoToken(token);
       b.style.background = 'var(' + token + ')';
       b.setAttribute('aria-pressed', String(actual === 'var(' + token + ')'));
+      /* Marca diferente da tua: esta diz «é o que a peça já tinha», e o que
+         tem de sair no CSS exportado continua a ser só o que mudaste. */
+      if (emUso === 'var(' + token + ')') b.dataset.edActual = '';
       b.addEventListener('click', function () { definir(seleccionado, propriedade, 'var(' + token + ')'); pintarProps(); });
       g.appendChild(b);
     });
@@ -535,12 +621,14 @@
     var linha = el('div', 'ed-degraus');
     var s = seletor(seleccionado);
     var actual = (estilos[s] || {})[propriedade];
+    var emUso = actual ? null : valorEmUso(seleccionado, propriedade, lista);
 
     lista.forEach(function (v) {
       var b = el('button', 'ed-degrau', rotulo ? rotulo(v) : v.replace('--', '').replace(/^[te]-/, ''));
       b.type = 'button';
       b.dataset.edDica = descreverDegrau(v, propriedade);
       b.setAttribute('aria-pressed', String(actual === valorToken(v)));
+      if (emUso === valorToken(v)) b.dataset.edActual = '';
       b.addEventListener('click', function () { definir(seleccionado, propriedade, valorToken(v)); pintarProps(); });
       linha.appendChild(b);
     });
@@ -764,7 +852,7 @@
     /* O painel acabou de ser construído, e nasceu em português. Em inglês, a
        tradução passa por ele agora — só por ele, e não pela página toda, que a
        cada clique era percorrê-la dezenas de vezes por minuto. */
-    if (window.RomafeTraducao) window.RomafeTraducao.traduzirRamo(painelDir);
+    traduzirRamo(painelDir);
 
     /* --- repor esta peça --- */
     var sr = el('div', 'ed-seccao');
