@@ -186,6 +186,36 @@
     'Ações': 'Actions',
     'Mais ações': 'More actions',
 
+    /* ── guias de remessa ── */
+    'Consulte e acompanhe os seus documentos de expedição.':
+      'Consult and track your dispatch documents.',
+    'Filtros de pesquisa': 'Search filters',
+    'N.º Guia de Remessa': 'Delivery note no.',
+    'Introduza o número': 'Enter the number',
+    'Tipo de documento': 'Document type',
+    'Fatura': 'Invoice',
+    'Nota crédito': 'Credit note',
+    'Documentos encontrados': 'Documents found',
+    'Notas de crédito': 'Credit notes',
+    'Total faturado': 'Total invoiced',
+    'Resultados': 'Results',
+    'registos por página': 'records per page',
+    'Guia de remessa': 'Delivery note',
+    'Tipo': 'Type',
+    'Bruto': 'Gross',
+    'Desconto': 'Discount',
+    'Embalagens': 'Packages',
+    'Portes': 'Shipping',
+    'Base tributável': 'Taxable base',
+    'IVA': 'VAT',
+    'Entrega normal': 'Standard delivery',
+    'Cliente solicitou entrega após as 17h': 'Customer requested delivery after 5 pm',
+    'Devolução de mercadoria': 'Goods returned',
+    'Entrega parcial': 'Partial delivery',
+    'Páginas de resultados': 'Result pages',
+    'Página anterior': 'Previous page',
+    'Página seguinte': 'Next page',
+
     /* ── rodapé ── */
     'Peças para um mundo em movimento': 'Parts for a world in motion',
     'Aviso legal': 'Legal notice',
@@ -435,6 +465,9 @@
     [/^(\d+) artigos?$/, function (m) { return m[1] + (m[1] === '1' ? ' item' : ' items'); }],
     [/^Carrinho, (\d+) artigos?$/, function (m) { return 'Cart, ' + m[1] + (m[1] === '1' ? ' item' : ' items'); }],
     [/^A mostrar (\d+) de (\d+) pedidos$/, function (m) { return 'Showing ' + m[1] + ' of ' + m[2] + ' orders'; }],
+    [/^A mostrar (\d+) a (\d+) de (\d+) registos$/, function (m) {
+      return 'Showing ' + m[1] + ' to ' + m[2] + ' of ' + m[3] + ' records';
+    }],
 
     /* A dica de cada botão da paleta, que o próprio editor compõe com o nome da
        peça. Uma linha aqui em vez de dezassete entradas iguais no dicionário. */

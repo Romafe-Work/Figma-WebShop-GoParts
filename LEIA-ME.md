@@ -23,6 +23,8 @@ web/
   assets/css/base.css         botão, campo, opção, segmentado
   assets/css/entrada.css      só o layout do ecrã de entrada
   assets/css/portal.css       só o layout do início do portal
+  assets/css/pedidos.css      só o layout do histórico de pedidos
+  assets/css/guias.css        só o layout das guias de remessa
   assets/css/documentacao.css só a página de documentação
   assets/js/tema.js           claro, escuro, auto — a chave é 'uiux:tema'
   assets/js/entrada.js        mostrar/ocultar, erro de credenciais
@@ -38,8 +40,9 @@ web/
 Abre `web/index.html` no navegador. Não precisa de servidor nem de build.
 
 **A página abre em modo de edição**, como uma tela de desenho: camadas à
-esquerda, propriedades à direita, e o seletor de ecrã em cima. Há dois ecrãs — a
-entrada e o início do portal — e acrescentar outro é acrescentar um
+esquerda, propriedades à direita, e o seletor de ecrã em cima. Há cinco ecrãs —
+a entrada, o início do portal, o catálogo, o histórico de pedidos e as guias de
+remessa — e acrescentar outro é acrescentar um
 `<div class="ecra" data-ecra="…" data-nome="…">` ao HTML.
 
 Por baixo das camadas há uma **paleta de peças**: dezassete campos — texto,
