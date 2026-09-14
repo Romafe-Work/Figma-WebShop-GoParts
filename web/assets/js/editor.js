@@ -286,6 +286,11 @@
   }
 
   function carregar() {
+    /* PRIMEIRO as peças, depois os estilos. Uma regra guardada para uma peça
+       que ainda não existe não se aplica a nada, e a peça voltava sem a cor
+       que alguém lhe tinha dado. */
+    if (window.RomafePecas) window.RomafePecas.repor();
+
     try {
       var g = JSON.parse(localStorage.getItem(CHAVE) || '{}');
       estilos = g.estilos || {};
@@ -357,6 +362,8 @@
       try { var n = document.querySelector(s); if (n) n.style.backgroundImage = originais.fotos[s]; } catch (e) {}
     });
 
+    if (window.RomafePecas) window.RomafePecas.limpar();
+
     estilos = {}; textos = {}; classes = {}; fotos = {};
     originais = { textos: {}, classes: {}, fotos: {} };
     historico = [];
@@ -365,7 +372,7 @@
     escrever();
     seleccionar(null);
     construirCamadas();
-    aviso('Voltou tudo ao original — texto, variantes e fotografia');
+    aviso('Voltou tudo ao original — texto, variantes, fotografia e peças');
   }
 
   /* ---------------- mover ----------------
@@ -480,6 +487,10 @@
     }
     seleccionar(null);
     construirCamadas();
+    // O ecrã que estava escondido nunca foi traduzido — o percurso dos nós de
+    // texto passa por ele na mesma, mas uma peça acrescentada lá dentro depois
+    // da troca não passava. Repetir é barato e não deixa buracos.
+    if (window.RomafeTraducao) window.RomafeTraducao.aplicar();
     window.scrollTo(0, 0);
   }
 
@@ -922,6 +933,20 @@
 
   /* ---------------- exportar ---------------- */
   function cssFinal() {
+    /* As peças acrescentadas não são CSS — são marcação, e vão para o
+       `index.html` à mão. Aparecem aqui em cima porque quem abre esta janela
+       quer levar daqui tudo o que mudou, e não só metade. */
+    var marcacao = window.RomafePecas ? window.RomafePecas.html() : '';
+    if (marcacao) {
+      marcacao = '/* ── PEÇAS ACRESCENTADAS ─────────────────────────────────\n' +
+        '   Isto é HTML, não é CSS. Colar no index.html, no sítio indicado.\n' +
+        '   ──────────────────────────────────────────────────────── */\n' +
+        marcacao + '\n\n';
+    }
+    return marcacao + cssDasRegras();
+  }
+
+  function cssDasRegras() {
     var partes = ['/* ROMAFE — alterações feitas no editor.',
                   '   Só tokens: nenhum valor aqui foi inventado. */', ''];
 
@@ -1025,6 +1050,11 @@
     listaCamadas = el('div', 'ed-corpo');
     painelEsq.appendChild(listaCamadas);
 
+    /* A paleta de peças vive noutro ficheiro e monta-se aqui. Se não estiver
+       carregada, o editor continua a servir para tudo o resto — uma paleta em
+       falta não pode tirar o painel das camadas a ninguém. */
+    if (window.RomafePecas) window.RomafePecas.montar(painelEsq);
+
     var peE = el('div', 'ed-pe');
     var bCss = el('button', 'ed-botao ed-botao--accao', 'Ver o CSS');
     bCss.type = 'button';
@@ -1053,6 +1083,25 @@
       temaBarra.appendChild(b);
     });
     peE.appendChild(temaBarra);
+
+    /* O IDIOMA MUDA-SE AQUI, e não só no botão do ecrã de entrada.
+       O botão da barra de topo só existe na entrada; os outros três ecrãs não
+       têm nenhum, e sem isto não havia maneira de os ver em inglês. */
+    var idiomaBarra = el('div', 'ed-degraus');
+    [['pt', 'Português'], ['en', 'English']].forEach(function (par) {
+      var b = el('button', 'ed-degrau', par[1]);
+      b.type = 'button';
+      b.dataset.edIdioma = par[0];
+      b.dataset.edDica = 'Ver o ecrã em ' + par[1].toLowerCase();
+      /* Quem marca o degrau é a própria tradução — ver `marcar()` lá. Aqui só
+         se pede a mudança, senão havia dois sítios a decidir o mesmo. */
+      b.addEventListener('click', function () {
+        if (window.RomafeTraducao) window.RomafeTraducao.aplicar(par[0]);
+      });
+      idiomaBarra.appendChild(b);
+    });
+    peE.appendChild(idiomaBarra);
+
     painelEsq.appendChild(peE);
 
     /* painel direito: propriedades */
@@ -1197,6 +1246,14 @@
     }, true);
 
     window.RomafeEditor = {
+      /* O que a paleta de peças precisa de saber do editor. Nada disto é novo:
+         é o que o editor já usava por dentro, agora com nome. */
+      seletor: seletor,
+      alvo: function () { return seleccionado; },
+      seleccionar: seleccionar,
+      refrescar: function () { construirCamadas(); pintarProps(); },
+      aviso: aviso,
+
       irPara: function (nome) {
         var picker = painelEsq && painelEsq.querySelector('.ed-ecras select');
         if (picker) picker.value = nome;

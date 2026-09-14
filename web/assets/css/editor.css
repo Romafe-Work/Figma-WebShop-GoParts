@@ -14,6 +14,7 @@
   --ed-tinta-2: #cdccc1;
   --ed-tinta-3: #adaca1;
   --ed-accao:   #fb8f39;
+  --ed-erro:    #e8695d;
   --ed-marca:   #a8caee;
   --ed-larg:    264px;
 }
@@ -205,3 +206,102 @@
   font-family: var(--f-mono); font-size: 10px; line-height: 1.6; color: var(--ed-tinta-2);
   white-space: pre; tab-size: 2;
 }
+
+/* =========================================================
+   A PALETA DE PEÇAS
+
+   Vive no painel das camadas, por baixo da árvore. Ali e não no painel das
+   propriedades: o da direita fala da peça escolhida, e acrescentar não é uma
+   propriedade de nada — é uma ação sobre o ecrã.
+   ========================================================= */
+
+.ed-pecas {
+  /* `flex: none` e altura própria: sem isto a paleta empurrava a árvore das
+     camadas até ela ficar cortada a meio de um nome, e quem estava a mexer no
+     ecrã deixava de conseguir escolher pela lista. As duas repartem a altura,
+     e cada uma rola dentro do seu bocado. */
+  flex: none;
+  max-height: 44%;
+  overflow-y: auto;
+  border-top: 1px solid var(--ed-borda);
+  padding: var(--e-3) var(--e-3) var(--e-4);
+}
+
+/* A árvore nunca desce abaixo disto. Uma lista de camadas com duas linhas não
+   serve para nada, e é preferível a paleta rolar. */
+.ed-painel--esq .ed-corpo { min-height: 150px; }
+
+.ed-pecas__grupo {
+  margin: var(--e-3) 0 var(--e-2);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ed-tinta-3);
+}
+
+/* Duas colunas e não três: os nomes são palavras inteiras — «Caixa de
+   verificação» — e cortados a meio deixam de dizer o que a peça é. */
+.ed-pecas__grelha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.ed-peca {
+  min-height: 34px;
+  padding: 6px 8px;
+  border: 1px solid var(--ed-borda);
+  border-radius: var(--r-sm);
+  background: var(--ed-painel-2);
+  color: var(--ed-tinta);
+  font: inherit;
+  font-size: 11.5px;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ed-peca:hover { border-color: var(--ed-accao); color: var(--ed-accao); }
+.ed-peca:focus-visible { outline: 2px solid var(--ed-marca); outline-offset: 1px; }
+
+.ed-pecas__lista { margin-top: var(--e-3); }
+
+.ed-pecas__linha {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ed-pecas__nome {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 6px;
+  border: 0;
+  background: none;
+  color: var(--ed-tinta-2);
+  font: inherit;
+  font-size: 11px;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ed-pecas__nome:hover { color: var(--ed-accao); }
+
+.ed-pecas__apagar {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--ed-borda);
+  border-radius: var(--r-sm);
+  background: none;
+  color: var(--ed-tinta-3);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ed-pecas__apagar:hover { border-color: var(--ed-erro); color: var(--ed-erro); }

@@ -1249,6 +1249,12 @@
 
 <script src="assets/js/entrada.js"></script>
 <script src="assets/js/portal.js"></script>
+<!-- A paleta ANTES do editor: é o editor que a monta no painel, e um painel
+     montado antes de a paleta existir ficava sem ela até se recarregar. -->
+<script src="assets/js/pecas.js"></script>
 <script src="assets/js/editor.js"></script>
+<!-- A tradução DEPOIS de tudo: o editor repõe os textos guardados ao arrancar,
+     e traduzir antes disso era traduzir o que ia ser substituído a seguir. -->
+<script src="assets/js/traducao.js"></script>
 </body>
 </html>

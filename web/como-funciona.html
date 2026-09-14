@@ -106,6 +106,68 @@
       </p>
     </section>
 
+    <section class="seccao" id="acrescentar">
+      <h2>Acrescentar campos que não estão no ecrã</h2>
+      <p>
+        Por baixo das camadas há uma paleta com dezassete peças — texto, email,
+        palavra-passe, número, telefone, data, hora, valor, seleção, caixa de
+        verificação, botões de opção, ficheiro, área de texto, pesquisa, botão,
+        título e parágrafo. Um clique põe a peça no ecrã.
+      </p>
+      <p>
+        <strong>A peça nasce com o sistema já aplicado.</strong> É escrita com
+        as classes da casa, e não com estilo próprio: a altura, o raio, a cor da
+        borda e o tipo de letra vêm dos mesmos valores que tudo o resto, e o tema
+        escuro apanha-a sem ninguém lhe tocar. É a mesma regra do painel das
+        propriedades — aqui não se inventa nada que o produto não consiga
+        construir.
+      </p>
+      <p>
+        <strong>A peça entra sempre no fim do bloco escolhido, nunca a meio</strong>,
+        e a razão é a mesma que faz o editor funcionar. Cada peça é identificada
+        por um caminho de classes com a posição, quando há irmãos iguais. Enfiar
+        um campo entre o primeiro e o segundo empurra os de baixo, e as regras
+        já guardadas para eles passam a apontar para o campo errado: as cores e
+        as folgas que alguém afinou mudavam de peça sozinhas, sem erro nenhum à
+        vista. Acrescentar no fim não empurra ninguém, e depois arrasta-se para o
+        sítio.
+      </p>
+      <p>
+        No fim, <em>Ver o CSS</em> traz também o HTML das peças novas, com o
+        sítio onde cada uma entra. Uma peça não é uma regra de estilo — é
+        marcação, e vai para o ficheiro à mão.
+      </p>
+    </section>
+
+    <section class="seccao" id="idioma">
+      <h2>Português e inglês</h2>
+      <p>
+        O mesmo ecrã lê-se nas duas línguas. O botão está na barra de topo e
+        também no painel do editor, porque só o ecrã de entrada tem o da barra e
+        os outros três ficariam sem maneira de mudar.
+      </p>
+      <p>
+        <strong>O HTML continua escrito em português, e é essa a fonte.</strong>
+        O inglês é uma camada por cima: um dicionário do que está escrito para o
+        que se lê. O caminho normal seria marcar cada texto com uma chave, e isso
+        custava tocar em algumas centenas de nós — o ecrã deixava de se ler como
+        o ecrã que é, e ganhava pouco.
+      </p>
+      <p>
+        Assim, uma peça acrescentada na paleta aparece traduzida sem se lhe
+        mexer, e o que falta traduzir descobre-se sozinho: na consola,
+        <code>RomafeTraducao.porTraduzir()</code> devolve o que está no ecrã e
+        não está no dicionário. Hoje o que sobra são marcas de automóvel,
+        moradas e números de pedido, que ficam como estão de propósito.
+      </p>
+      <p>
+        O preço está escrito e é real: duas frases iguais em sítios diferentes
+        têm de ter a mesma tradução. Neste ecrã não há nenhum caso em que isso
+        incomode; no dia em que houver, a saída é a chave, e não remendar o
+        dicionário.
+      </p>
+    </section>
+
     <section class="seccao" id="regra">
       <h2>A regra que o torna útil</h2>
       <p>

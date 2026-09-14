@@ -28,6 +28,8 @@ web/
   assets/js/entrada.js        mostrar/ocultar, erro de credenciais
   assets/js/documentacao.js   constrói as grelhas a partir dos tokens
   assets/js/editor.js         o editor do ecrã, ligado pelo botão Editar
+  assets/js/pecas.js          a paleta: acrescentar campos ao ecrã
+  assets/js/traducao.js       português e inglês, por dicionário
   assets/css/editor.css       a moldura do editor
   assets/fonts/               Motor, Jost e Lato em woff2
   assets/img/                 colocar aqui oficina.jpg
@@ -39,6 +41,19 @@ Abre `web/index.html` no navegador. Não precisa de servidor nem de build.
 esquerda, propriedades à direita, e o seletor de ecrã em cima. Há dois ecrãs — a
 entrada e o início do portal — e acrescentar outro é acrescentar um
 `<div class="ecra" data-ecra="…" data-nome="…">` ao HTML.
+
+Por baixo das camadas há uma **paleta de peças**: dezassete campos — texto,
+email, data, número, seleção, caixa de verificação, botões de opção, ficheiro,
+área de texto, e mais — que entram no ecrã com um clique, já com as classes da
+casa. A peça entra sempre no **fim** do bloco escolhido, nunca a meio: enfiar um
+campo entre dois irmãos empurra os de baixo e as regras de CSS já guardadas para
+eles passam a apontar para a peça errada, sem erro nenhum à vista.
+
+O ecrã lê-se em **português e inglês**. O botão está na barra de topo e também
+no painel do editor, porque só a entrada tem o da barra. O HTML continua escrito
+em português e o inglês é um dicionário por cima — uma peça acrescentada na
+paleta aparece traduzida sem se lhe mexer, e `RomafeTraducao.porTraduzir()`, na
+consola, diz o que falta.
 
 O painel só oferece tokens do manual. Não há selecionador de cor livre nem folga
 escrita à mão, e um botão muda de cor trocando de categoria. Com o rato sobre
